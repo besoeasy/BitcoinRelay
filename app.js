@@ -9,7 +9,7 @@ const { commitMsg } = require("./modules/nostr.js");
 async function main() {
   const btcprice = await getBitcoinPrice();
 
-  const msg = `Bitcoin Is ${btcprice} USD`;
+  const msg = `Bitcoin : ${btcprice} USD`;
 
   const buffer = await paintImg(msg);
 
@@ -18,7 +18,7 @@ async function main() {
   console.log(msg, msgurl);
 
   if (msgurl) {
-    await commitMsg(process.env.NSEC, `${msg} ${msgurl}`);
+    await commitMsg(process.env.NSEC, `${msg} #bitcoin ${msgurl}`);
   }
 
   process.exit(0);
