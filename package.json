@@ -4,7 +4,7 @@
   "main": "app.js",
   "type": "commonjs",
   "scripts": {
-    "test": "node app.js"
+    "start": "node app.js"
   },
   "author": "besoeasy",
   "license": "ISC",
