@@ -10,59 +10,36 @@ async function paintImg(textx) {
   context.fillStyle = "#000000";
   context.fillRect(0, 0, width, height);
 
-  // Font color: Randomly choose red or green
-  const fontColor = Math.random() > 0.5 ? "#e74c3c" : "#2ecc71";  // Red or Green
+  // Font color: White for "Bitcoin" and "USD"
+  const fontColor = "#ffffff";
 
   // Set font size and style
-  const fontSize = 100;  // Increase font size
+  const fontSize = 120;  // Increased font size for larger text
   context.font = `bold ${fontSize}px 'Helvetica Neue', Arial, sans-serif`;
   context.textAlign = "center";
   context.textBaseline = "middle";
+
+  // Draw "Bitcoin" at the top
   context.fillStyle = fontColor;
+  context.fillText("BITCOIN", width / 2, height / 4 - fontSize / 2);
 
-  // Split text into lines if necessary
-  const lineHeight = fontSize * 1.2;
-  const lines = splitTextToLines(context, textx, width - 40);
+  // Randomly choose red or green for textx
+  const textxColor = Math.random() > 0.5 ? "#e74c3c" : "#2ecc71";  // Red or Green
 
-  // Calculate vertical position to center the text
-  const totalTextHeight = lines.length * lineHeight;
-  const startY = (height - totalTextHeight) / 2 + lineHeight / 2;
+  // Draw dynamic text (textx) in the middle
+  context.font = `bold ${fontSize * 1.5}px 'Helvetica Neue', Arial, sans-serif`;
+  context.fillStyle = textxColor;
+  context.fillText(textx, width / 2, height / 2);
 
-  // Draw each line of text
-  lines.forEach((line, index) => {
-    context.fillText(line, width / 2, startY + index * lineHeight);
-  });
+  // Draw "USD" at the bottom
+  context.font = `bold ${fontSize}px 'Helvetica Neue', Arial, sans-serif`;
+  context.fillStyle = fontColor;
+  context.fillText("USD", width / 2, height * 3 / 4 + fontSize / 2);
 
   // Convert canvas to buffer
   const buffer = canvas.toBuffer("image/png");
 
   return buffer;
-}
-
-// Helper function to split text into lines
-function splitTextToLines(context, text, maxWidth) {
-  const words = text.split(" ");
-  const lines = [];
-  let currentLine = "";
-
-  words.forEach(word => {
-    const testLine = currentLine ? `${currentLine} ${word}` : word;
-    const metrics = context.measureText(testLine);
-    if (metrics.width <= maxWidth) {
-      currentLine = testLine;
-    } else {
-      if (currentLine) {
-        lines.push(currentLine);
-      }
-      currentLine = word;
-    }
-  });
-
-  if (currentLine) {
-    lines.push(currentLine);
-  }
-
-  return lines;
 }
 
 module.exports = {
