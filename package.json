@@ -1,29 +1,17 @@
 {
   "name": "cryptorelay",
   "version": "1.0.0",
-  "description": "cryptorelay",
   "main": "app.js",
+  "type": "commonjs",
   "scripts": {
     "test": "node app.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/besoeasy/CryptoRelay.git"
-  },
-  "keywords": [
-    "nostr",
-    "bitcoin",
-    "crypto"
-  ],
   "author": "besoeasy",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/besoeasy/CryptoRelay/issues"
-  },
-  "homepage": "https://github.com/besoeasy/CryptoRelay#readme",
+  "description": "",
   "dependencies": {
     "axios": "^1.7.9",
-    "nostr-tools": "^2.10.4",
-    "ws": "^8.18.0"
+    "canvas": "^3.0.0",
+    "dotenv": "^16.4.7"
   }
 }

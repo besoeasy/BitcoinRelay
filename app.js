@@ -1,30 +1,23 @@
-const nsec = "nsec1xwsfkvdtyfekjhs5jugl2hnrx0rfcm56hmwenmsg083uesxsuddsnxpefa";
+require("dotenv").config();
 
-const { commitMsg } = require("./x/commit.js");
+const nsec = process.env.NSEC;
 
-const axios = require("axios");
+const apiKey = process.env.IMGBB_API_KEY;
 
-async function getBitcoinPrice() {
-  try {
-    const response = await axios.get(
-      "https://api.coindesk.com/v1/bpi/currentprice.json"
-    );
+const { getBitcoinPrice, uploadToImgbb } = require("./modules/pag.js");
 
-    return response.data.bpi.USD.rate;
-  } catch (error) {
-    console.error(error);
-    return 0;
-  }
-}
+const { paintImg } = require("./create/canva.js");
 
 async function main() {
   const btcprice = await getBitcoinPrice();
 
   const msg = `Bitcoin price is $${btcprice}`;
 
-  const commit = commitMsg(nsec, msg);
+  const buffer = await paintImg(msg);
 
-  console.log(commit);
+  const msgurl = await uploadToImgbb(apiKey, buffer);
+
+  console.log(msg, msgurl);
 }
 
 main();
