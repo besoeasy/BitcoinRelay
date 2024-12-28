@@ -1,24 +1,21 @@
 require("dotenv").config();
 
-const { getBitcoinPrice, uploadToImgbb } = require("./modules/pag.js");
-
-const { paintImg } = require("./create/canva.js");
-
-const { commitMsg } = require("./modules/nostr.js");
+const { text2img, commitMsg, getBitcoinPrice } = require("./uts.js");
 
 async function main() {
   const btcprice = await getBitcoinPrice();
 
-  const msg = `Bitcoin : ${btcprice} USD`;
-
-  const buffer = await paintImg(msg);
-
-  const msgurl = await uploadToImgbb(process.env.IMGBB_API_KEY, buffer);
-
-  console.log(msg, msgurl, "         ");
+  const msgurl = await text2img(`Bitcoin : ${btcprice} USD`);
 
   if (msgurl) {
-    await commitMsg(process.env.NSEC, `${msg} #bitcoin #updates ${msgurl}`);
+    await commitMsg(
+      process.env.NSEC,
+      `Bitcoin : ${btcprice} USD
+       #bitcoin #updates 
+       ${msgurl}
+       
+       `
+    );
   }
 
   process.exit(0);
