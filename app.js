@@ -37,7 +37,7 @@ async function main() {
   if (random < 6) {
     const btcprice = await getBitcoinPrice();
 
-    if (msgurl) {
+    if (btcprice > 1) {
       await commitMsg(
         process.env.NSEC,
         `Bitcoin Is ${btcprice} USD  #bitcoin #crypto #trade`
