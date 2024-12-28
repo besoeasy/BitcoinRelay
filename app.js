@@ -20,6 +20,7 @@ async function text2img(msg) {
 async function main() {
   const random = Math.floor(Math.random() * 10);
   const btcprice = await getBitcoinPrice();
+  const fees = await getBitcoinFees();
 
   switch (true) {
     case random < 2: {
@@ -79,7 +80,6 @@ async function main() {
     }
 
     case random < 10: {
-      const fees = await getBitcoinFees();
       await commitMsg(
         process.env.NSEC,
         `Bitcoin fees: ${fees} sat/vB  #bitcoin #crypto #trade`
