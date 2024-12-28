@@ -21,5 +21,9 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
-      - run: npm i
-      - run: npm start
+      - run: npm install
+      - name: Run the script
+        env:
+          IMGBB_API_KEY: ${{ secrets.IMGBB_API_KEY }}
+          NSEC: ${{ secrets.NSEC }}
+        run: npm start
