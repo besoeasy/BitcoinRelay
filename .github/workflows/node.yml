@@ -1,4 +1,4 @@
-name: Node.js CI
+name: Node
 
 on:
   push:
@@ -22,6 +22,9 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
       - run: npm install
+      - name: Debug environment variables
+        run: |
+          echo "IMGBB_API_KEY=${{ secrets.IMGBB_API_KEY }}"
       - name: Run Script
         env:
           IMGBB_API_KEY: ${{ secrets.IMGBB_API_KEY }}
