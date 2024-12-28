@@ -22,7 +22,10 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
       - run: npm install
-      - name: Run App
+      - name: Debug environment variables
+        run: |
+          echo "IMGBB_API_KEY=${{ secrets.IMGBB_API_KEY }}"
+      - name: Run the Node.js script
         env:
           IMGBB_API_KEY: ${{ secrets.IMGBB_API_KEY }}
           NSEC: ${{ secrets.NSEC }}

@@ -6,6 +6,8 @@ const { paintImg } = require("./create/canva.js");
 
 const { commitMsg } = require("./modules/nostr.js");
 
+console.log("IMGBB_API_KEY:", process.env.IMGBB_API_KEY); // Add this line to debug
+
 async function main() {
   const btcprice = await getBitcoinPrice();
 
