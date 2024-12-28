@@ -1,12 +1,10 @@
 require("dotenv").config();
 
-const nsec = process.env.NSEC;
-
-const apiKey = process.env.IMGBB_API_KEY;
-
 const { getBitcoinPrice, uploadToImgbb } = require("./modules/pag.js");
 
 const { paintImg } = require("./create/canva.js");
+
+const { commitMsg } = require("./modules/nostr.js");
 
 async function main() {
   const btcprice = await getBitcoinPrice();
@@ -15,9 +13,11 @@ async function main() {
 
   const buffer = await paintImg(msg);
 
-  const msgurl = await uploadToImgbb(apiKey, buffer);
+  const msgurl = await uploadToImgbb(process.env.IMGBB_API_KEY, buffer);
 
   console.log(msg, msgurl);
+
+  await commitMsg(process.env.NSEC, `${msg} ${msgurl}`);
 }
 
 main();

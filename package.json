@@ -12,6 +12,8 @@
   "dependencies": {
     "axios": "^1.7.9",
     "canvas": "^3.0.0",
-    "dotenv": "^16.4.7"
+    "dotenv": "^16.4.7",
+    "nostr-tools": "^2.10.4",
+    "ws": "^8.18.0"
   }
 }
