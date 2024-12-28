@@ -1,4 +1,8 @@
-const { finalizeEvent, getPublicKey, getEventHash } = require("nostr-tools/pure");
+const {
+  finalizeEvent,
+  getPublicKey,
+  getEventHash,
+} = require("nostr-tools/pure");
 const { Relay } = require("nostr-tools/relay");
 const { useWebSocketImplementation } = require("nostr-tools/pool");
 const WebSocket = require("ws");
@@ -64,8 +68,6 @@ async function commitMsg(nsec, content) {
       }
     }
 
-    console.log("              ");
-    console.log("https://primal.net/p/" + pk);
     console.log("              ");
     console.log(signedEvent);
     console.log("              ");
