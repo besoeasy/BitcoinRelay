@@ -59,7 +59,6 @@ export async function commitMsg(nsec, content) {
       try {
         const relay = await Relay.connect(relayUrl);
         await relay.publish(signedEvent);
-        console.log(`Posted : ${relayUrl}`);
         await relay.close();
       } catch (error) {
         console.error(`Error : ${relayUrl}`);
