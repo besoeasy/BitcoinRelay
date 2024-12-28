@@ -15,10 +15,10 @@ async function main() {
 
   const msgurl = await uploadToImgbb(process.env.IMGBB_API_KEY, buffer);
 
-  console.log(msg, msgurl);
+  console.log(msg, msgurl, "         ");
 
   if (msgurl) {
-    await commitMsg(process.env.NSEC, `${msg} #bitcoin ${msgurl}`);
+    await commitMsg(process.env.NSEC, `${msg} #bitcoin #updates ${msgurl}`);
   }
 
   process.exit(0);

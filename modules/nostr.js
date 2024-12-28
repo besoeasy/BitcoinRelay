@@ -2,13 +2,14 @@ const {
   finalizeEvent,
   getPublicKey,
   getEventHash,
+  verifyEvent,
 } = require("nostr-tools/pure");
 const { Relay } = require("nostr-tools/relay");
 const { useWebSocketImplementation } = require("nostr-tools/pool");
-const WebSocket = require("ws");
+const WebSocket = require("ws");  // Import WebSocket from the ws package
 const nip19 = require("nostr-tools/nip19");
 
-useWebSocketImplementation(WebSocket);
+useWebSocketImplementation(WebSocket);  // Set ws as the WebSocket implementation
 
 const relayarray = [
   "wss://nostr-1.nbo.angani.co",
@@ -28,17 +29,25 @@ const relayarray = [
   "wss://relay.0xchat.com",
 ];
 
-function computePow(event, difficulty) {
-  let nonce = 0;
-  while (true) {
-    event.tags = [["nonce", nonce.toString(), difficulty.toString()]];
-    const id = getEventHash(event);
+function extractHashtagsAndLinks(content) {
+  const hashtagPattern = /#(\w+)/g;
+  const urlPattern = /(https?:\/\/[^\s]+)/g;
 
-    if (parseInt(id.substring(0, Math.ceil(difficulty / 4)), 16) === 0) {
-      return { id, nonce };
-    }
-    nonce++;
+  let hashtags = [];
+  let links = [];
+  let match;
+
+  // Extract hashtags
+  while ((match = hashtagPattern.exec(content)) !== null) {
+    hashtags.push(`${match[1]}`);
   }
+
+  // Extract links
+  while ((match = urlPattern.exec(content)) !== null) {
+    links.push(match[0]);
+  }
+
+  return { hashtags, links };
 }
 
 async function commitMsg(nsec, content) {
@@ -48,39 +57,44 @@ async function commitMsg(nsec, content) {
     const sk = data;
     const pk = getPublicKey(sk);
 
-    // Create the event template
+    // Extract hashtags and links from content
+    const { hashtags, links } = extractHashtagsAndLinks(content);
+
     const eventTemplate = {
       kind: 1,
       created_at: Math.floor(Date.now() / 1000),
       tags: [],
       content: content,
-      pubkey: pk, // Add the public key here
+      pubkey: pk,
     };
 
-    // Compute PoW
-    const difficulty = 20; // Set PoW difficulty
-    const { id, nonce } = computePow(eventTemplate, difficulty);
+    eventTemplate.tags.push(...hashtags.map((tag) => ["t", tag]));
+    eventTemplate.tags.push(...links.map((link) => ["r", link]));
 
-    // Update the event template with PoW tags
-    eventTemplate.tags = [["nonce", nonce.toString(), difficulty.toString()]];
-
-    // Sign the event
     const signedEvent = finalizeEvent(eventTemplate, sk);
 
-    // Publish the event to all relays
+    if (!verifyEvent(signedEvent)) {
+      console.error("Invalid event signature");
+      return;
+    }
+
     for (const relayUrl of relayarray) {
       try {
         const relay = await Relay.connect(relayUrl);
+
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+
         await relay.publish(signedEvent);
+
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+
         await relay.close();
       } catch (error) {
         console.error(`Error : ${relayUrl}`);
       }
     }
 
-    console.log("              ");
     console.log(signedEvent);
-    console.log("              ");
   } catch (error) {
     console.error("Error in bot execution:", error);
   }
