@@ -20,6 +20,8 @@ async function main() {
   if (msgurl) {
     await commitMsg(process.env.NSEC, `${msg} ${msgurl}`);
   }
+
+  process.exit(0);
 }
 
 main();

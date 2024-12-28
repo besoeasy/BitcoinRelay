@@ -20,7 +20,6 @@ function computePow(event, difficulty) {
     event.tags = [["nonce", nonce.toString(), difficulty.toString()]];
     const id = getEventHash(event);
 
-    // Check if the hash meets the difficulty
     if (parseInt(id.substring(0, Math.ceil(difficulty / 4)), 16) === 0) {
       return { id, nonce };
     }
