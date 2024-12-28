@@ -28,7 +28,7 @@ async function main() {
 
     await commitMsg(
       process.env.NSEC,
-      `${post.title}  #bitcoin #news ${post.link}`
+      `${post.title}  #bitcoin #news        ${post.link}`
     );
 
     return;
