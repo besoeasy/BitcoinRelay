@@ -6,10 +6,10 @@ const {
 } = require("nostr-tools/pure");
 const { Relay } = require("nostr-tools/relay");
 const { useWebSocketImplementation } = require("nostr-tools/pool");
-const WebSocket = require("ws");  // Import WebSocket from the ws package
+const WebSocket = require("ws"); // Import WebSocket from the ws package
 const nip19 = require("nostr-tools/nip19");
 
-useWebSocketImplementation(WebSocket);  // Set ws as the WebSocket implementation
+useWebSocketImplementation(WebSocket); // Set ws as the WebSocket implementation
 
 const relayarray = [
   "wss://nostr-1.nbo.angani.co",
@@ -60,10 +60,12 @@ async function commitMsg(nsec, content) {
     // Extract hashtags and links from content
     const { hashtags, links } = extractHashtagsAndLinks(content);
 
+    const timenow = Math.floor(Date.now() / 1000);
+
     const eventTemplate = {
       kind: 1,
-      created_at: Math.floor(Date.now() / 1000),
-      tags: [],
+      created_at: timenow,
+      tags: [["expiration", String(timenow + 86400)]],
       content: content,
       pubkey: pk,
     };
@@ -82,11 +84,7 @@ async function commitMsg(nsec, content) {
       try {
         const relay = await Relay.connect(relayUrl);
 
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-
         await relay.publish(signedEvent);
-
-        await new Promise((resolve) => setTimeout(resolve, 3000));
 
         await relay.close();
       } catch (error) {
