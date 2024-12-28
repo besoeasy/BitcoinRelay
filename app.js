@@ -3,9 +3,11 @@ require("dotenv").config();
 const {
   uploadToImgbb,
   getBitcoinPrice,
+  getBitcoinFees,
   getRandomTransactionDetails,
   getBiggestTransactionDetails,
 } = require("./modules/pag.js");
+
 const { paintImg } = require("./create/canva.js");
 const { commitMsg } = require("./modules/nostr.js");
 const { fetchAllFeeds } = require("./modules/news.js");
@@ -42,7 +44,7 @@ async function main() {
       break;
     }
 
-    case random < 6: {
+    case random < 6 && btcprice > 1: {
       const msgurl = await text2img(`${btcprice}`);
       if (msgurl) {
         await commitMsg(
