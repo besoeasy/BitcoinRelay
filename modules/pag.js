@@ -4,10 +4,10 @@ const FormData = require("form-data");
 async function getBitcoinPrice() {
   try {
     const response = await axios.get(
-      "https://api.coindesk.com/v1/bpi/currentprice.json"
+      "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd"
     );
 
-    return response.data.bpi.USD.rate;
+    return parseInt(response.data.bitcoin.usd || 0);
   } catch (error) {
     console.error(error);
     return 0;
@@ -30,9 +30,7 @@ async function uploadToImgbb(apiKey, buffer) {
       { headers }
     );
 
-    console.log("Image URL:", response.data.data.url);
-
-    return response.data.data.url;
+    return response.data.data.url || "";
   } catch (error) {
     console.error(
       "Error uploading image:",
