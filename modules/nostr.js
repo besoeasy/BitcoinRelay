@@ -64,7 +64,7 @@ function calculatePow(event, difficulty) {
   return event;
 }
 
-async function commitMsg(nsec, content, powDifficulty = 7) {
+async function commitMsg(nsec, content, powDifficulty = 4) {
   try {
     const { type, data } = nip19.decode(nsec);
 
