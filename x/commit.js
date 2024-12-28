@@ -10,8 +10,9 @@ const relayarray = [
   "wss://relay.damus.io",
   "wss://nos.lol",
   "wss://purplerelay.com",
-  "wss://nostr21.com",
   "wss://strfry.iris.to",
+  "wss://relay.nostr.space",
+  "wss://relay.0xchat.com",
 ];
 
 export async function commitMsg(nsec, content) {
@@ -19,12 +20,6 @@ export async function commitMsg(nsec, content) {
     const { type, data } = nip19.decode(nsec);
 
     const sk = data;
-
-    const randomRelay =
-      relayarray[Math.floor(Math.random() * relayarray.length)];
-
-    const relay = await Relay.connect(randomRelay);
-
     const pk = getPublicKey(sk);
 
     const eventTemplate = {
@@ -36,16 +31,22 @@ export async function commitMsg(nsec, content) {
 
     const signedEvent = finalizeEvent(eventTemplate, sk);
 
-    await relay.publish(signedEvent);
+    for (const relayUrl of relayarray) {
+      try {
+        const relay = await Relay.connect(relayUrl);
+        await relay.publish(signedEvent);
+        console.log(`Posted : ${relayUrl}`);
+        await relay.close();
+      } catch (error) {
+        console.error(`Error : ${relayUrl}`);
+      }
+    }
 
     console.log("              ");
     console.log("https://primal.net/p/" + pk);
-    console.log("Relay:", randomRelay);
     console.log("              ");
     console.log(signedEvent);
     console.log("              ");
-
-    await relay.close();
   } catch (error) {
     console.error("Error in bot execution:", error);
   }
