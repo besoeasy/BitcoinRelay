@@ -44,7 +44,7 @@ async function commitMsg(nsec, content) {
     };
 
     // Compute PoW
-    const difficulty = 12; // Set PoW difficulty
+    const difficulty = 20; // Set PoW difficulty
     const { id, nonce } = computePow(eventTemplate, difficulty);
 
     // Update the event template with PoW tags
