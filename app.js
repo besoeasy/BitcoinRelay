@@ -19,11 +19,13 @@ async function main() {
       const posts = await fetchAllFeeds();
       const post = posts[Math.floor(Math.random() * posts.length)];
       await commitMsg(process.env.NSEC, `${post.title} #bitcoin #news ${post.link}`);
+      process.exit(0); // Exit after posting
       break;
     }
 
     case random < 6 && btcprice > 1: {
       await commitMsg(process.env.NSEC, `Bitcoin is ${btcprice} USD #bitcoin #crypto #trade`);
+      process.exit(0); // Exit after posting
       break;
     }
 
@@ -32,10 +34,12 @@ async function main() {
       if (msgurl) {
         await commitMsg(process.env.NSEC, `Bitcoin: ${btcprice} USD #bitcoin #crypto #trade ${msgurl}`);
       }
+      process.exit(0); // Exit after posting
       break;
     }
 
     default:
+      process.exit(0); // Exit if no case matches
       break;
   }
 }
