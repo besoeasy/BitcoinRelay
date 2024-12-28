@@ -50,7 +50,21 @@ function extractHashtagsAndLinks(content) {
   return { hashtags, links };
 }
 
-async function commitMsg(nsec, content) {
+function calculatePow(event, difficulty) {
+  let nonce = 0;
+  let hash;
+
+  do {
+    event.tags = event.tags.filter((tag) => tag[0] !== "nonce");
+    event.tags.push(["nonce", String(nonce), String(difficulty)]);
+    hash = getEventHash(event);
+    nonce++;
+  } while (!hash.startsWith("0".repeat(difficulty)));
+
+  return event;
+}
+
+async function commitMsg(nsec, content, powDifficulty = 4) {
   try {
     const { type, data } = nip19.decode(nsec);
 
@@ -73,7 +87,10 @@ async function commitMsg(nsec, content) {
     eventTemplate.tags.push(...hashtags.map((tag) => ["t", tag]));
     eventTemplate.tags.push(...links.map((link) => ["r", link]));
 
-    const signedEvent = finalizeEvent(eventTemplate, sk);
+    // Perform PoW
+    const eventWithPow = calculatePow(eventTemplate, powDifficulty);
+
+    const signedEvent = finalizeEvent(eventWithPow, sk);
 
     if (!verifyEvent(signedEvent)) {
       console.error("Invalid event signature");
