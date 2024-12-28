@@ -36,6 +36,10 @@ async function fetchAllFeeds() {
   // Optional: Sort posts by publication date
   allPosts.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
 
+  allPosts.forEach((post) => {
+    post.link = post.link.split("?")[0];
+  });
+
   return allPosts.slice(0, 7);
 }
 
