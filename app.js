@@ -1,6 +1,11 @@
 require("dotenv").config();
 
-const { uploadToImgbb, getBitcoinPrice } = require("./modules/pag.js");
+const {
+  uploadToImgbb,
+  getBitcoinPrice,
+  getRandomTransactionDetails,
+  getBiggestTransactionDetails,
+} = require("./modules/pag.js");
 const { paintImg } = require("./create/canva.js");
 const { commitMsg } = require("./modules/nostr.js");
 const { fetchAllFeeds } = require("./modules/news.js");
@@ -26,7 +31,7 @@ async function main() {
       break;
     }
 
-    case random < 6 && btcprice > 1: {
+    case random < 4 && btcprice > 1: {
       const sattousd = parseFloat(btcprice / 100000000).toFixed(6);
 
       await commitMsg(
@@ -37,7 +42,7 @@ async function main() {
       break;
     }
 
-    case random < 10: {
+    case random < 6: {
       const msgurl = await text2img(`${btcprice}`);
       if (msgurl) {
         await commitMsg(
@@ -45,6 +50,38 @@ async function main() {
           `Bitcoin: ${btcprice} USD #bitcoin #crypto #trade ${msgurl}`
         );
       }
+      process.exit(0); // Exit after posting
+      break;
+    }
+
+    case random < 8: {
+      if (Math.random() > 0.5) {
+        const randomTx = await getRandomTransactionDetails();
+
+        await commitMsg(
+          process.env.NSEC,
+          `${randomTx} #bitcoin #crypto #wallet`
+        );
+        process.exit(0); // Exit after posting
+        break;
+      } else {
+        const biggestTx = await getBiggestTransactionDetails();
+
+        await commitMsg(
+          process.env.NSEC,
+          `${biggestTx} #bitcoin #crypto #wallet`
+        );
+        process.exit(0); // Exit after posting
+        break;
+      }
+    }
+
+    case random < 10: {
+      const fees = await getBitcoinFees();
+      await commitMsg(
+        process.env.NSEC,
+        `Bitcoin fees: ${fees} sat/vB  #bitcoin #crypto #trade`
+      );
       process.exit(0); // Exit after posting
       break;
     }
