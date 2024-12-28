@@ -80,6 +80,8 @@ async function commitMsg(nsec, content) {
       return;
     }
 
+    console.log(signedEvent);
+
     for (const relayUrl of relayarray) {
       try {
         const relay = await Relay.connect(relayUrl);
@@ -91,8 +93,6 @@ async function commitMsg(nsec, content) {
         console.error(`Error : ${relayUrl}`);
       }
     }
-
-    console.log(signedEvent);
   } catch (error) {
     console.error("Error in bot execution:", error);
   }
