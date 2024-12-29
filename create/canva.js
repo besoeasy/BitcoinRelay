@@ -1,5 +1,11 @@
 const { createCanvas, loadImage } = require("canvas");
 
+const backgroundImagePrice = [
+  "https://bafkreiaskulskavaxi5z3x7bgovn563ppnn73q32ahhmgrm656ktalxx54.ipfs.dweb.link",
+  "https://bafkreia62gmdu7mkabkfk5yegeztcdopvgnzvs6wr2ifawlbtflfjyzi5a.ipfs.dweb.link",
+  "https://bafkreie3nexatkohw3gltrdkvsgcwhgsmkgp3on6juzlo3irjlfikyd7lu.ipfs.dweb.link",
+];
+
 async function paintPrice(textx) {
   const width = 1000;
   const height = 1000;
@@ -7,8 +13,11 @@ async function paintPrice(textx) {
   const context = canvas.getContext("2d");
 
   const backgroundImage = await loadImage(
-    "https://bafkreiaskulskavaxi5z3x7bgovn563ppnn73q32ahhmgrm656ktalxx54.ipfs.dweb.link/"
+    backgroundImagePrice[
+      Math.floor(Math.random() * backgroundImagePrice.length)
+    ]
   );
+
   context.drawImage(backgroundImage, 0, 0, width, height);
 
   const fontSize = 160;

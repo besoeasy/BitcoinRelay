@@ -104,35 +104,35 @@ async function handleBitcoinFeesPost() {
     await commitMsg(
       process.env.NSEC,
       `Bitcoin Fees:\n` +
-      `Current Fee: ${fee} sat/vB\n` +
-      `Mempool Size: ${mempoolSize} transactions pending\n\n` +
-      `#bitcoin #fees\n` +
-      `${msgurl}`
+        `Current Fee: ${fee} sat/vB\n` +
+        `Mempool Size: ${mempoolSize} transactions pending\n\n` +
+        `#bitcoin #fees\n` +
+        `${msgurl}`
     );
   }
 }
 
 async function main() {
-  const random = Math.floor(Math.random() * 10);
+  const random = Math.random();
 
   try {
     switch (true) {
-      case random < 2:
+      case random < 0.1:
         await handleNewsPost();
         break;
-      case random < 5:
+      case random < 0.3:
         await handleBitcoinPricePost();
         break;
-      case random < 7:
+      case random < 0.5:
         await handleBiggestTransactionPost();
         break;
-      case random < 8:
+      case random < 0.7:
         await handleTransactionDetailsPost();
         break;
-      case random < 9:
+      case random < 0.8:
         await handleLightningNetworkPost();
         break;
-      case random < 10:
+      case random < 0.9:
         await handleBitcoinFeesPost();
         break;
       default:
