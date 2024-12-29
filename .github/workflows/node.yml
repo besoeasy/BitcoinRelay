@@ -28,4 +28,4 @@ jobs:
         env:
           IMGBB_API_KEY: ${{ secrets.IMGBB_API_KEY }}
           NSEC: ${{ secrets.NSEC }}
-        run: npm start && npm start
+        run: npm start
