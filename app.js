@@ -97,6 +97,7 @@ async function handleBitcoinFeesPost() {
   const { fee, mempoolSize } = await getBitcoinFees();
 
   const msgurl = await text2img2(`${mempoolSize}`);
+
   if (msgurl) {
     await commitMsg(
       process.env.NSEC,
