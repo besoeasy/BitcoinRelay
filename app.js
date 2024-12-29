@@ -19,7 +19,7 @@ async function text2img(msg) {
 }
 
 async function main() {
-  const random = 5 || Math.floor(Math.random() * 10);
+  const random = Math.floor(Math.random() * 10);
 
   switch (true) {
     case random < 2: {
