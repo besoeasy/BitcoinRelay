@@ -1,15 +1,24 @@
 const axios = require("axios");
 const FormData = require("form-data");
 
+async function axiosGet(url) {
+  try {
+    const response = await axios.get(url);
+    return response.data;
+  } catch (error) {
+    console.error("GET request error:", error.response?.data || error.message);
+    return null;
+  }
+}
+
 async function getBitcoinPrice() {
   try {
-    const response = await axios.get(
+    const data = await axiosGet(
       "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd"
     );
-
-    return parseInt(response.data.bitcoin.usd || 0);
+    return parseInt(data?.bitcoin?.usd || 0);
   } catch (error) {
-    console.error(error);
+    console.error("Error fetching Bitcoin price:", error.message);
     return 0;
   }
 }
@@ -34,37 +43,49 @@ async function uploadToImgbb(apiKey, buffer) {
   } catch (error) {
     console.error(
       "Error uploading image:",
-      error.response ? error.response.data : error.message
+      error.response?.data || error.message
     );
+    return "";
   }
 }
 
 async function getBitcoinFees() {
-  const response = await axios.get(
-    "https://mempool.space/api/v1/fees/recommended"
+  const fees = await axiosGet("https://mempool.space/api/v1/fees/recommended");
+  const mempool = await axiosGet("https://mempool.space/api/mempool");
+
+  return {
+    fee: fees?.fastestFee || 0,
+    mempoolSize: mempool?.count || 0,
+  };
+}
+
+async function btcLightning() {
+  const data = await axiosGet(
+    "https://mempool.space/api/v1/lightning/statistics/latest"
   );
-  return response.data.fastestFee;
+  
+  return data?.latest || {};
 }
 
 async function getblockdata() {
-  const latestBlockResponse = await axios.get(
+  const latestBlockHash = await axiosGet(
     "https://blockstream.info/api/blocks/tip/hash"
   );
 
-  const latestBlockHash = latestBlockResponse.data;
+  if (!latestBlockHash) {
+    throw new Error("Failed to fetch the latest block hash");
+  }
 
-  const blockDetailsResponse = await axios.get(
+  const blockDetails = await axiosGet(
     `https://blockstream.info/api/block/${latestBlockHash}`
   );
-  const blockDetails = blockDetailsResponse.data;
 
-  const transactionsResponse = await axios.get(
+  const transactions = await axiosGet(
     `https://blockstream.info/api/block/${latestBlockHash}/txs`
   );
-  const transactions = transactionsResponse.data;
 
-  if (transactions.length === 0) {
-    return "Its quiet out there… no transactions in the latest block. Did Bitcoin fall asleep?";
+  if (!transactions || transactions.length === 0) {
+    return "It's quiet out there… no transactions in the latest block. Did Bitcoin fall asleep?";
   }
 
   return { transactions, blockDetails };
@@ -73,14 +94,12 @@ async function getblockdata() {
 async function getRandomTransactionDetails() {
   try {
     const { transactions, blockDetails } = await getblockdata();
-
     const randomTransaction =
       transactions[Math.floor(Math.random() * transactions.length)];
 
     let output = "";
 
     output += "🎲 A Bitcoin user moved some Bitcoins!\n\n";
-
     output += `🧱 Block Height: ${blockDetails.height}\n`;
     output += `⏰ Block Time: ${new Date(
       blockDetails.timestamp * 1000
@@ -90,9 +109,7 @@ async function getRandomTransactionDetails() {
     output += "💰 Inputs:\n";
     randomTransaction.vin.forEach((input, index) => {
       const value = input.prevout ? input.prevout.value / 1e8 : 0;
-      const address = input.prevout
-        ? input.prevout.scriptpubkey_address
-        : "Coinbase (Miners' piggy bank)";
+      const address = input.prevout?.scriptpubkey_address || "Coinbase (Miners' piggy bank)";
       output += `  Input ${index + 1}: ${value} BTC from ${address}\n`;
     });
 
@@ -103,9 +120,8 @@ async function getRandomTransactionDetails() {
       output += `  Output ${index + 1}: ${value} BTC to ${address}\n`;
     });
 
-    if (randomTransaction.vin[0].prevout === null) {
-      output +=
-        "\n🏗️ This is a Coinbase transaction. Miners just got their paycheck!";
+    if (!randomTransaction.vin[0].prevout) {
+      output += "\n🏗️ This is a Coinbase transaction. Miners just got their paycheck!";
     }
 
     output += `\n🌐 https://blockchair.com/bitcoin/transaction/${randomTransaction.txid}\n`;
@@ -138,27 +154,18 @@ async function getBiggestTransactionDetails() {
       return "No valid transactions found in the block. Maybe the whales are broke?";
     }
 
-    // Build the details
-
-    let output = "";
-
-    output += `🐋 A whale moved his Bitcoins!\n\n`;
-
-    output += `🧱 Block Height: ${transactions[0].status.block_height}\n`;
-
+    let output = "🐋 A whale moved his Bitcoins!\n\n";
+    output += `🧱 Block Height: ${blockDetails.height}\n`;
     output += `⏰ Block Time: ${new Date(
       blockDetails.timestamp * 1000
     ).toLocaleString()}\n`;
-
     output += `🔗 Transaction ID: ${biggestTransaction.txid}\n`;
     output += `💸 Total Bitcoin Transferred: ${maxTransferred / 1e8} BTC\n\n`;
 
     output += "💰 Inputs:\n";
     biggestTransaction.vin.forEach((input, index) => {
       const value = input.prevout ? input.prevout.value / 1e8 : 0;
-      const address = input.prevout
-        ? input.prevout.scriptpubkey_address
-        : "Coinbase (Miners' piggy bank)";
+      const address = input.prevout?.scriptpubkey_address || "Coinbase (Miners' piggy bank)";
       output += `  Input ${index + 1}: ${value} BTC from ${address}\n`;
     });
 
@@ -181,6 +188,7 @@ module.exports = {
   getBitcoinPrice,
   uploadToImgbb,
   getBitcoinFees,
+  btcLightning,
   getRandomTransactionDetails,
   getBiggestTransactionDetails,
 };

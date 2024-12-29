@@ -4,6 +4,7 @@ const {
   uploadToImgbb,
   getBitcoinPrice,
   getBitcoinFees,
+  btcLightning,
   getRandomTransactionDetails,
   getBiggestTransactionDetails,
 } = require("./modules/pag.js");
@@ -32,7 +33,7 @@ async function main() {
       break;
     }
 
-    case random < 6 && btcprice > 1: {
+    case random < 6: {
       const btcprice = await getBitcoinPrice();
 
       if (Math.random() > 0.5) {
@@ -78,12 +79,30 @@ async function main() {
       }
     }
 
-    case random < 10: {
-      const fees = await getBitcoinFees();
+    case random < 9: {
+      const { node_count, channel_count, avg_capacity, total_capacity } =
+        await btcLightning();
 
       await commitMsg(
         process.env.NSEC,
-        `Bitcoin fees: ${fees} sat/vB  #bitcoin #fees`
+        `Bitcoin Lightning Network: 
+
+         ${node_count} Nodes
+         ${channel_count} Channels
+         Avg capacity ${avg_capacity / 100000000} BTC
+         Total capacity ${total_capacity / 100000000} BTC 
+        
+        #bitcoin #lightning
+        `
+      );
+    }
+
+    case random < 10: {
+      const { fee, mempoolSize } = await getBitcoinFees();
+
+      await commitMsg(
+        process.env.NSEC,
+        `Bitcoin fees: ${fee} sat/vB with ${mempoolSize} transactions waiting to be confirmed #bitcoin`
       );
       process.exit(0); // Exit after posting
       break;
