@@ -16,17 +16,17 @@ const { plotData, getBTCData } = require("./create/chaw.js");
 const { commitMsg } = require("./modules/nostr.js");
 const { fetchAllFeeds } = require("./modules/news.js");
 
-async function text2img(msg) {
+async function imgPrice(msg) {
   const buffer = await paintPrice(msg);
   return uploadToImgbb(process.env.IMGBB_API_KEY, buffer) || null;
 }
 
-async function text2img2(msg) {
+async function imgPending(msg) {
   const buffer = await paintTransaction(msg);
   return uploadToImgbb(process.env.IMGBB_API_KEY, buffer) || null;
 }
 
-async function text2img3() {
+async function imgChart() {
   const buffer = await plotData();
   return uploadToImgbb(process.env.IMGBB_API_KEY, buffer) || null;
 }
@@ -35,7 +35,7 @@ async function handleBitcoinPriceChart() {
   const { data, minPrice, maxPrice, avgPrice } = await getBTCData();
 
   if (!data.length) return;
-  const msgurl = await text2img3();
+  const msgurl = await imgChart();
 
   if (msgurl) {
     await commitMsg(
@@ -75,7 +75,7 @@ async function handleBitcoinPricePost() {
         `#bitcoin #crypto`
     );
   } else {
-    const msgurl = await text2img(`${btcprice}`);
+    const msgurl = await imgPrice(`${btcprice}`);
     if (msgurl) {
       await commitMsg(
         process.env.NSEC,
@@ -124,7 +124,7 @@ async function handleLightningNetworkPost() {
 async function handleBitcoinFeesPost() {
   const { fee, mempoolSize } = await getBitcoinFees();
 
-  const msgurl = await text2img2(`${mempoolSize}`);
+  const msgurl = await imgPending(`${mempoolSize}`);
 
   if (msgurl) {
     await commitMsg(
