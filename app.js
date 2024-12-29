@@ -19,8 +19,6 @@ async function text2img(msg) {
 
 async function main() {
   const random = Math.floor(Math.random() * 10);
-  const btcprice = await getBitcoinPrice();
-  const fees = await getBitcoinFees();
 
   switch (true) {
     case random < 2: {
@@ -30,29 +28,30 @@ async function main() {
         process.env.NSEC,
         `${post.title} #bitcoin #news ${post.link}`
       );
-      process.exit(0); // Exit after posting
-      break;
-    }
-
-    case random < 4 && btcprice > 1: {
-      const sattousd = parseFloat(btcprice / 100000000).toFixed(6);
-
-      await commitMsg(
-        process.env.NSEC,
-        `1 Bitcoin = ${btcprice} USD, which means 1 Satoshi = ${sattousd} USD #bitcoin #crypto #trade`
-      );
-      process.exit(0); // Exit after posting
+      process.exit(0);
       break;
     }
 
     case random < 6 && btcprice > 1: {
-      const msgurl = await text2img(`${btcprice}`);
-      if (msgurl) {
+      const btcprice = await getBitcoinPrice();
+
+      if (Math.random() > 0.5) {
+        const sattousd = parseFloat(btcprice / 100000000).toFixed(6);
+
         await commitMsg(
           process.env.NSEC,
-          `Bitcoin: ${btcprice} USD #bitcoin #crypto #trade ${msgurl}`
+          `1 Bitcoin = ${btcprice} USD, which means 1 Satoshi = ${sattousd} USD #bitcoin #crypto #trade`
         );
+      } else {
+        const msgurl = await text2img(`${btcprice}`);
+        if (msgurl) {
+          await commitMsg(
+            process.env.NSEC,
+            `Bitcoin: ${btcprice} USD #bitcoin #crypto #trade ${msgurl}`
+          );
+        }
       }
+
       process.exit(0); // Exit after posting
       break;
     }
@@ -80,9 +79,11 @@ async function main() {
     }
 
     case random < 10: {
+      const fees = await getBitcoinFees();
+
       await commitMsg(
         process.env.NSEC,
-        `Bitcoin fees: ${fees} sat/vB  #bitcoin #crypto #trade`
+        `Bitcoin fees: ${fees} sat/vB  #bitcoin #fees`
       );
       process.exit(0); // Exit after posting
       break;

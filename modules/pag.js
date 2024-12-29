@@ -79,7 +79,7 @@ async function getRandomTransactionDetails() {
 
     let output = "";
 
-    output += "🎲 A Bitcoin user moved some Bitcoins! Here's the scoop:\n\n";
+    output += "🎲 A Bitcoin user moved some Bitcoins!\n\n";
 
     output += `🧱 Block Height: ${blockDetails.height}\n`;
     output += `⏰ Block Time: ${new Date(
@@ -108,7 +108,7 @@ async function getRandomTransactionDetails() {
         "\n🏗️ This is a Coinbase transaction. Miners just got their paycheck!";
     }
 
-    output += `\n🌐 See all the juicy details here: https://blockchair.com/bitcoin/transaction/${randomTransaction.txid}\n`;
+    output += `\n🌐 https://blockchair.com/bitcoin/transaction/${randomTransaction.txid}\n`;
 
     return output;
   } catch (error) {
@@ -142,7 +142,7 @@ async function getBiggestTransactionDetails() {
 
     let output = "";
 
-    output += `🐋 A whale moved his Bitcoins! Here's the splash:\n\n`;
+    output += `🐋 A whale moved his Bitcoins!\n\n`;
 
     output += `🧱 Block Height: ${transactions[0].status.block_height}\n`;
 
@@ -169,7 +169,7 @@ async function getBiggestTransactionDetails() {
       output += `  Output ${index + 1}: ${value} BTC to ${address}\n`;
     });
 
-    output += `\n🌐 See the whales splash here: https://blockchair.com/bitcoin/transaction/${biggestTransaction.txid}\n`;
+    output += `\n🌐 https://blockchair.com/bitcoin/transaction/${biggestTransaction.txid}\n`;
 
     return output;
   } catch (error) {
