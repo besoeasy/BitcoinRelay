@@ -92,8 +92,6 @@ async function getRandomTransactionDetails() {
 
     output += "🎲 A Bitcoin user moved some Bitcoins!\n\n";
 
-    output += `🔗 Transaction ID: ${randomTransaction.txid}\n\n`;
-
     output += "💰 Inputs:\n";
     randomTransaction.vin.forEach((input, index) => {
       const value = input.prevout ? input.prevout.value / 1e8 : 0;
@@ -146,7 +144,6 @@ async function getBiggestTransactionDetails() {
 
     let output = "🐋 A whale moved his Bitcoins!\n\n";
 
-    output += `🔗 Transaction ID: ${biggestTransaction.txid}\n`;
     output += `💸 Total Bitcoin Transferred: ${maxTransferred / 1e8} BTC\n\n`;
 
     output += "💰 Inputs:\n";
@@ -200,7 +197,6 @@ async function getTransactionWithMaxOutputs() {
 
     let output = "🔔 A Crypto Exchange Paid Bitcoin To Users !\n\n";
 
-    output += `🔗 Transaction ID: ${transactionWithMaxOutputs.txid}\n`;
     output += `📤 Number of Outputs: ${maxOutputsCount}\n`;
     output += `💸 Total Amount Paid Out: ${totalPaidOut} BTC\n\n`;
     output += `\nhttps://blockchair.com/bitcoin/transaction/${transactionWithMaxOutputs.txid}\n\n`;
