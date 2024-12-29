@@ -71,10 +71,6 @@ async function getblockdata() {
     throw new Error("Failed to fetch the latest block hash");
   }
 
-  const blockDetails = await axiosGet(
-    `https://blockstream.info/api/block/${latestBlockHash}`
-  );
-
   const transactions = await axiosGet(
     `https://blockstream.info/api/block/${latestBlockHash}/txs`
   );
@@ -83,22 +79,19 @@ async function getblockdata() {
     return "It's quiet out there… no transactions in the latest block. Did Bitcoin fall asleep?";
   }
 
-  return { transactions, blockDetails };
+  return { transactions };
 }
 
 async function getRandomTransactionDetails() {
   try {
-    const { transactions, blockDetails } = await getblockdata();
+    const { transactions } = await getblockdata();
     const randomTransaction =
       transactions[Math.floor(Math.random() * transactions.length)];
 
     let output = "";
 
     output += "🎲 A Bitcoin user moved some Bitcoins!\n\n";
-    output += `🧱 Block Height: ${blockDetails.height}\n`;
-    output += `⏰ Block Time: ${new Date(
-      blockDetails.timestamp * 1000
-    ).toLocaleString()}\n`;
+
     output += `🔗 Transaction ID: ${randomTransaction.txid}\n\n`;
 
     output += "💰 Inputs:\n";
@@ -131,7 +124,7 @@ async function getRandomTransactionDetails() {
 
 async function getBiggestTransactionDetails() {
   try {
-    const { transactions, blockDetails } = await getblockdata();
+    const { transactions } = await getblockdata();
 
     let biggestTransaction = null;
     let maxTransferred = 0;
@@ -152,10 +145,7 @@ async function getBiggestTransactionDetails() {
     }
 
     let output = "🐋 A whale moved his Bitcoins!\n\n";
-    output += `🧱 Block Height: ${blockDetails.height}\n`;
-    output += `⏰ Block Time: ${new Date(
-      blockDetails.timestamp * 1000
-    ).toLocaleString()}\n`;
+
     output += `🔗 Transaction ID: ${biggestTransaction.txid}\n`;
     output += `💸 Total Bitcoin Transferred: ${maxTransferred / 1e8} BTC\n\n`;
 
@@ -182,10 +172,9 @@ async function getBiggestTransactionDetails() {
   }
 }
 
-
 async function getTransactionWithMaxOutputs() {
   try {
-    const { transactions, blockDetails } = await getblockdata();
+    const { transactions } = await getblockdata();
 
     let transactionWithMaxOutputs = null;
     let maxOutputsCount = 0;
@@ -203,16 +192,14 @@ async function getTransactionWithMaxOutputs() {
     }
 
     // Calculate the total amount paid out (sum of all outputs)
-    const totalPaidOut = transactionWithMaxOutputs.vout.reduce(
-      (sum, output) => sum + output.value,
-      0
-    ) / 1e8; // Convert satoshis to BTC
+    const totalPaidOut =
+      transactionWithMaxOutputs.vout.reduce(
+        (sum, output) => sum + output.value,
+        0
+      ) / 1e8; // Convert satoshis to BTC
 
     let output = "🔔 A Crypto Exchange Paid Bitcoin To Users !\n\n";
-    output += `🧱 Block Height: ${blockDetails.height}\n`;
-    output += `⏰ Block Time: ${new Date(
-      blockDetails.timestamp * 1000
-    ).toLocaleString()}\n`;
+
     output += `🔗 Transaction ID: ${transactionWithMaxOutputs.txid}\n`;
     output += `📤 Number of Outputs: ${maxOutputsCount}\n`;
     output += `💸 Total Amount Paid Out: ${totalPaidOut} BTC\n\n`;
@@ -223,7 +210,6 @@ async function getTransactionWithMaxOutputs() {
     return `🚨 Error fetching Bitcoin data: ${error.message}`;
   }
 }
-
 
 module.exports = {
   getBitcoinPrice,

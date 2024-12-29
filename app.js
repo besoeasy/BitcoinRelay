@@ -32,7 +32,6 @@ async function main() {
         `${post.title} #bitcoin #news ${post.link}`
       );
       process.exit(0);
-      break;
     }
 
     case random < 6: {
@@ -56,11 +55,20 @@ async function main() {
       }
 
       process.exit(0); // Exit after posting
-      break;
+    }
+
+    case random < 7: {
+      const biggestTx = await getBiggestTransactionDetails();
+
+      await commitMsg(
+        process.env.NSEC,
+        `${biggestTx} #bitcoin #crypto #wallet`
+      );
+      process.exit(0); // Exit after posting
     }
 
     case random < 8: {
-      if (Math.random() > 0.66) {
+      if (Math.random() > 0.5) {
         const randomTx = await getRandomTransactionDetails();
 
         await commitMsg(
@@ -68,16 +76,6 @@ async function main() {
           `${randomTx} #bitcoin #crypto #wallet`
         );
         process.exit(0); // Exit after posting
-        break;
-      } else if (Math.random() > 0.33) {
-        const biggestTx = await getBiggestTransactionDetails();
-
-        await commitMsg(
-          process.env.NSEC,
-          `${biggestTx} #bitcoin #crypto #wallet`
-        );
-        process.exit(0); // Exit after posting
-        break;
       } else {
         const maxOutputsTx = await getTransactionWithMaxOutputs();
 
@@ -86,7 +84,6 @@ async function main() {
           `${maxOutputsTx} #bitcoin #crypto #wallet`
         );
         process.exit(0); // Exit after posting
-        break;
       }
     }
 
@@ -116,12 +113,10 @@ async function main() {
         `Bitcoin fees: ${fee} sat/vB with ${mempoolSize} transactions waiting to be confirmed #bitcoin`
       );
       process.exit(0); // Exit after posting
-      break;
     }
 
     default:
       process.exit(0); // Exit if no case matches
-      break;
   }
 }
 
