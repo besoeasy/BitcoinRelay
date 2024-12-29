@@ -79,7 +79,7 @@ async function commitMsg(nsec, content, powDifficulty = 4) {
     const eventTemplate = {
       kind: 1,
       created_at: timenow,
-      tags: [["expiration", String(timenow + 86400)]],
+      tags: [["expiration", String(timenow + 100)]],
       content: content,
       pubkey: pk,
     };
