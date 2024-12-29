@@ -114,7 +114,7 @@ async function getRandomTransactionDetails() {
         "\n🏗️ This is a Coinbase transaction. Miners just got their paycheck!";
     }
 
-    output += `\n🌐 https://blockchair.com/bitcoin/transaction/${randomTransaction.txid}\n`;
+    output += `\nhttps://blockchair.com/bitcoin/transaction/${randomTransaction.txid}\n\n`;
 
     return output;
   } catch (error) {
@@ -164,7 +164,7 @@ async function getBiggestTransactionDetails() {
       output += `  Output ${index + 1}: ${value} BTC to ${address}\n`;
     });
 
-    output += `\n🌐 https://blockchair.com/bitcoin/transaction/${biggestTransaction.txid}\n`;
+    output += `\nhttps://blockchair.com/bitcoin/transaction/${biggestTransaction.txid}\n\n`;
 
     return output;
   } catch (error) {
@@ -203,7 +203,7 @@ async function getTransactionWithMaxOutputs() {
     output += `🔗 Transaction ID: ${transactionWithMaxOutputs.txid}\n`;
     output += `📤 Number of Outputs: ${maxOutputsCount}\n`;
     output += `💸 Total Amount Paid Out: ${totalPaidOut} BTC\n\n`;
-    output += `\n🌐 https://blockchair.com/bitcoin/transaction/${transactionWithMaxOutputs.txid}\n`;
+    output += `\nhttps://blockchair.com/bitcoin/transaction/${transactionWithMaxOutputs.txid}\n\n`;
 
     return output;
   } catch (error) {

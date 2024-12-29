@@ -31,7 +31,11 @@ async function handleNewsPost() {
   const post = posts[Math.floor(Math.random() * posts.length)];
   await commitMsg(
     process.env.NSEC,
-    `${post.title} #bitcoin #news ${post.link}`
+    `${post.title}   
+
+     ${post.link} 
+     
+     #bitcoin #news`
   );
 }
 
