@@ -12,15 +12,10 @@ async function axiosGet(url) {
 }
 
 async function getBitcoinPrice() {
-  try {
-    const data = await axiosGet(
-      "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd"
-    );
-    return parseInt(data?.bitcoin?.usd || 0);
-  } catch (error) {
-    console.error("Error fetching Bitcoin price:", error.message);
-    return 0;
-  }
+  const data = await axiosGet(
+    "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd"
+  );
+  return parseInt(data?.bitcoin?.usd || 0);
 }
 
 async function uploadToImgbb(apiKey, buffer) {
@@ -63,7 +58,7 @@ async function btcLightning() {
   const data = await axiosGet(
     "https://mempool.space/api/v1/lightning/statistics/latest"
   );
-  
+
   return data?.latest || {};
 }
 
@@ -109,7 +104,8 @@ async function getRandomTransactionDetails() {
     output += "💰 Inputs:\n";
     randomTransaction.vin.forEach((input, index) => {
       const value = input.prevout ? input.prevout.value / 1e8 : 0;
-      const address = input.prevout?.scriptpubkey_address || "Coinbase (Miners' piggy bank)";
+      const address =
+        input.prevout?.scriptpubkey_address || "Coinbase (Miners' piggy bank)";
       output += `  Input ${index + 1}: ${value} BTC from ${address}\n`;
     });
 
@@ -121,7 +117,8 @@ async function getRandomTransactionDetails() {
     });
 
     if (!randomTransaction.vin[0].prevout) {
-      output += "\n🏗️ This is a Coinbase transaction. Miners just got their paycheck!";
+      output +=
+        "\n🏗️ This is a Coinbase transaction. Miners just got their paycheck!";
     }
 
     output += `\n🌐 https://blockchair.com/bitcoin/transaction/${randomTransaction.txid}\n`;
@@ -165,7 +162,8 @@ async function getBiggestTransactionDetails() {
     output += "💰 Inputs:\n";
     biggestTransaction.vin.forEach((input, index) => {
       const value = input.prevout ? input.prevout.value / 1e8 : 0;
-      const address = input.prevout?.scriptpubkey_address || "Coinbase (Miners' piggy bank)";
+      const address =
+        input.prevout?.scriptpubkey_address || "Coinbase (Miners' piggy bank)";
       output += `  Input ${index + 1}: ${value} BTC from ${address}\n`;
     });
 

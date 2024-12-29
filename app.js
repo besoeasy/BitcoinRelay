@@ -19,7 +19,7 @@ async function text2img(msg) {
 }
 
 async function main() {
-  const random = Math.floor(Math.random() * 10);
+  const random = 5 || Math.floor(Math.random() * 10);
 
   switch (true) {
     case random < 2: {
@@ -36,7 +36,7 @@ async function main() {
     case random < 6: {
       const btcprice = await getBitcoinPrice();
 
-      if (Math.random() > 0.5) {
+      if (Math.random() > 0.7) {
         const sattousd = parseFloat(btcprice / 100000000).toFixed(6);
 
         await commitMsg(
