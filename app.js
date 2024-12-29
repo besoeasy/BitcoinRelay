@@ -34,7 +34,7 @@ async function main() {
       process.exit(0);
     }
 
-    case random < 6: {
+    case random < 5: {
       const btcprice = await getBitcoinPrice();
 
       if (Math.random() > 0.7) {
