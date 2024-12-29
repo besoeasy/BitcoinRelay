@@ -40,6 +40,10 @@ async function fetchAllFeeds() {
     post.link = post.link.split("?")[0];
   });
 
+  allPosts.forEach((post) => {
+    post.title = post.title.replace(/[^a-zA-Z0-9 ]/g, "");
+  });
+
   return allPosts.slice(0, 7);
 }
 

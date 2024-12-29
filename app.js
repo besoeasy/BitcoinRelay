@@ -25,6 +25,7 @@ async function main() {
     case random < 2: {
       const posts = await fetchAllFeeds();
       const post = posts[Math.floor(Math.random() * posts.length)];
+
       await commitMsg(
         process.env.NSEC,
         `${post.title} #bitcoin #news ${post.link}`
