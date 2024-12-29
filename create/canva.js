@@ -12,9 +12,6 @@ async function paintImg(textx) {
   ); // Replace with your image URL
   context.drawImage(backgroundImage, 0, 0, width, height);
 
-  // Font color: White for "Bitcoin" and "USD"
-  const fontColor = "#ffffff";
-
   // Set font size and style
   const fontSize = 120; // Increased font size for larger text
   context.font = `bold ${fontSize}px 'Helvetica Neue', Arial, sans-serif`;
@@ -25,7 +22,7 @@ async function paintImg(textx) {
   const textxColor = Math.random() > 0.5 ? "#e74c3c" : "#2ecc71"; // Red or Green
 
   // Draw dynamic text (textx) in the middle
-  context.font = `bold ${fontSize * 1.5}px 'Helvetica Neue', Arial, sans-serif`;
+  context.font = `bold ${fontSize}px 'Helvetica Neue', Arial, sans-serif`;
   context.fillStyle = textxColor;
   context.fillText(textx, width / 2, height / 2);
 
