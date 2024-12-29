@@ -16,13 +16,11 @@ const { paintImg } = require("./create/canva.js");
 const { commitMsg } = require("./modules/nostr.js");
 const { fetchAllFeeds } = require("./modules/news.js");
 
-// Utility function to convert text to an image and upload it
 async function text2img(msg) {
   const buffer = await paintImg(msg);
   return uploadToImgbb(process.env.IMGBB_API_KEY, buffer) || null;
 }
 
-// Action handlers
 async function handleNewsPost() {
   const posts = await fetchAllFeeds();
   const post = posts[Math.floor(Math.random() * posts.length)];
@@ -92,9 +90,13 @@ async function handleLightningNetworkPost() {
 
 async function handleBitcoinFeesPost() {
   const { fee, mempoolSize } = await getBitcoinFees();
+
   await commitMsg(
     process.env.NSEC,
-    `Bitcoin fees: ${fee} sat/vB with ${mempoolSize} transactions waiting to be confirmed #bitcoin`
+    `Bitcoin fees:\n` +
+      `${fee} sat/vB\n` +
+      `${mempoolSize} transactions waiting to be confirmed\n\n` +
+      `#bitcoin`
   );
 }
 
