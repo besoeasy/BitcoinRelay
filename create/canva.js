@@ -6,30 +6,23 @@ async function paintImg(textx) {
   const canvas = createCanvas(width, height);
   const context = canvas.getContext("2d");
 
-  // Load background image
   const backgroundImage = await loadImage(
     "https://bafkreiaskulskavaxi5z3x7bgovn563ppnn73q32ahhmgrm656ktalxx54.ipfs.dweb.link/"
-  ); // Replace with your image URL
+  );
   context.drawImage(backgroundImage, 0, 0, width, height);
 
-  // Set font size and style
-  const fontSize = 160; // Increased font size for larger text
+  const fontSize = 160;
   context.font = `bold ${fontSize}px 'Helvetica Neue', Arial, sans-serif`;
   context.textAlign = "center";
   context.textBaseline = "middle";
 
-  // Randomly choose red or green for textx
-  const textxColor = Math.random() > 0.5 ? "#e74c3c" : "#2ecc71"; // Red or Green
+  const textxColor = Math.random() > 0.5 ? "#e74c3c" : "#2ecc71";
 
-  // Draw dynamic text (textx) in the middle
   context.font = `bold ${fontSize}px 'Helvetica Neue', Arial, sans-serif`;
   context.fillStyle = textxColor;
   context.fillText(textx, width / 2, height / 2);
 
-  // Convert canvas to buffer
-  const buffer = canvas.toBuffer("image/png");
-
-  return buffer;
+  return canvas.toBuffer("image/png");
 }
 
 module.exports = {
