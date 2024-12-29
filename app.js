@@ -1,5 +1,7 @@
+// Load environment variables
 require("dotenv").config();
 
+// Import necessary modules
 const {
   uploadToImgbb,
   getBitcoinPrice,
@@ -14,109 +16,118 @@ const { paintImg } = require("./create/canva.js");
 const { commitMsg } = require("./modules/nostr.js");
 const { fetchAllFeeds } = require("./modules/news.js");
 
+// Utility function to convert text to an image and upload it
 async function text2img(msg) {
   const buffer = await paintImg(msg);
   return uploadToImgbb(process.env.IMGBB_API_KEY, buffer) || null;
 }
 
+// Action handlers
+async function handleNewsPost() {
+  const posts = await fetchAllFeeds();
+  const post = posts[Math.floor(Math.random() * posts.length)];
+  await commitMsg(
+    process.env.NSEC,
+    `${post.title} #bitcoin #news ${post.link}`
+  );
+}
+
+async function handleBitcoinPricePost() {
+  const btcprice = await getBitcoinPrice();
+
+  if (Math.random() > 0.7) {
+    const sattousd = parseFloat(btcprice / 100000000).toFixed(6);
+    await commitMsg(
+      process.env.NSEC,
+      `1 Bitcoin = ${btcprice} USD\n` +
+        `1 Satoshi = ${sattousd} USD\n\n` +
+        `#bitcoin #crypto`
+    );
+  } else {
+    const msgurl = await text2img(`${btcprice}`);
+    if (msgurl) {
+      await commitMsg(
+        process.env.NSEC,
+        `Bitcoin:\n` +
+          `${btcprice} USD\n\n` +
+          `#bitcoin #crypto\n` +
+          `${msgurl}`
+      );
+    }
+  }
+}
+
+async function handleBiggestTransactionPost() {
+  const biggestTx = await getBiggestTransactionDetails();
+  await commitMsg(process.env.NSEC, `${biggestTx} #bitcoin #crypto #wallet`);
+}
+
+async function handleTransactionDetailsPost() {
+  if (Math.random() > 0.5) {
+    const randomTx = await getRandomTransactionDetails();
+    await commitMsg(process.env.NSEC, `${randomTx} #bitcoin #crypto #wallet`);
+  } else {
+    const maxOutputsTx = await getTransactionWithMaxOutputs();
+    await commitMsg(
+      process.env.NSEC,
+      `${maxOutputsTx} #bitcoin #crypto #wallet`
+    );
+  }
+}
+
+async function handleLightningNetworkPost() {
+  const { node_count, channel_count, avg_capacity, total_capacity } =
+    await btcLightning();
+
+  await commitMsg(
+    process.env.NSEC,
+    `Bitcoin Lightning Network:\n\n` +
+      `${node_count} Nodes\n` +
+      `${channel_count} Channels\n` +
+      `Avg capacity ${(avg_capacity / 100000000).toFixed(4)} BTC\n` +
+      `Total capacity ${(total_capacity / 100000000).toFixed(4)} BTC\n\n` +
+      `#bitcoin #lightning`
+  );
+}
+
+async function handleBitcoinFeesPost() {
+  const { fee, mempoolSize } = await getBitcoinFees();
+  await commitMsg(
+    process.env.NSEC,
+    `Bitcoin fees: ${fee} sat/vB with ${mempoolSize} transactions waiting to be confirmed #bitcoin`
+  );
+}
+
 async function main() {
   const random = Math.floor(Math.random() * 10);
 
-  switch (true) {
-    case random < 2: {
-      const posts = await fetchAllFeeds();
-      const post = posts[Math.floor(Math.random() * posts.length)];
-
-      await commitMsg(
-        process.env.NSEC,
-        `${post.title} #bitcoin #news ${post.link}`
-      );
-      process.exit(0);
+  try {
+    switch (true) {
+      case random < 2:
+        await handleNewsPost();
+        break;
+      case random < 5:
+        await handleBitcoinPricePost();
+        break;
+      case random < 7:
+        await handleBiggestTransactionPost();
+        break;
+      case random < 8:
+        await handleTransactionDetailsPost();
+        break;
+      case random < 9:
+        await handleLightningNetworkPost();
+        break;
+      case random < 10:
+        await handleBitcoinFeesPost();
+        break;
+      default:
+        console.log("No matching case.");
     }
-
-    case random < 5: {
-      const btcprice = await getBitcoinPrice();
-
-      if (Math.random() > 0.7) {
-        const sattousd = parseFloat(btcprice / 100000000).toFixed(6);
-
-        await commitMsg(
-          process.env.NSEC,
-          `1 Bitcoin = ${btcprice} USD, which means 1 Satoshi = ${sattousd} USD #bitcoin #crypto #trade`
-        );
-      } else {
-        const msgurl = await text2img(`${btcprice}`);
-        if (msgurl) {
-          await commitMsg(
-            process.env.NSEC,
-            `Bitcoin: ${btcprice} USD #bitcoin #crypto #trade ${msgurl}`
-          );
-        }
-      }
-
-      process.exit(0); // Exit after posting
-    }
-
-    case random < 7: {
-      const biggestTx = await getBiggestTransactionDetails();
-
-      await commitMsg(
-        process.env.NSEC,
-        `${biggestTx} #bitcoin #crypto #wallet`
-      );
-      process.exit(0); // Exit after posting
-    }
-
-    case random < 8: {
-      if (Math.random() > 0.5) {
-        const randomTx = await getRandomTransactionDetails();
-
-        await commitMsg(
-          process.env.NSEC,
-          `${randomTx} #bitcoin #crypto #wallet`
-        );
-        process.exit(0); // Exit after posting
-      } else {
-        const maxOutputsTx = await getTransactionWithMaxOutputs();
-
-        await commitMsg(
-          process.env.NSEC,
-          `${maxOutputsTx} #bitcoin #crypto #wallet`
-        );
-        process.exit(0); // Exit after posting
-      }
-    }
-
-    case random < 9: {
-      const { node_count, channel_count, avg_capacity, total_capacity } =
-        await btcLightning();
-
-      await commitMsg(
-        process.env.NSEC,
-        `Bitcoin Lightning Network: 
-
-         ${node_count} Nodes
-         ${channel_count} Channels
-         Avg capacity ${avg_capacity / 100000000} BTC
-         Total capacity ${total_capacity / 100000000} BTC 
-        
-        #bitcoin #lightning
-        `
-      );
-    }
-
-    case random < 10: {
-      const { fee, mempoolSize } = await getBitcoinFees();
-
-      await commitMsg(
-        process.env.NSEC,
-        `Bitcoin fees: ${fee} sat/vB with ${mempoolSize} transactions waiting to be confirmed #bitcoin`
-      );
-      process.exit(0); // Exit after posting
-    }
-
-    default:
-      process.exit(0); // Exit if no case matches
+  } catch (error) {
+    console.error("An error occurred:", error);
+  } finally {
+    process.exit(0);
   }
 }
 
