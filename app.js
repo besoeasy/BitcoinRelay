@@ -142,11 +142,11 @@ async function main() {
   const random = Math.random();
 
   try {
-    if (random < 0.125) {
+    if (random < 0.08) {
       await handleNewsPost();
     } else if (random < 0.25) {
       await handleBitcoinPriceChart();
-    } else if (random < 0.375) {
+    } else if (random < 0.4) {
       await handleBitcoinPricePost();
     } else if (random < 0.5) {
       await handleBiggestTransactionPost();
