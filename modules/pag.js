@@ -188,14 +188,19 @@ async function getTransactionWithMaxOutputs() {
       return "No valid transactions found in the block. Maybe it's a quiet day.";
     }
 
-    // Calculate the total amount paid out (sum of all outputs)
     const totalPaidOut =
       transactionWithMaxOutputs.vout.reduce(
         (sum, output) => sum + output.value,
         0
-      ) / 1e8; // Convert satoshis to BTC
+      ) / 1e8; 
 
-    let output = "🔔 A Crypto Exchange Paid Bitcoin To Users !\n\n";
+    let output = "";
+
+    if(maxOutputsCount > 4){
+      output += "🔔 Crypto Exchange Paid Bitcoin To Users !\n\n"
+    }else{
+      output += "🔔 Some Website Paid Bitcoin To Users !\n\n"
+    }
 
     output += `📤 Number of Outputs: ${maxOutputsCount}\n`;
     output += `💸 Total Amount Paid Out: ${totalPaidOut} BTC\n\n`;
