@@ -1,7 +1,5 @@
-// Load environment variables
 require("dotenv").config();
 
-// Import necessary modules
 const {
   uploadToImgbb,
   getBitcoinPrice,
