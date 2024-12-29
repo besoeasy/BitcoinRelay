@@ -13,7 +13,7 @@ async function paintImg(textx) {
   context.drawImage(backgroundImage, 0, 0, width, height);
 
   // Set font size and style
-  const fontSize = 120; // Increased font size for larger text
+  const fontSize = 140; // Increased font size for larger text
   context.font = `bold ${fontSize}px 'Helvetica Neue', Arial, sans-serif`;
   context.textAlign = "center";
   context.textBaseline = "middle";
