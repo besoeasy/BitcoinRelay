@@ -27,6 +27,11 @@ const relayarray = [
   "wss://purplerelay.com",
   "wss://strfry.iris.to",
   "wss://relay.0xchat.com",
+  "wss://r.kojira.io",
+  "wss://nrelay-jp.c-stellar.net",
+  "wss://nostr.fediverse.jp",
+  "wss://nostr.holybea.com",
+  "wss://relay-jp.nostr.wirednet.jp",
 ];
 
 function extractHashtagsAndLinks(content) {

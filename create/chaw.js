@@ -5,7 +5,7 @@ const getBTCData = async () => {
   try {
     const response = await axios.get(
       "https://api.coingecko.com/api/v3/coins/bitcoin/ohlc",
-      { params: { vs_currency: "usd", days: "1" } }
+      { params: { vs_currency: "usd", days: "2" } }
     );
 
     // Extract OHLC data
