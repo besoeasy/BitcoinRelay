@@ -108,7 +108,7 @@ const plotData = async () => {
 
   // Annotations: High, Low, and Average Prices
   ctx.fillStyle = "white";
-  ctx.font = "48px Arial";
+  ctx.font = "80px Arial";
 
   // High
   ctx.fillText(
