@@ -36,7 +36,7 @@ async function paintTransaction(textx) {
   );
   context.drawImage(backgroundImage, 0, 0, width, height);
 
-  const fontSize = 100;
+  const fontSize = 150;
   context.font = `bold ${fontSize}px 'Helvetica Neue', Arial, sans-serif`;
   context.textAlign = "center";
   context.textBaseline = "middle";

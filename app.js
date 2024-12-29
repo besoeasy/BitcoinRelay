@@ -105,11 +105,11 @@ async function handleBitcoinFeesPost() {
   if (msgurl) {
     await commitMsg(
       process.env.NSEC,
-      `Bitcoin fees:\n` +
-        `${fee} sat/vB\n` +
-        `${mempoolSize} Transactions Pending\n\n` +
-        `#bitcoin` +
-        `${msgurl}`
+      `Bitcoin Fees:\n` +
+      `Current Fee: ${fee} sat/vB\n` +
+      `Mempool Size: ${mempoolSize} transactions pending\n\n` +
+      `#bitcoin #fees\n` +
+      `${msgurl}`
     );
   }
 }
