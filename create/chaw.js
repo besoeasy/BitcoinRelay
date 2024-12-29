@@ -16,11 +16,11 @@ const getBTCData = async () => {
     const lows = data.map((d) => d[3]);
     const closes = data.map((d) => d[4]);
 
-    const minPrice = Math.min(...lows);
-    const maxPrice = Math.max(...highs);
-    const avgPrice =
-      closes.reduce((sum, price) => sum + price, 0) / closes.length;
-
+    const minPrice = parseInt(Math.min(...lows));
+    const maxPrice = parseInt(Math.max(...highs));
+    const avgPrice = parseInt(
+      closes.reduce((sum, price) => sum + price, 0) / closes.length
+    );
     return {
       data,
       minPrice,
