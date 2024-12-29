@@ -53,7 +53,7 @@ async function handleBitcoinPricePost() {
     if (msgurl) {
       await commitMsg(
         process.env.NSEC,
-        `Bitcoin:\n` +
+        `Bitcoin: \n` +
           `${btcprice} USD\n\n` +
           `#bitcoin #crypto\n` +
           `${msgurl}`
