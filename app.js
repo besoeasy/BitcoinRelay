@@ -7,6 +7,7 @@ const {
   btcLightning,
   getRandomTransactionDetails,
   getBiggestTransactionDetails,
+  getTransactionWithMaxOutputs,
 } = require("./modules/pag.js");
 
 const { paintImg } = require("./create/canva.js");
@@ -59,7 +60,7 @@ async function main() {
     }
 
     case random < 8: {
-      if (Math.random() > 0.5) {
+      if (Math.random() > 0.66) {
         const randomTx = await getRandomTransactionDetails();
 
         await commitMsg(
@@ -68,12 +69,21 @@ async function main() {
         );
         process.exit(0); // Exit after posting
         break;
-      } else {
+      } else if (Math.random() > 0.33) {
         const biggestTx = await getBiggestTransactionDetails();
 
         await commitMsg(
           process.env.NSEC,
           `${biggestTx} #bitcoin #crypto #wallet`
+        );
+        process.exit(0); // Exit after posting
+        break;
+      } else {
+        const maxOutputsTx = await getTransactionWithMaxOutputs();
+
+        await commitMsg(
+          process.env.NSEC,
+          `${maxOutputsTx} #bitcoin #crypto #wallet`
         );
         process.exit(0); // Exit after posting
         break;

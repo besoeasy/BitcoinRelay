@@ -182,6 +182,49 @@ async function getBiggestTransactionDetails() {
   }
 }
 
+
+async function getTransactionWithMaxOutputs() {
+  try {
+    const { transactions, blockDetails } = await getblockdata();
+
+    let transactionWithMaxOutputs = null;
+    let maxOutputsCount = 0;
+
+    transactions.forEach((transaction) => {
+      const outputsCount = transaction.vout.length;
+      if (outputsCount > maxOutputsCount) {
+        maxOutputsCount = outputsCount;
+        transactionWithMaxOutputs = transaction;
+      }
+    });
+
+    if (!transactionWithMaxOutputs) {
+      return "No valid transactions found in the block. Maybe it's a quiet day.";
+    }
+
+    // Calculate the total amount paid out (sum of all outputs)
+    const totalPaidOut = transactionWithMaxOutputs.vout.reduce(
+      (sum, output) => sum + output.value,
+      0
+    ) / 1e8; // Convert satoshis to BTC
+
+    let output = "🔔 A Crypto Exchange Paid Bitcoin To Users !\n\n";
+    output += `🧱 Block Height: ${blockDetails.height}\n`;
+    output += `⏰ Block Time: ${new Date(
+      blockDetails.timestamp * 1000
+    ).toLocaleString()}\n`;
+    output += `🔗 Transaction ID: ${transactionWithMaxOutputs.txid}\n`;
+    output += `📤 Number of Outputs: ${maxOutputsCount}\n`;
+    output += `💸 Total Amount Paid Out: ${totalPaidOut} BTC\n\n`;
+    output += `\n🌐 https://blockchair.com/bitcoin/transaction/${transactionWithMaxOutputs.txid}\n`;
+
+    return output;
+  } catch (error) {
+    return `🚨 Error fetching Bitcoin data: ${error.message}`;
+  }
+}
+
+
 module.exports = {
   getBitcoinPrice,
   uploadToImgbb,
@@ -189,4 +232,5 @@ module.exports = {
   btcLightning,
   getRandomTransactionDetails,
   getBiggestTransactionDetails,
+  getTransactionWithMaxOutputs,
 };
