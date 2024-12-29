@@ -12,12 +12,17 @@ const {
   getTransactionWithMaxOutputs,
 } = require("./modules/pag.js");
 
-const { paintImg } = require("./create/canva.js");
+const { paintPrice, paintTransaction } = require("./create/canva.js");
 const { commitMsg } = require("./modules/nostr.js");
 const { fetchAllFeeds } = require("./modules/news.js");
 
 async function text2img(msg) {
-  const buffer = await paintImg(msg);
+  const buffer = await paintPrice(msg);
+  return uploadToImgbb(process.env.IMGBB_API_KEY, buffer) || null;
+}
+
+async function text2img2(msg) {
+  const buffer = await paintTransaction(msg);
   return uploadToImgbb(process.env.IMGBB_API_KEY, buffer) || null;
 }
 
@@ -91,13 +96,17 @@ async function handleLightningNetworkPost() {
 async function handleBitcoinFeesPost() {
   const { fee, mempoolSize } = await getBitcoinFees();
 
-  await commitMsg(
-    process.env.NSEC,
-    `Bitcoin fees:\n` +
-      `${fee} sat/vB\n` +
-      `${mempoolSize} transactions waiting to be confirmed\n\n` +
-      `#bitcoin`
-  );
+  const msgurl = await text2img2(`${mempoolSize}`);
+  if (msgurl) {
+    await commitMsg(
+      process.env.NSEC,
+      `Bitcoin fees:\n` +
+        `${fee} sat/vB\n` +
+        `${mempoolSize} Transactions Pending\n\n` +
+        `#bitcoin` +
+        `${msgurl}`
+    );
+  }
 }
 
 async function main() {
