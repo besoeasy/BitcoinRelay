@@ -2,12 +2,11 @@ name: Node
 
 on:
   push:
-    tags:
-      - build
-    branches:
-      - main
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
   schedule:
-    - cron: "*/7 * * * *"
+    - cron: "*/9 * * * *"
 
 jobs:
   build:
@@ -19,31 +18,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      
-      # Determine commit for cron runs or tagged push
-      - name: Set commit to use
-        id: set-commit
-        run: |
-          if [ "${{ github.event_name }}" == "schedule" ]; then
-            # Fetch the latest commit tagged as "build"
-            COMMIT_SHA=$(git rev-list --tags="build" --max-count=1)
-            echo "commit=$COMMIT_SHA" >> $GITHUB_ENV
-          else
-            echo "commit=${{ github.sha }}" >> $GITHUB_ENV
-          fi
-
-      - name: Checkout specified commit
-        run: |
-          git checkout ${{ env.commit }}
-
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
-
       - run: npm install
-
       - name: Run Script
         env:
           IMGBB_API_KEY: ${{ secrets.IMGBB_API_KEY }}
