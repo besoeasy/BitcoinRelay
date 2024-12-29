@@ -111,11 +111,7 @@ const plotData = async () => {
   ctx.font = "80px Arial";
 
   // High
-  ctx.fillText(
-    `High: $${maxPrice}`,
-    chartPadding,
-    chartPadding - 50
-  );
+  ctx.fillText(`High: $${maxPrice}`, chartPadding, chartPadding - 50);
 
   // Low
   ctx.fillText(
