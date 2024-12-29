@@ -11,6 +11,8 @@ const {
 } = require("./modules/pag.js");
 
 const { paintPrice, paintTransaction } = require("./create/canva.js");
+const { plotData, getBTCData } = require("./create/chaw.js");
+
 const { commitMsg } = require("./modules/nostr.js");
 const { fetchAllFeeds } = require("./modules/news.js");
 
@@ -22,6 +24,30 @@ async function text2img(msg) {
 async function text2img2(msg) {
   const buffer = await paintTransaction(msg);
   return uploadToImgbb(process.env.IMGBB_API_KEY, buffer) || null;
+}
+
+async function text2img3() {
+  const buffer = await plotData();
+  return uploadToImgbb(process.env.IMGBB_API_KEY, buffer) || null;
+}
+
+async function handleBitcoinPriceChart() {
+  const { data, minPrice, maxPrice, avgPrice } = await getBTCData();
+
+  if (!data.length) return;
+  const msgurl = await text2img3();
+
+  if (msgurl) {
+    await commitMsg(
+      process.env.NSEC,
+      `Bitcoin Price Action :\n` +
+        `Min: ${minPrice} USD\n` +
+        `Max: ${maxPrice} USD\n` +
+        `Avg: ${avgPrice} USD\n\n` +
+        `#bitcoin #crypto\n\n` +
+        `${msgurl}`
+    );
+  }
 }
 
 async function handleNewsPost() {
@@ -116,27 +142,22 @@ async function main() {
   const random = Math.random();
 
   try {
-    switch (true) {
-      case random < 0.1:
-        await handleNewsPost();
-        break;
-      case random < 0.3:
-        await handleBitcoinPricePost();
-        break;
-      case random < 0.5:
-        await handleBiggestTransactionPost();
-        break;
-      case random < 0.7:
-        await handleTransactionDetailsPost();
-        break;
-      case random < 0.8:
-        await handleLightningNetworkPost();
-        break;
-      case random < 0.9:
-        await handleBitcoinFeesPost();
-        break;
-      default:
-        console.log("No matching case.");
+    if (random < 0.125) {
+      await handleNewsPost();
+    } else if (random < 0.25) {
+      await handleBitcoinPriceChart();
+    } else if (random < 0.375) {
+      await handleBitcoinPricePost();
+    } else if (random < 0.5) {
+      await handleBiggestTransactionPost();
+    } else if (random < 0.625) {
+      await handleTransactionDetailsPost();
+    } else if (random < 0.75) {
+      await handleLightningNetworkPost();
+    } else if (random < 0.875) {
+      await handleBitcoinFeesPost();
+    } else {
+      console.log("No action taken");
     }
   } catch (error) {
     console.error("An error occurred:", error);

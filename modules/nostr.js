@@ -113,6 +113,7 @@ async function commitMsg(nsec, content, powDifficulty = 4) {
   } catch (error) {
     console.error("Error in bot execution:", error);
   }
+
 }
 
 module.exports = { commitMsg };
