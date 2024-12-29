@@ -8,7 +8,7 @@ async function paintImg(textx) {
 
   // Load background image
   const backgroundImage = await loadImage(
-    "https://bafkreigtfnady7hyktfh4pnwz7hzb6d5adfjcgwt5drisui4o5bc46m7qu.ipfs.dweb.link/"
+    "https://bafkreiaskulskavaxi5z3x7bgovn563ppnn73q32ahhmgrm656ktalxx54.ipfs.dweb.link/"
   ); // Replace with your image URL
   context.drawImage(backgroundImage, 0, 0, width, height);
 
