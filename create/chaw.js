@@ -112,14 +112,14 @@ const plotData = async () => {
 
   // High
   ctx.fillText(
-    `High: $${maxPrice.toFixed(2)}`,
+    `High: $${maxPrice}`,
     chartPadding,
     chartPadding - 50
   );
 
   // Low
   ctx.fillText(
-    `Low: $${minPrice.toFixed(2)}`,
+    `Low: $${minPrice}`,
     chartPadding,
     canvasHeight - chartPadding + 100
   );
@@ -136,9 +136,9 @@ const plotData = async () => {
   ctx.setLineDash([]);
   ctx.fillStyle = "#ffd700";
   ctx.fillText(
-    `Avg: $${avgPrice.toFixed(2)}`,
+    `Avg: $${avgPrice}`,
     canvasWidth - chartPadding - 300,
-    avgY - 20
+    avgY - 50
   );
 
   return canvas.toBuffer("image/png");
