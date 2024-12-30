@@ -124,17 +124,30 @@ async function getBiggestTransactionDetails() {
   try {
     const { transactions } = await getblockdata();
 
-    let biggestTransaction = null;
-    let maxTransferred = 0;
+    if (!transactions || transactions.length === 0) {
+      return "No transactions found in the block.";
+    }
 
+    let biggestTransaction = null;
+    let secondBiggestTransaction = null;
+    let maxTransferred = 0;
+    let secondMaxTransferred = 0;
+
+    // Find the biggest transaction
     transactions.forEach((transaction) => {
       const totalOutput = transaction.vout.reduce(
         (sum, output) => sum + output.value,
         0
       );
       if (totalOutput > maxTransferred) {
+        secondMaxTransferred = maxTransferred;
+        secondBiggestTransaction = biggestTransaction;
+
         maxTransferred = totalOutput;
         biggestTransaction = transaction;
+      } else if (totalOutput > secondMaxTransferred) {
+        secondMaxTransferred = totalOutput;
+        secondBiggestTransaction = transaction;
       }
     });
 
@@ -142,8 +155,15 @@ async function getBiggestTransactionDetails() {
       return "No valid transactions found in the block. Maybe the whales are broke?";
     }
 
+    // Check if the biggest transaction has more than 4 outputs
+    if (biggestTransaction.vout.length > 4 && secondBiggestTransaction) {
+      biggestTransaction = secondBiggestTransaction;
+      maxTransferred = secondMaxTransferred;
+    }
+
     let output = "🐋 A whale moved his Bitcoins!\n\n";
 
+    output += `🔗 Transaction ID: ${biggestTransaction.txid}\n`;
     output += `💸 Total Bitcoin Transferred: ${maxTransferred / 1e8} BTC\n\n`;
 
     output += "💰 Inputs:\n";
@@ -192,14 +212,14 @@ async function getTransactionWithMaxOutputs() {
       transactionWithMaxOutputs.vout.reduce(
         (sum, output) => sum + output.value,
         0
-      ) / 1e8; 
+      ) / 1e8;
 
     let output = "";
 
-    if(maxOutputsCount > 4){
-      output += "🔔 Crypto Exchange Paid Bitcoin To Users !\n\n"
-    }else{
-      output += "🔔 Some Website Paid Bitcoin To Users !\n\n"
+    if (maxOutputsCount > 4) {
+      output += "🔔 Crypto Exchange Paid Bitcoin To Users !\n\n";
+    } else {
+      output += "🔔 Some Website Paid Bitcoin To Users !\n\n";
     }
 
     output += `📤 Number of Outputs: ${maxOutputsCount}\n`;
