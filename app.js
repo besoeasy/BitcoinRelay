@@ -142,19 +142,21 @@ async function main() {
   const random = Math.random();
 
   try {
-    if (random < 0.08) {
+    if (random < 0.1) {
       await handleNewsPost();
-    } else if (random < 0.25) {
+    } else if (random < 0.3) {
       await handleBitcoinPriceChart();
-    } else if (random < 0.4) {
+    } else if (random < 0.6) {
       await handleBitcoinPricePost();
-    } else if (random < 0.5) {
-      await handleBiggestTransactionPost();
-    } else if (random < 0.625) {
-      await handleTransactionDetailsPost();
-    } else if (random < 0.75) {
+    } else if (random < 0.7) {
+      if (Math.random()) {
+        await handleBiggestTransactionPost();
+      } else {
+        await handleTransactionDetailsPost();
+      }
+    } else if (random < 0.8) {
       await handleLightningNetworkPost();
-    } else if (random < 0.875) {
+    } else if (random < 0.9) {
       await handleBitcoinFeesPost();
     } else {
       console.log("No action taken");
