@@ -44,7 +44,7 @@ async function fetchAllFeeds() {
     post.title = post.title.replace(/[^a-zA-Z0-9 ]/g, "");
   });
 
-  return allPosts.slice(0, 7);
+  return allPosts[Math.floor(Math.random() * allPosts.length)];
 }
 
 module.exports = {

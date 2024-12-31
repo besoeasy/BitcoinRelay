@@ -51,14 +51,18 @@ async function handleBitcoinPriceChart() {
 }
 
 async function handleNewsPost() {
-  const posts = await fetchAllFeeds();
-  const post = posts[Math.floor(Math.random() * posts.length)];
+  const post = await fetchAllFeeds();
+
+  console.log(post);
+
   await commitMsg(
     process.env.NSEC,
-    `${post.title}   
+    `${post.title}    
 
-     ${post.link} 
-     
+     ${post.contentSnippet} 
+
+🔗   *Read more:* ${post.link}  
+   
      #bitcoin #news`
   );
 }
