@@ -61,7 +61,7 @@ async function handleNewsPost() {
 
      ${post.contentSnippet} 
 
-🔗   *Read more:* ${post.link}  
+🔗   *Read :* ${post.link}  
    
      #bitcoin #news`
   );
@@ -80,20 +80,11 @@ async function handleBitcoinPricePost() {
     );
   } else {
     const msgurl = await imgPrice(`${btcprice}`);
-
-    const usdname = [
-      "US Dollars",
-      "USD",
-      "United States Dollars",
-      "American Dollars",
-    ];
-
-    const usd = usdname[Math.floor(Math.random() * usdname.length)];
-
+    
     if (msgurl) {
       await commitMsg(
         process.env.NSEC,
-        `Bitcoin: ${btcprice} ${usd}` + `\n\n #bitcoin #crypto` + `\n ${msgurl}`
+        `Bitcoin: ${btcprice} USD` + `\n\n #bitcoin #crypto` + `\n ${msgurl}`
       );
     }
   }
