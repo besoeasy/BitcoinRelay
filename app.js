@@ -139,27 +139,30 @@ async function handleBitcoinFeesPost() {
 }
 
 async function main() {
-  const random = Math.random();
+  const random = Math.floor(Math.random() * 6);
 
   try {
-    if (random < 0.1) {
+    if (random === 0) {
       await handleNewsPost();
-    } else if (random < 0.3) {
+    }
+    if (random === 1) {
       await handleBitcoinPriceChart();
-    } else if (random < 0.6) {
+    }
+    if (random === 2) {
       await handleBitcoinPricePost();
-    } else if (random < 0.7) {
-      if (Math.random()) {
+    }
+    if (random === 3) {
+      if (Math.random() < 0.5) {
         await handleBiggestTransactionPost();
       } else {
         await handleTransactionDetailsPost();
       }
-    } else if (random < 0.8) {
+    }
+    if (random === 4) {
       await handleLightningNetworkPost();
-    } else if (random < 0.9) {
+    }
+    if (random === 5) {
       await handleBitcoinFeesPost();
-    } else {
-      console.log("No action taken");
     }
   } catch (error) {
     console.error("An error occurred:", error);
