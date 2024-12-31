@@ -40,11 +40,11 @@ async function handleBitcoinPriceChart() {
   if (msgurl) {
     await commitMsg(
       process.env.NSEC,
-      `Bitcoin Price Action :\n` +
+      `Bitcoin Price Action :\n\n` +
         `Min: ${minPrice} USD\n` +
         `Max: ${maxPrice} USD\n` +
-        `Avg: ${avgPrice} USD\n\n` +
-        `#bitcoin #crypto\n\n` +
+        `Avg: ${avgPrice} USD\n` +
+        `\n\n#bitcoin #crypto #trade\n\n` +
         `${msgurl}`
     );
   }
@@ -75,18 +75,25 @@ async function handleBitcoinPricePost() {
     await commitMsg(
       process.env.NSEC,
       `1 Bitcoin = ${btcprice} USD\n` +
-        `1 Satoshi = ${sattousd} USD\n\n` +
-        `#bitcoin #crypto`
+        `1 Satoshi = ${sattousd} USD\n` +
+        `\n\n#bitcoin #crypto #trade`
     );
   } else {
     const msgurl = await imgPrice(`${btcprice}`);
+
+    const usdname = [
+      "US Dollars",
+      "USD",
+      "United States Dollars",
+      "American Dollars",
+    ];
+
+    const usd = usdname[Math.floor(Math.random() * usdname.length)];
+
     if (msgurl) {
       await commitMsg(
         process.env.NSEC,
-        `Bitcoin: \n` +
-          `${btcprice} USD\n\n` +
-          `#bitcoin #crypto\n` +
-          `${msgurl}`
+        `Bitcoin: ${btcprice} ${usd}` + `\n\n #bitcoin #crypto` + `\n ${msgurl}`
       );
     }
   }
