@@ -1,13 +1,18 @@
 const RSSParser = require("rss-parser");
 const parser = new RSSParser();
 
-// List of RSS feed URLs
 const feedUrls = [
   "https://cointelegraph.com/rss",
   "https://news.bitcoin.com/feed",
+  "https://www.coindesk.com/arc/outboundfeeds/rss/",
+  "https://bitcoinmagazine.com/feed",
+  "https://decrypt.co/feed",
+  "https://cryptoslate.com/feed/",
+  "https://u.today/rss",
+  "https://www.theblock.co/rss",
+  "https://beincrypto.com/feed/",
 ];
 
-// Function to fetch and parse a single feed
 async function fetchFeed(url) {
   try {
     const feed = await parser.parseURL(url);
@@ -24,7 +29,6 @@ async function fetchFeed(url) {
   }
 }
 
-// Main function to fetch all feeds and compile them into a JSON object
 async function fetchAllFeeds() {
   const allPosts = [];
 
@@ -33,7 +37,6 @@ async function fetchAllFeeds() {
     allPosts.push(...posts);
   }
 
-  // Optional: Sort posts by publication date
   allPosts.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
 
   allPosts.forEach((post) => {

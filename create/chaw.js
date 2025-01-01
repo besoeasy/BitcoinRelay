@@ -8,10 +8,8 @@ const getBTCData = async () => {
       { params: { vs_currency: "usd", days: "1" } }
     );
 
-    // Extract OHLC data
     const data = response.data;
 
-    // Calculate min, max, and average prices
     const highs = data.map((d) => d[2]);
     const lows = data.map((d) => d[3]);
     const closes = data.map((d) => d[4]);
@@ -44,7 +42,7 @@ const plotData = async () => {
   const ctx = canvas.getContext("2d");
 
   // Background
-  ctx.fillStyle = "#1e1e2e"; // Dark theme
+  ctx.fillStyle = "#1e1e2e"; 
   ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
   // Define chart area
