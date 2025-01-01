@@ -13,19 +13,6 @@
 - **Open-Source**: Free to use, modify, and enhance. Your contributions are welcome!
 ---
 
-## 📍 Where to Find Crypto Relay
-
-Interact with Crypto Relay on these platforms:
-
-- **[Nosta.me Profile](https://nosta.me/cryptorelay@zaps.lol)**
-- **[Primal.net Profile](https://primal.net/p/npub1c5ehrpe0hcnx3rmypv7kmu7t4ysjnf9dnrtqqedtzl4ref0n2gjq56zewr)**
-- **[Nostrudel.ninja Profile](https://nostrudel.ninja/#/u/npub1c5ehrpe0hcnx3rmypv7kmu7t4ysjnf9dnrtqqedtzl4ref0n2gjq56zewr/about)**
-- **[SlideStr.net Profile](https://slidestr.net/npub1c5ehrpe0hcnx3rmypv7kmu7t4ysjnf9dnrtqqedtzl4ref0n2gjq56zewr)**
-
-Or find us on any Nostr-based client using the username: **cryptorelay@zaps.lol**
-
----
-
 ## 💡 About Nostr
 
 Nostr is a lightweight, open protocol designed for truly decentralized social networking. Discover more about Nostr and how it works [here](https://nostr.com/).
