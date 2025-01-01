@@ -57,11 +57,9 @@ async function handleNewsPost() {
 
   await commitMsg(
     process.env.NSEC,
-    `${post.title}    
+    `${post.title}  ${post.contentSnippet} 
 
-     ${post.contentSnippet} 
-
-🔗   *Read :* ${post.link}  
+🔗 Read : ${post.link}  
    
      #bitcoin #news`
   );
