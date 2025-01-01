@@ -5,7 +5,6 @@ const {
   getBitcoinPrice,
   getBitcoinFees,
   btcLightning,
-  getRandomTransactionDetails,
   getBiggestTransactionDetails,
   getTransactionWithMaxOutputs,
 } = require("./modules/pag.js");
@@ -78,7 +77,7 @@ async function handleBitcoinPricePost() {
     );
   } else {
     const msgurl = await imgPrice(`${btcprice}`);
-    
+
     if (msgurl) {
       await commitMsg(
         process.env.NSEC,
@@ -89,20 +88,16 @@ async function handleBitcoinPricePost() {
 }
 
 async function handleBiggestTransactionPost() {
-  const biggestTx = await getBiggestTransactionDetails();
-  await commitMsg(process.env.NSEC, `${biggestTx} #bitcoin #crypto #wallet`);
-}
+  let biggestTx = null;
 
-async function handleTransactionDetailsPost() {
   if (Math.random() > 0.5) {
-    const randomTx = await getRandomTransactionDetails();
-    await commitMsg(process.env.NSEC, `${randomTx} #bitcoin #crypto #wallet`);
+    biggestTx = await getTransactionWithMaxOutputs();
   } else {
-    const maxOutputsTx = await getTransactionWithMaxOutputs();
-    await commitMsg(
-      process.env.NSEC,
-      `${maxOutputsTx} #bitcoin #crypto #wallet`
-    );
+    biggestTx = await getBiggestTransactionDetails();
+  }
+
+  if (!biggestTx) {
+    await commitMsg(process.env.NSEC, `${biggestTx} #bitcoin #crypto #wallet`);
   }
 }
 
@@ -152,11 +147,7 @@ async function main() {
       await handleBitcoinPricePost();
     }
     if (random === 3) {
-      if (Math.random() < 0.5) {
-        await handleBiggestTransactionPost();
-      } else {
-        await handleTransactionDetailsPost();
-      }
+      await handleBiggestTransactionPost();
     }
     if (random === 4) {
       await handleLightningNetworkPost();

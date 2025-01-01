@@ -82,44 +82,6 @@ async function getblockdata() {
   return { transactions };
 }
 
-async function getRandomTransactionDetails() {
-  try {
-    const { transactions } = await getblockdata();
-    const randomTransaction =
-      transactions[Math.floor(Math.random() * transactions.length)];
-
-    let output = "";
-
-    output += "🎲 A Bitcoin user moved some Bitcoins!\n\n";
-
-    output += "💰 Inputs:\n";
-    randomTransaction.vin.forEach((input, index) => {
-      const value = input.prevout ? input.prevout.value / 1e8 : 0;
-      const address =
-        input.prevout?.scriptpubkey_address || "Coinbase (Miners' piggy bank)";
-      output += `  Input ${index + 1}: ${value} BTC from ${address}\n`;
-    });
-
-    output += "\n📤 Outputs:\n";
-    randomTransaction.vout.forEach((outputTx, index) => {
-      const value = outputTx.value / 1e8;
-      const address = outputTx.scriptpubkey_address || "Mystery address 🔮";
-      output += `  Output ${index + 1}: ${value} BTC to ${address}\n`;
-    });
-
-    if (!randomTransaction.vin[0].prevout) {
-      output +=
-        "\n🏗️ This is a Coinbase transaction. Miners just got their paycheck!";
-    }
-
-    output += `\nhttps://blockchair.com/bitcoin/transaction/${randomTransaction.txid}\n\n`;
-
-    return output;
-  } catch (error) {
-    return `🚨 Error fetching Bitcoin data: ${error.message}`;
-  }
-}
-
 async function getBiggestTransactionDetails() {
   try {
     const { transactions } = await getblockdata();
@@ -237,7 +199,6 @@ module.exports = {
   uploadToImgbb,
   getBitcoinFees,
   btcLightning,
-  getRandomTransactionDetails,
   getBiggestTransactionDetails,
   getTransactionWithMaxOutputs,
 };
