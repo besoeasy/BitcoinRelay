@@ -2,7 +2,7 @@
 
 **Crypto Relay** is an intelligent, open-source bot designed to share valuable insights and updates about Bitcoin on Nostr. With its automatic post-deletion feature, Crypto Relay ensures a clean and clutter-free experience for its followers.
 
-![Crypto Relay](https://github.com/user-attachments/assets/1fc683c2-6a1c-4da9-8e98-26f897e3057c)
+[![Crypto Relay](https://github.com/user-attachments/assets/1fc683c2-6a1c-4da9-8e98-26f897e3057c)](https://nosta.me/cryptorelay@zaps.lol)
 
 ---
 
