@@ -46,11 +46,9 @@ async function uploadToImgbb(apiKey, buffer) {
 
 async function getBitcoinFees() {
   const fees = await axiosGet("https://mempool.space/api/v1/fees/recommended");
-  const mempool = await axiosGet("https://mempool.space/api/mempool");
 
   return {
     fee: fees?.fastestFee || 3,
-    mempoolSize: mempool?.count || 168123,
   };
 }
 
