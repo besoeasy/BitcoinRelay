@@ -8,7 +8,6 @@ const feedUrls = [
   "https://bitcoinmagazine.com/feed",
   "https://decrypt.co/feed",
   "https://cryptoslate.com/feed/",
-  "https://u.today/rss",
   "https://www.theblock.co/rss",
   "https://beincrypto.com/feed/",
 ];
