@@ -1,23 +1,21 @@
 const axios = require("axios");
 const { createCanvas, loadImage } = require("canvas");
 
-async function paintPrice(textx) {
-  const backgroundImagePrice = [
-    "https://bafkreiekpm3hj2cktdjgrxibcpefdjwuc7yahuhqzkbtpltwrpu2nyynnq.ipfs.dweb.link",
-    "https://bafkreiaskulskavaxi5z3x7bgovn563ppnn73q32ahhmgrm656ktalxx54.ipfs.dweb.link",
-    "https://bafkreia62gmdu7mkabkfk5yegeztcdopvgnzvs6wr2ifawlbtflfjyzi5a.ipfs.dweb.link",
-    "https://bafkreie3nexatkohw3gltrdkvsgcwhgsmkgp3on6juzlo3irjlfikyd7lu.ipfs.dweb.link",
-  ];
+const backimgprice = [
+  "https://bafkreiekpm3hj2cktdjgrxibcpefdjwuc7yahuhqzkbtpltwrpu2nyynnq.ipfs.dweb.link",
+  "https://bafkreiaskulskavaxi5z3x7bgovn563ppnn73q32ahhmgrm656ktalxx54.ipfs.dweb.link",
+  "https://bafkreia62gmdu7mkabkfk5yegeztcdopvgnzvs6wr2ifawlbtflfjyzi5a.ipfs.dweb.link",
+  "https://bafkreie3nexatkohw3gltrdkvsgcwhgsmkgp3on6juzlo3irjlfikyd7lu.ipfs.dweb.link",
+];
 
+async function paintPrice(textx) {
   const width = 1000;
   const height = 1000;
   const canvas = createCanvas(width, height);
   const context = canvas.getContext("2d");
 
   const backgroundImage = await loadImage(
-    backgroundImagePrice[
-      Math.floor(Math.random() * backgroundImagePrice.length)
-    ]
+    backimgprice[Math.floor(Math.random() * backimgprice.length)]
   );
 
   context.drawImage(backgroundImage, 0, 0, width, height);
@@ -35,8 +33,6 @@ async function paintPrice(textx) {
 
   return canvas.toBuffer("image/png");
 }
-
-
 
 const getBTCData = async () => {
   try {
@@ -79,7 +75,7 @@ const plotData = async () => {
   const ctx = canvas.getContext("2d");
 
   // Background
-  ctx.fillStyle = "#1e1e2e"; 
+  ctx.fillStyle = "#1e1e2e";
   ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
   // Define chart area
