@@ -48,8 +48,6 @@ async function handleBitcoinPriceChart() {
 async function handleNewsPost() {
   const post = await fetchAllFeeds();
 
-  console.log(post);
-
   await pushIt(
     `${post.title} ✍️ ${post.contentSnippet} \n\n🔗 Read : ${post.link} \n #bitcoin #news`
   );
@@ -75,10 +73,7 @@ async function handleBitcoinPricePost() {
 }
 
 async function handleBiggestTransactionPost() {
-  const biggestTx =
-    Math.random() > 0.5
-      ? await getmaxTxn()
-      : await getbigTxn();
+  const biggestTx = Math.random() > 0.5 ? await getmaxTxn() : await getbigTxn();
 
   if (biggestTx) {
     await pushIt(`${biggestTx} #bitcoin #crypto #wallet`);
@@ -109,7 +104,6 @@ async function main() {
   const tasks = [
     handleNewsPost,
     handleBitcoinPriceChart,
-    handleBitcoinPricePost,
     handleBitcoinPricePost,
     handleBiggestTransactionPost,
     handleLightningNetworkPost,

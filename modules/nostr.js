@@ -76,7 +76,6 @@ async function commitMsg(nsec, content, powDifficulty = 4) {
     const sk = data;
     const pk = getPublicKey(sk);
 
-    // Extract hashtags and links from content
     const { hashtags, links } = extractHashtagsAndLinks(content);
 
     const timenow = Math.floor(Date.now() / 1000);
@@ -92,8 +91,7 @@ async function commitMsg(nsec, content, powDifficulty = 4) {
     eventTemplate.tags.push(...hashtags.map((tag) => ["t", tag]));
     eventTemplate.tags.push(...links.map((link) => ["r", link]));
 
-    // Perform PoW
-    const eventWithPow = calculatePow(eventTemplate, powDifficulty);
+     const eventWithPow = calculatePow(eventTemplate, powDifficulty);
 
     const signedEvent = finalizeEvent(eventWithPow, sk);
 
@@ -118,7 +116,6 @@ async function commitMsg(nsec, content, powDifficulty = 4) {
   } catch (error) {
     console.error("Error in bot execution:", error);
   }
-
 }
 
 module.exports = { commitMsg };
