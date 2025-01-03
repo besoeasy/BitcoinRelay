@@ -3,6 +3,7 @@ const { createCanvas, loadImage } = require("canvas");
 
 async function paintPrice(textx) {
   const backgroundImagePrice = [
+    "https://bafkreiekpm3hj2cktdjgrxibcpefdjwuc7yahuhqzkbtpltwrpu2nyynnq.ipfs.dweb.link",
     "https://bafkreiaskulskavaxi5z3x7bgovn563ppnn73q32ahhmgrm656ktalxx54.ipfs.dweb.link",
     "https://bafkreia62gmdu7mkabkfk5yegeztcdopvgnzvs6wr2ifawlbtflfjyzi5a.ipfs.dweb.link",
     "https://bafkreie3nexatkohw3gltrdkvsgcwhgsmkgp3on6juzlo3irjlfikyd7lu.ipfs.dweb.link",
