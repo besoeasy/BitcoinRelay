@@ -12,26 +12,10 @@ const nip19 = require("nostr-tools/nip19");
 useWebSocketImplementation(WebSocket); // Set ws as the WebSocket implementation
 
 const relayarray = [
-  "wss://nostr-1.nbo.angani.co",
-  "wss://nostr.bitcoiner.social",
-  "wss://nostr.gruntwerk.org",
-  "wss://nostr.middling.mydns.jp",
-  "wss://nostr-pub.wellorder.net",
-  "wss://nostr.roundrockbitcoiners.com",
-  "wss://nostr.vulpem.com",
+  "wss://nostr.oxtr.dev",
   "wss://relay.damus.io",
-  "wss://soloco.nl",
-  "wss://bitcoiner.social",
-  "wss://puravida.nostr.land",
-  "wss://relay.minibolt.info",
+  "wss://nos.lol",
   "wss://purplerelay.com",
-  "wss://strfry.iris.to",
-  "wss://relay.0xchat.com",
-  "wss://r.kojira.io",
-  "wss://nrelay-jp.c-stellar.net",
-  "wss://nostr.fediverse.jp",
-  "wss://nostr.holybea.com",
-  "wss://relay-jp.nostr.wirednet.jp",
 ];
 
 function extractHashtagsAndLinks(content) {
@@ -91,7 +75,7 @@ async function commitMsg(nsec, content, powDifficulty = 4) {
     eventTemplate.tags.push(...hashtags.map((tag) => ["t", tag]));
     eventTemplate.tags.push(...links.map((link) => ["r", link]));
 
-     const eventWithPow = calculatePow(eventTemplate, powDifficulty);
+    const eventWithPow = calculatePow(eventTemplate, powDifficulty);
 
     const signedEvent = finalizeEvent(eventWithPow, sk);
 
