@@ -112,6 +112,7 @@ async function main() {
     handleNewsPost,
     handleBitcoinPriceChart,
     handleBitcoinPricePost,
+    handleBitcoinPricePost,
     handleBiggestTransactionPost,
     handleLightningNetworkPost,
     handleBitcoinFeesPost,
