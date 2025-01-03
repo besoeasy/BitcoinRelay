@@ -80,7 +80,7 @@ async function getblockdata() {
   return { transactions };
 }
 
-async function getBiggestTransactionDetails() {
+async function getbigTxn() {
   try {
     const { transactions } = await getblockdata();
 
@@ -149,7 +149,7 @@ async function getBiggestTransactionDetails() {
   }
 }
 
-async function getTransactionWithMaxOutputs() {
+async function getmaxTxn() {
   try {
     const { transactions } = await getblockdata();
 
@@ -197,6 +197,6 @@ module.exports = {
   uploadToImgbb,
   getBitcoinFees,
   btcLightning,
-  getBiggestTransactionDetails,
-  getTransactionWithMaxOutputs,
+  getbigTxn,
+  getmaxTxn,
 };

@@ -5,8 +5,8 @@ const {
   getBitcoinPrice,
   getBitcoinFees,
   btcLightning,
-  getBiggestTransactionDetails,
-  getTransactionWithMaxOutputs,
+  getbigTxn,
+  getmaxTxn,
 } = require("./modules/pag.js");
 
 const { plotData, getBTCData, paintPrice } = require("./modules/chaw.js");
@@ -69,9 +69,7 @@ async function handleBitcoinPricePost() {
     const msgurl = await imgPrice(`${btcprice}`);
 
     if (msgurl) {
-      await pushIt(
-        `Bitcoin: ${btcprice} USD\n\n#bitcoin #crypto\n${msgurl}`
-      );
+      await pushIt(`Bitcoin: ${btcprice} USD\n\n#bitcoin #crypto\n${msgurl}`);
     }
   }
 }
@@ -79,8 +77,8 @@ async function handleBitcoinPricePost() {
 async function handleBiggestTransactionPost() {
   const biggestTx =
     Math.random() > 0.5
-      ? await getTransactionWithMaxOutputs()
-      : await getBiggestTransactionDetails();
+      ? await getmaxTxn()
+      : await getbigTxn();
 
   if (biggestTx) {
     await pushIt(`${biggestTx} #bitcoin #crypto #wallet`);
@@ -129,4 +127,6 @@ async function main() {
   }
 }
 
-main();
+if (Math.random() > 0.2) {
+  main();
+}
