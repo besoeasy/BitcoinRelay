@@ -16,6 +16,8 @@ const relayarray = [
   "wss://relay.damus.io",
   "wss://nos.lol",
   "wss://purplerelay.com",
+  "wss://n.ok0.org",
+  "wss://zap.watch",
 ];
 
 function extractHashtagsAndLinks(content) {
