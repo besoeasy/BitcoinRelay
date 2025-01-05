@@ -122,6 +122,4 @@ async function main() {
   }
 }
 
-if (Math.random() > 0.2) {
-  main();
-}
+main();
