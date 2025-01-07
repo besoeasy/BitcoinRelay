@@ -103,7 +103,6 @@ async function handleBitcoinFeesPost() {
 async function main() {
   const tasks = [
     handleNewsPost,
-    handleNewsPost,
     handleBitcoinPriceChart,
     handleBitcoinPricePost,
     handleBiggestTransactionPost,
