@@ -1,4 +1,4 @@
-export const bitcoinAddresses = [
+const bitcoinAddresses = [
   {
     address: "34xp4vRoCGJym3xR7yCVPFHoCNxv4Twseo",
     wallet: "Binance-coldwallet",
@@ -37,3 +37,5 @@ export const bitcoinAddresses = [
     wallet: "BITMEX-coldwallet",
   },
 ];
+
+module.exports = { bitcoinAddresses };
