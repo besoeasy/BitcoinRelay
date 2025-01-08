@@ -55,20 +55,13 @@ async function handleNewsPost() {
 
 async function handleBitcoinPricePost() {
   const btcprice = await getBitcoinPrice();
+  const sattousd = parseFloat(btcprice / 100000000).toFixed(6);
+  const msgurl = await imgPrice(`${btcprice}`);
 
-  if (Math.random() > 0.7) {
-    const sattousd = parseFloat(btcprice / 100000000).toFixed(6);
+  if (msgurl) {
     await pushIt(
-      `1 Bitcoin = ${btcprice} USD\n` +
-        `1 Satoshi = ${sattousd} USD\n` +
-        `\n\n#bitcoin #crypto #trade`
+      `Bitcoin: ${btcprice} USD\n\n1 Satoshi = ${sattousd} USD\n\n#bitcoin #crypto\n${msgurl}`
     );
-  } else {
-    const msgurl = await imgPrice(`${btcprice}`);
-
-    if (msgurl) {
-      await pushIt(`Bitcoin: ${btcprice} USD\n\n#bitcoin #crypto\n${msgurl}`);
-    }
   }
 }
 
