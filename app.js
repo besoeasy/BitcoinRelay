@@ -93,6 +93,19 @@ async function handleBitcoinFeesPost() {
   await pushIt(`Current Bitcoin Fee: ${fee} sat/vB \n\n#bitcoin #fees`);
 }
 
+const { bitcoinAddresses } = require("./data/btcwhales.js");
+
+async function handleBigWhales() {
+  const bigWhale =
+    bitcoinAddresses[Math.floor(Math.random() * bitcoinAddresses.length)];
+  const { balanceInBTC } = await getBalance(bigWhale.address);
+
+  await pushIt(
+    `Whale: ${bigWhale.wallet} Has Balance: ${balanceInBTC.toFixed(0)} BTC\n` +
+      `Address: ${bigWhale.address}\n\n https://mempool.space/address/${bigWhale.address}\n#bitcoin #whale`
+  );
+}
+
 async function main() {
   const tasks = [
     handleNewsPost,
@@ -101,6 +114,7 @@ async function main() {
     handleBiggestTransactionPost,
     handleLightningNetworkPost,
     handleBitcoinFeesPost,
+    handleBigWhales,
   ];
 
   const randomTask = tasks[Math.floor(Math.random() * tasks.length)];

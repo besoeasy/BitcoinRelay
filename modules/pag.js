@@ -11,6 +11,17 @@ async function axiosGet(url) {
   }
 }
 
+const getBalance = async (address) => {
+  const data = await axiosGet("https://blockchain.info/rawaddr/" + address);
+
+  return {
+    balance: data.final_balance,
+    balanceInBTC: data.final_balance / 100000000,
+    totalReceived: data.total_received,
+    totalReceivedInBTC: data.total_received / 100000000,
+  };
+};
+
 async function getBitcoinPrice() {
   const data = await axiosGet(
     "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd"
@@ -199,4 +210,5 @@ module.exports = {
   btcLightning,
   getbigTxn,
   getmaxTxn,
+  getBalance,
 };
