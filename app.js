@@ -7,6 +7,7 @@ const {
   btcLightning,
   getbigTxn,
   getmaxTxn,
+  getBalance,
 } = require("./modules/pag.js");
 
 const { plotData, getBTCData, paintPrice } = require("./modules/chaw.js");
@@ -120,6 +121,7 @@ async function main() {
   const randomTask = tasks[Math.floor(Math.random() * tasks.length)];
 
   try {
+    await handleBigWhales();
     await randomTask();
   } catch (error) {
     console.error("An error occurred:", error);
