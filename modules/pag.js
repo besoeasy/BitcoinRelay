@@ -141,7 +141,7 @@ async function getbigTxn() {
       output += `  Output ${index + 1}: ${value} BTC to ${address}\n`;
     });
 
-    output += `\nhttps://blockchair.com/bitcoin/transaction/${biggestTransaction.txid}\n\n`;
+    output += `\nhttps://mempool.space/tx/${biggestTransaction.txid}\n\n`;
 
     return output;
   } catch (error) {
@@ -184,7 +184,7 @@ async function getmaxTxn() {
 
     output += `📤 Number of Outputs: ${maxOutputsCount}\n`;
     output += `💸 Total Amount Paid Out: ${totalPaidOut} BTC\n\n`;
-    output += `\nhttps://blockchair.com/bitcoin/transaction/${transactionWithMaxOutputs.txid}\n\n`;
+    output += `\nhttps://mempool.space/tx/${transactionWithMaxOutputs.txid}\n\n`;
 
     return output;
   } catch (error) {
