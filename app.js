@@ -49,7 +49,7 @@ async function handleNewsPost() {
   const post = await fetchAllFeeds();
 
   await pushIt(
-    `${post.title} ✍️ ${post.contentSnippet} \n\n🔗 Read : ${post.link} \n #bitcoin #news`
+    `${post.title} ✍️ ${post.contentSnippet} \n\n🔗 Read : ${post.link} \n #bitcoin #crypto #btc #news`
   );
 }
 
@@ -95,7 +95,6 @@ async function handleBitcoinFeesPost() {
 
 async function main() {
   const tasks = [
-    handleNewsPost,
     handleBitcoinPriceChart,
     handleBitcoinPricePost,
     handleBiggestTransactionPost,
@@ -106,6 +105,7 @@ async function main() {
   const randomTask = tasks[Math.floor(Math.random() * tasks.length)];
 
   try {
+    await handleNewsPost();
     await randomTask();
   } catch (error) {
     console.error("An error occurred:", error);
