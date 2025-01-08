@@ -107,7 +107,7 @@ async function handleBigWhales() {
       `📊 Balance: ${balanceInBTC.toFixed(0)} BTC\n` +
       `🔗 Address: ${bigWhale.address}\n\n` +
       `🌐 https://mempool.space/address/${bigWhale.address}\n` +
-      `#bitcoin #whale`
+      `\n#bitcoin #whale`
   );
   
 }
@@ -126,7 +126,6 @@ async function main() {
   const randomTask = tasks[Math.floor(Math.random() * tasks.length)];
 
   try {
-    await handleBigWhales();
     await randomTask();
   } catch (error) {
     console.error("An error occurred:", error);
