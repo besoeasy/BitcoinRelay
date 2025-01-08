@@ -102,9 +102,14 @@ async function handleBigWhales() {
   const { balanceInBTC } = await getBalance(bigWhale.address);
 
   await pushIt(
-    `Whale: ${bigWhale.wallet} Has Balance: ${balanceInBTC.toFixed(0)} BTC\n` +
-      `Address: ${bigWhale.address}\n\n https://mempool.space/address/${bigWhale.address}\n#bitcoin #whale`
+    `🐋 Whale Alert 🐋\n\n` +
+      `💰 Wallet: ${bigWhale.wallet}\n` +
+      `📊 Balance: ${balanceInBTC.toFixed(0)} BTC\n` +
+      `🔗 Address: ${bigWhale.address}\n\n` +
+      `🌐 https://mempool.space/address/${bigWhale.address}\n` +
+      `#bitcoin #whale`
   );
+  
 }
 
 async function main() {
