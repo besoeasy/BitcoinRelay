@@ -49,7 +49,7 @@ async function handleNewsPost() {
   const post = await fetchAllFeeds();
 
   await pushIt(
-    `${post.title} ✍️ ${post.contentSnippet} \n\n🔗 Read : ${post.link} \n #bitcoin #crypto #btc #news`
+    `${post.title} ✍️ ${post.contentSnippet} \n\n🔗 Read : ${post.link} \n\n#bitcoin #crypto #btc #news`
   );
 }
 
