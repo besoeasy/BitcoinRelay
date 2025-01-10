@@ -17,7 +17,7 @@ const uploadToImgBB = async (buffer) => {
       return data.url;
     } else {
       console.error("Unexpected response format from ImgBB:", response.data);
-      return "";
+      return null; // Return null to indicate failure
     }
   } catch (error) {
     console.error(
@@ -25,7 +25,7 @@ const uploadToImgBB = async (buffer) => {
         error.response?.data?.error?.message || error.message
       }`
     );
-    return "";
+    return null; // Return null to indicate failure
   }
 };
 
@@ -45,11 +45,11 @@ const uploadToCatbox = async (buffer) => {
       return response.data.trim();
     } else {
       console.error("Unexpected response format from Catbox:", response.data);
-      return "";
+      return null; // Return null to indicate failure
     }
   } catch (error) {
     console.error(`Error uploading to Catbox: ${error.message}`);
-    return "";
+    return null; // Return null to indicate failure
   }
 };
 
@@ -58,12 +58,28 @@ async function uploadIMG(buffer) {
     throw new TypeError("Provided data is not a Buffer");
   }
 
+  let imageUrl = null;
+
   if (apiKey) {
-    return await uploadToImgBB(buffer);
+    imageUrl = await uploadToImgBB(buffer);
+    if (!imageUrl) {
+      console.warn("ImgBB upload failed. Falling back to Catbox.");
+    }
   } else {
     console.warn("API key for ImgBB is not provided. Falling back to Catbox.");
-    return await uploadToCatbox(buffer);
   }
+
+  // Fallback to Catbox if ImgBB fails or API key is not provided
+  if (!imageUrl) {
+    imageUrl = await uploadToCatbox(buffer);
+  }
+
+  if (!imageUrl) {
+    console.error("Both ImgBB and Catbox uploads failed.");
+    throw new Error("Image upload failed.");
+  }
+
+  return imageUrl;
 }
 
 module.exports = {
