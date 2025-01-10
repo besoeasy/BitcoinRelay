@@ -4,9 +4,9 @@ const {
   getBitcoinPrice,
   getBitcoinFees,
   btcLightning,
-  getbigTxn,
-  getmaxTxn,
 } = require("./modules/pag.js");
+
+const { getbigTxn, getmaxTxn } = require("./modules/txns.js");
 
 const { plotData, getBTCData, paintPrice } = require("./modules/chaw.js");
 
