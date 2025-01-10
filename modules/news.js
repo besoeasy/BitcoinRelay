@@ -1,6 +1,8 @@
 const RSSParser = require("rss-parser");
+
 const parser = new RSSParser();
-const axios = require("axios");
+
+const { shorturl } = require("./urlshort.js");
 
 async function fetchFeed(url) {
   try {
@@ -15,25 +17,6 @@ async function fetchFeed(url) {
     console.error(`Error fetching feed from ${url}:`, error.message);
     return [];
   }
-}
-
-async function shorturl(url) {
-  return axios
-    .post(
-      "https://spoo.me/",
-      {
-        url: url,
-      },
-      {
-        headers: {
-          "content-type": "application/x-www-form-urlencoded",
-          Accept: "application/json",
-        },
-      }
-    )
-    .then((response) => {
-      return response.data.short_url || url;
-    });
 }
 
 async function fetchAllFeeds() {

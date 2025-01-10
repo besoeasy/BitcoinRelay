@@ -1,6 +1,8 @@
 const axios = require("axios");
 const FormData = require("form-data");
 
+const { shorturl } = require("./urlshort.js");
+
 async function axiosGet(url) {
   try {
     const response = await axios.get(url);
@@ -152,7 +154,11 @@ async function getbigTxn() {
       output += `  Output ${index + 1}: ${value} BTC to ${address}\n`;
     });
 
-    output += `\nhttps://mempool.space/tx/${biggestTransaction.txid}\n\n`;
+    const urlx = await shorturl(
+      `https://mempool.space/tx/${biggestTransaction.txid}`
+    );
+
+    output += `\n${urlx}\n\n`;
 
     return output;
   } catch (error) {
@@ -195,7 +201,12 @@ async function getmaxTxn() {
 
     output += `📤 Number of Outputs: ${maxOutputsCount}\n`;
     output += `💸 Total Amount Paid Out: ${totalPaidOut} BTC\n\n`;
-    output += `\nhttps://mempool.space/tx/${transactionWithMaxOutputs.txid}\n\n`;
+
+    const urlx = await shorturl(
+      `https://mempool.space/tx/${biggestTransaction.txid}`
+    );
+
+    output += `\n${urlx}\n\n`;
 
     return output;
   } catch (error) {
