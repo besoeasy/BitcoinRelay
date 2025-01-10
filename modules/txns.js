@@ -28,7 +28,15 @@ async function analyzeTransactions() {
       return "It's quiet out there… no transactions in the latest block. Did Bitcoin fall asleep?";
     }
 
-    for (const transaction of transactions) {
+    const nonCoinbaseTransactions = transactions.filter(
+      (transaction) => transaction.vin.length > 0
+    );
+
+    if (nonCoinbaseTransactions.length === 0) {
+      return "No non-coinbase transactions found in the latest block.";
+    }
+
+    for (const transaction of nonCoinbaseTransactions) {
       const totalOutput = transaction.vout.reduce(
         (sum, output) => sum + output.value,
         0
@@ -46,7 +54,7 @@ async function analyzeTransactions() {
 
     // If no whale or exchange withdrawal is found, pick a random transaction
     const randomTransaction =
-      transactions[Math.floor(Math.random() * transactions.length)];
+      nonCoinbaseTransactions[Math.floor(Math.random() * nonCoinbaseTransactions.length)];
     return formatUserTransaction(randomTransaction);
   } catch (error) {
     return `🚨 Error fetching Bitcoin data: ${error.message}`;
