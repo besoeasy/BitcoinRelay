@@ -7,6 +7,7 @@ const {
   btcLightning,
   getbigTxn,
   getmaxTxn,
+  getLinkMetadata,
 } = require("./modules/pag.js");
 
 const { plotData, getBTCData, paintPrice } = require("./modules/chaw.js");
@@ -46,11 +47,17 @@ async function handleBitcoinPriceChart() {
 }
 
 async function handleNewsPost() {
-  const post = await fetchAllFeeds();
+  const { title, contentSnippet, url } = await fetchAllFeeds();
 
-  await pushIt(
-    `${post.title}\n\n${post.contentSnippet}\n\nRead : ${post.url}\n\n#bitcoin #crypto #btc #news`
-  );
+  const { image } = await getLinkMetadata(url);
+
+  let output = `📰 ${title}\n\n${contentSnippet}\n\n#bitcoin #crypto #news\n\n${url}`;
+
+  if (image) {
+    output += `\n\n${image}`;
+  }
+
+  await pushIt(output);
 }
 
 async function handleBitcoinPricePost() {

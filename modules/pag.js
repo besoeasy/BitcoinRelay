@@ -3,6 +3,16 @@ const FormData = require("form-data");
 
 const { shorturl } = require("./urlshort.js");
 
+const getLinkMetadata = async (url) => {
+  const data = await axiosGet(`https://api.microlink.io?url=${url}`);
+  return {
+    title: data.data.title,
+    description: data.data.description,
+    image: data.data.image.url,
+    url: data.data.url || url,
+  };
+};
+
 async function axiosGet(url) {
   try {
     const response = await axios.get(url);
@@ -158,7 +168,7 @@ async function getbigTxn() {
       `https://mempool.space/tx/${biggestTransaction.txid}`
     );
 
-    output += `\n${urlx}\n\n`;
+    output += `\nView : ${urlx}\n\n`;
 
     return output;
   } catch (error) {
@@ -206,7 +216,7 @@ async function getmaxTxn() {
       `https://mempool.space/tx/${biggestTransaction.txid}`
     );
 
-    output += `\n${urlx}\n\n`;
+    output += `\nView : ${urlx}\n\n`;
 
     return output;
   } catch (error) {
@@ -222,4 +232,5 @@ module.exports = {
   getbigTxn,
   getmaxTxn,
   getBalance,
+  getLinkMetadata,
 };
