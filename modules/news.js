@@ -1,26 +1,15 @@
 const RSSParser = require("rss-parser");
 const parser = new RSSParser();
-
-const feedUrls = [
-  "https://cointelegraph.com/rss",
-  "https://news.bitcoin.com/feed",
-  "https://www.coindesk.com/arc/outboundfeeds/rss/",
-  "https://bitcoinmagazine.com/feed",
-  "https://decrypt.co/feed",
-  "https://cryptoslate.com/feed/",
-  "https://www.theblock.co/rss",
-  "https://beincrypto.com/feed/",
-];
+const axios = require("axios");
 
 async function fetchFeed(url) {
   try {
     const feed = await parser.parseURL(url);
     return feed.items.map((item) => ({
       title: item.title,
+      contentSnippet: item.contentSnippet,
       link: item.link,
       pubDate: item.pubDate,
-      contentSnippet: item.contentSnippet,
-      source: feed.title,
     }));
   } catch (error) {
     console.error(`Error fetching feed from ${url}:`, error.message);
@@ -28,25 +17,39 @@ async function fetchFeed(url) {
   }
 }
 
+async function shorturl(url) {
+  return axios
+    .post(
+      "https://spoo.me/",
+      {
+        url: url,
+      },
+      {
+        headers: {
+          "content-type": "application/x-www-form-urlencoded",
+          Accept: "application/json",
+        },
+      }
+    )
+    .then((response) => {
+      return response.data.short_url || url;
+    });
+}
+
 async function fetchAllFeeds() {
-  const allPosts = [];
-
-  for (const url of feedUrls) {
-    const posts = await fetchFeed(url);
-    allPosts.push(...posts);
-  }
-
-  allPosts.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
-
-  allPosts.forEach((post) => {
-    post.link = post.link.split("?")[0];
-  });
+  const allPosts = await fetchFeed(
+    "https://www.bing.com/news/search?q=bitcoin&format=rss"
+  );
 
   allPosts.forEach((post) => {
     post.title = post.title.replace(/[^a-zA-Z0-9 ]/g, "");
   });
 
-  return allPosts[Math.floor(Math.random() * allPosts.length)];
+  let posttosend = allPosts[Math.floor(Math.random() * allPosts.length)];
+
+  posttosend.url = await shorturl(posttosend.link);
+
+  return posttosend;
 }
 
 module.exports = {
