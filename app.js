@@ -105,7 +105,7 @@ async function main() {
   const randomTask = tasks[Math.floor(Math.random() * tasks.length)];
 
   try {
-    if (Math.random() > 0.5) {
+    if (Math.random() > 0.01) {
       await handleNewsPost();
     }
 
