@@ -1,18 +1,20 @@
 require("dotenv").config();
 
 const {
-  uploadToImgbb,
   getBitcoinPrice,
   getBitcoinFees,
   btcLightning,
   getbigTxn,
   getmaxTxn,
-  getLinkMetadata,
 } = require("./modules/pag.js");
 
 const { plotData, getBTCData, paintPrice } = require("./modules/chaw.js");
+
 const { fetchAllFeeds } = require("./modules/news.js");
-const { commitMsg } = require("./modules/nostr.js");
+
+const { uploadToImgbb } = require("./modules/imgup.js");
+
+const { commitMsg } = require("./nostr.js");
 
 async function pushIt(text) {
   await commitMsg(process.env.NSEC, text);
@@ -49,15 +51,9 @@ async function handleBitcoinPriceChart() {
 async function handleNewsPost() {
   const { title, contentSnippet, url } = await fetchAllFeeds();
 
-  const { image } = await getLinkMetadata(url);
-
-  let output = `📰 ${title}\n\n${contentSnippet}\n\n#bitcoin #crypto #news\n\n${url}`;
-
-  if (image) {
-    output += `\n\n${image}`;
-  }
-
-  await pushIt(output);
+  await pushIt(
+    `📰 ${title}\n\n${contentSnippet}\n\n#bitcoin #crypto #news\n\n View : ${url}`
+  );
 }
 
 async function handleBitcoinPricePost() {

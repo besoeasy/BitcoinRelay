@@ -1,17 +1,4 @@
 const axios = require("axios");
-const FormData = require("form-data");
-
-const { shorturl } = require("./urlshort.js");
-
-const getLinkMetadata = async (url) => {
-  const data = await axiosGet(`https://api.microlink.io?url=${url}`);
-  return {
-    title: data.data.title,
-    description: data.data.description,
-    image: data.data.image.url,
-    url: data.data.url || url,
-  };
-};
 
 async function axiosGet(url) {
   try {
@@ -39,32 +26,6 @@ async function getBitcoinPrice() {
     "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd"
   );
   return parseInt(data?.bitcoin?.usd || 0);
-}
-
-async function uploadToImgbb(apiKey, buffer) {
-  if (!Buffer.isBuffer(buffer)) {
-    throw new Error("Provided data is not a Buffer");
-  }
-
-  const form = new FormData();
-  form.append("image", buffer.toString("base64"));
-
-  try {
-    const headers = form.getHeaders();
-    const response = await axios.post(
-      `https://api.imgbb.com/1/upload?expiration=15550000&key=${apiKey}`,
-      form,
-      { headers }
-    );
-
-    return response.data.data.url || "";
-  } catch (error) {
-    console.error(
-      "Error uploading image:",
-      error.response?.data || error.message
-    );
-    return "";
-  }
 }
 
 async function getBitcoinFees() {
@@ -164,11 +125,7 @@ async function getbigTxn() {
       output += `  Output ${index + 1}: ${value} BTC to ${address}\n`;
     });
 
-    const urlx = await shorturl(
-      `https://mempool.space/tx/${biggestTransaction.txid}`
-    );
-
-    output += `\nView : ${urlx}\n\n`;
+    output += `\nView : https://mempool.space/tx/${biggestTransaction.txid}\n\n`;
 
     return output;
   } catch (error) {
@@ -212,11 +169,7 @@ async function getmaxTxn() {
     output += `📤 Number of Outputs: ${maxOutputsCount}\n`;
     output += `💸 Total Amount Paid Out: ${totalPaidOut} BTC\n\n`;
 
-    const urlx = await shorturl(
-      `https://mempool.space/tx/${biggestTransaction.txid}`
-    );
-
-    output += `\nView : ${urlx}\n\n`;
+    output += `\nView : https://mempool.space/tx/${biggestTransaction.txid}\n\n`;
 
     return output;
   } catch (error) {
@@ -226,11 +179,9 @@ async function getmaxTxn() {
 
 module.exports = {
   getBitcoinPrice,
-  uploadToImgbb,
   getBitcoinFees,
   btcLightning,
   getbigTxn,
   getmaxTxn,
   getBalance,
-  getLinkMetadata,
 };
