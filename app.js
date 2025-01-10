@@ -12,7 +12,7 @@ const { plotData, getBTCData, paintPrice } = require("./modules/chaw.js");
 
 const { fetchAllFeeds } = require("./modules/news.js");
 
-const { uploadToImgbb } = require("./modules/imgup.js");
+const { uploadIMG } = require("./modules/imgup.js");
 
 const { commitMsg } = require("./nostr.js");
 
@@ -22,12 +22,12 @@ async function pushIt(text) {
 
 async function imgPrice(msg) {
   const buffer = await paintPrice(msg);
-  return uploadToImgbb(process.env.IMGBB_API_KEY, buffer) || null;
+  return uploadIMG(buffer) || null;
 }
 
 async function imgChart() {
   const buffer = await plotData();
-  return uploadToImgbb(process.env.IMGBB_API_KEY, buffer) || null;
+  return uploadIMG(buffer) || null;
 }
 
 async function handleBitcoinPriceChart() {
