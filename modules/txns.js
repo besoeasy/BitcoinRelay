@@ -28,33 +28,24 @@ async function analyzeTransactions() {
       return "It's quiet out there… no transactions in the latest block. Did Bitcoin fall asleep?";
     }
 
-    const nonCoinbaseTransactions = transactions.filter(
-      (transaction) => transaction.vin.length > 0
-    );
-
-    if (nonCoinbaseTransactions.length === 0) {
-      return "No non-coinbase transactions found in the latest block.";
-    }
-
-    for (const transaction of nonCoinbaseTransactions) {
-      const totalOutput = transaction.vout.reduce(
-        (sum, output) => sum + output.value,
-        0
-      ) / 1e8; // Convert satoshis to BTC
+    for (const transaction of transactions) {
+      const totalOutput =
+        transaction.vout.reduce((sum, output) => sum + output.value, 0) / 1e8;
 
       if (totalOutput > 7) {
         return formatWhaleTransaction(transaction, totalOutput);
       }
 
       const outputCount = transaction.vout.length;
-      if (outputCount > 3) {
+
+      if (outputCount > 5) {
         return formatExchangeWithdrawal(transaction, totalOutput, outputCount);
       }
     }
 
-    // If no whale or exchange withdrawal is found, pick a random transaction
     const randomTransaction =
-      nonCoinbaseTransactions[Math.floor(Math.random() * nonCoinbaseTransactions.length)];
+      transactions[Math.floor(Math.random() * transactions.length)];
+
     return formatUserTransaction(randomTransaction);
   } catch (error) {
     return `🚨 Error fetching Bitcoin data: ${error.message}`;
