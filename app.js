@@ -6,7 +6,7 @@ const {
   btcLightning,
 } = require("./modules/pag.js");
 
-const { getbigTxn, getmaxTxn } = require("./modules/txns.js");
+const { analyzeTransactions } = require("./modules/txns.js");
 
 const { plotData, getBTCData, paintPrice } = require("./modules/chaw.js");
 
@@ -69,7 +69,7 @@ async function handleBitcoinPricePost() {
 }
 
 async function handleBiggestTransactionPost() {
-  const biggestTx = Math.random() > 0.5 ? await getmaxTxn() : await getbigTxn();
+  const biggestTx = await analyzeTransactions();
 
   if (biggestTx) {
     await pushIt(`${biggestTx} #bitcoin #crypto #wallet`);
