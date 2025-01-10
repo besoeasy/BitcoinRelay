@@ -72,7 +72,7 @@ async function handleBiggestTransactionPost() {
   const biggestTx = await analyzeTransactions();
 
   if (biggestTx) {
-    await pushIt(`${biggestTx} #bitcoin #crypto #wallet`);
+    await pushIt(`${biggestTx} \n\n#bitcoin #crypto #wallet`);
   }
 }
 
