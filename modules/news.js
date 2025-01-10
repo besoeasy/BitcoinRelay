@@ -1,4 +1,3 @@
-const { shorturl } = require("./urlshort.js");
 const RSSParser = require("rss-parser");
 const parser = new RSSParser();
 
@@ -43,11 +42,7 @@ async function fetchAllFeeds() {
     post.title = post.title.replace(/[^a-zA-Z0-9 ]/g, "");
   });
 
-  let posttosend = allPosts[Math.floor(Math.random() * 10)];
-
-  posttosend.url = await shorturl(posttosend.link);
-
-  return posttosend;
+  return allPosts[Math.floor(Math.random() * 10)];
 }
 
 module.exports = {

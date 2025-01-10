@@ -49,10 +49,10 @@ async function handleBitcoinPriceChart() {
 }
 
 async function handleNewsPost() {
-  const { title, contentSnippet, url } = await fetchAllFeeds();
+  const { title, contentSnippet, link } = await fetchAllFeeds();
 
   await pushIt(
-    `📰 ${title}\n\n${contentSnippet}\n\n#bitcoin #crypto #news\n\n View : ${url}`
+    `📰 ${title}\n\n${contentSnippet}\n\n#bitcoin #crypto #news\n\n View : ${link}`
   );
 }
 
