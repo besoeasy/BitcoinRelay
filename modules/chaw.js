@@ -36,7 +36,6 @@ async function paintPrice(textx) {
 }
 
 const backimgfees = [
-  "https://bafkreighf3bm536kfrdqz6ud2xwyxywjn6qr2h7meyejcwer3634rjvbmm.ipfs.dweb.link",
   "https://bafkreihhdmmljzb2o26mcrjdkss24jcjyiatxrwadjdibxo6on63hl2nfq.ipfs.dweb.link",
 ];
 
