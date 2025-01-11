@@ -8,7 +8,12 @@ const {
 
 const { analyzeTransactions } = require("./modules/txns.js");
 
-const { plotData, getBTCData, paintPrice } = require("./modules/chaw.js");
+const {
+  plotData,
+  getBTCData,
+  paintPrice,
+  paintFees,
+} = require("./modules/chaw.js");
 
 const { fetchAllFeeds } = require("./modules/news.js");
 
@@ -20,13 +25,18 @@ async function pushIt(text) {
   await commitMsg(process.env.NSEC, text);
 }
 
+async function imgChart() {
+  const buffer = await plotData();
+  return uploadIMG(buffer) || null;
+}
+
 async function imgPrice(msg) {
   const buffer = await paintPrice(msg);
   return uploadIMG(buffer) || null;
 }
 
-async function imgChart() {
-  const buffer = await plotData();
+async function imgFees(msg) {
+  const buffer = await paintFees(msg);
   return uploadIMG(buffer) || null;
 }
 
@@ -93,7 +103,11 @@ async function handleLightningNetworkPost() {
 async function handleBitcoinFeesPost() {
   const { fee } = await getBitcoinFees();
 
-  await pushIt(`Current Bitcoin Fee: ${fee} sat/vB \n\n#bitcoin #fees`);
+  const msgurl = await imgFees(`${fee} Sat`);
+
+  if (msgurl) {
+    await pushIt(`Bitcoin Fee: ${fee} sat/vB \n\n#bitcoin #fees\n${msgurl}`);
+  }
 }
 
 async function main() {

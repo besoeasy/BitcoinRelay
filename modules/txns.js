@@ -1,5 +1,14 @@
 const axios = require("axios");
 
+const { paintWhale } = require("./chaw.js");
+
+const { uploadIMG } = require("./imgup.js");
+
+async function imgWhale(msg) {
+  const buffer = await paintWhale(msg);
+  return uploadIMG(buffer) || null;
+}
+
 async function axiosGet(url) {
   try {
     const response = await axios.get(url);
@@ -52,7 +61,7 @@ async function analyzeTransactions() {
   }
 }
 
-function formatWhaleTransaction(transaction, totalOutput) {
+async function formatWhaleTransaction(transaction, totalOutput) {
   const { txid, vin, vout } = transaction;
 
   let output = "🐋 A whale moved Bitcoins!\n\n";
@@ -75,10 +84,17 @@ function formatWhaleTransaction(transaction, totalOutput) {
   });
 
   output += `\nView : https://mempool.space/tx/${txid}\n`;
+
+  const msgurl = await imgWhale(totalOutput.toFixed(2));
+
+  if (msgurl) {
+    output += `\n${msgurl}`;
+  }
+
   return output;
 }
 
-function formatExchangeWithdrawal(transaction, totalOutput, outputCount) {
+async function formatExchangeWithdrawal(transaction, totalOutput, outputCount) {
   const { txid } = transaction;
 
   let output = "🔔 Crypto Exchange Withdrawal Detected!\n\n";
@@ -88,7 +104,7 @@ function formatExchangeWithdrawal(transaction, totalOutput, outputCount) {
   return output;
 }
 
-function formatUserTransaction(transaction) {
+async function formatUserTransaction(transaction) {
   const { txid, vout } = transaction;
 
   const totalOutput = vout.reduce((sum, output) => sum + output.value, 0) / 1e8;
