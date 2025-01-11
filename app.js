@@ -103,7 +103,7 @@ async function handleLightningNetworkPost() {
 async function handleBitcoinFeesPost() {
   const { fee } = await getBitcoinFees();
 
-  const msgurl = await imgFees(`${fee} Satoshi`);
+  const msgurl = await imgFees(`${fee} Sat`);
 
   if (msgurl) {
     await pushIt(`Bitcoin Fee: ${fee} sat/vB \n\n#bitcoin #fees\n${msgurl}`);
