@@ -57,10 +57,8 @@ async function paintFees(textx) {
   context.textAlign = "center";
   context.textBaseline = "middle";
 
-  const textxColor = Math.random() > 0.5 ? "#e74c3c" : "#2ecc71";
-
   context.font = `bold ${fontSize}px 'Helvetica Neue', Arial, sans-serif`;
-  context.fillStyle = textxColor;
+  context.fillStyle = "#080808";
   context.fillText(textx, width / 2, height / 2);
 
   return canvas.toBuffer("image/png");
@@ -87,10 +85,8 @@ async function paintWhale(textx) {
   context.textAlign = "center";
   context.textBaseline = "middle";
 
-  const textxColor = Math.random() > 0.5 ? "#e74c3c" : "#2ecc71";
-
   context.font = `bold ${fontSize}px 'Helvetica Neue', Arial, sans-serif`;
-  context.fillStyle = textxColor;
+  context.fillStyle = "#1b1b1b";
   context.fillText(textx, width / 2, height / 2);
 
   return canvas.toBuffer("image/png");
