@@ -74,7 +74,7 @@ function formatWhaleTransaction(transaction, totalOutput) {
     output += `  Output ${index + 1}: ${value} BTC to ${address}\n`;
   });
 
-  output += `\nView on Mempool: https://mempool.space/tx/${txid}\n`;
+  output += `\nView : https://mempool.space/tx/${txid}\n`;
   return output;
 }
 
@@ -84,7 +84,7 @@ function formatExchangeWithdrawal(transaction, totalOutput, outputCount) {
   let output = "🔔 Crypto Exchange Withdrawal Detected!\n\n";
   output += `📤 Number of Outputs: ${outputCount}\n`;
   output += `💸 Total Amount Withdrawn: ${totalOutput} BTC\n\n`;
-  output += `View on Mempool: https://mempool.space/tx/${txid}\n`;
+  output += `View : https://mempool.space/tx/${txid}\n`;
   return output;
 }
 
@@ -95,7 +95,7 @@ function formatUserTransaction(transaction) {
   let output = "🔔 Random User Transaction Detected!\n\n";
   output += `🔗 Transaction ID: ${txid}\n`;
   output += `💸 Total Bitcoin Transferred: ${totalOutput} BTC\n\n`;
-  output += `View on Mempool: https://mempool.space/tx/${txid}\n`;
+  output += `View : https://mempool.space/tx/${txid}\n`;
   return output;
 }
 
