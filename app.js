@@ -122,10 +122,6 @@ async function main() {
   const randomTask = tasks[Math.floor(Math.random() * tasks.length)];
 
   try {
-    if (Math.random() > 0.5) {
-      await handleNewsPost();
-    }
-
     await randomTask();
   } catch (error) {
     console.error("An error occurred:", error);
