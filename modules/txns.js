@@ -1,7 +1,6 @@
 const axios = require("axios");
 
 const { paintWhale } = require("./chaw.js");
-
 const { uploadIMG } = require("./imgup.js");
 
 async function imgWhale(msg) {
@@ -37,25 +36,33 @@ async function analyzeTransactions() {
       return "It's quiet out there… no transactions in the latest block. Did Bitcoin fall asleep?";
     }
 
-    for (const transaction of transactions) {
-      const totalOutput =
-        transaction.vout.reduce((sum, output) => sum + output.value, 0) / 1e8;
+    const biggestTransaction = transactions
+      .filter((tx) => tx.vout.length < 3)
+      .reduce(
+        (max, tx) => {
+          const totalOutput = tx.vout.reduce(
+            (sum, output) => sum + output.value,
+            0
+          );
+          return totalOutput > max.totalOutput
+            ? { transaction: tx, totalOutput }
+            : max;
+        },
+        { transaction: null, totalOutput: 0 }
+      );
 
-      const outputCount = transaction.vout.length;
-
-      if (totalOutput > 5 && outputCount < 3) {
-        return formatWhaleTransaction(transaction, totalOutput);
-      }
-
-      if (outputCount > 5) {
-        return formatExchangeWithdrawal(transaction, totalOutput, outputCount);
-      }
+    if (Math.random() < 0.5) {
+      return formatWhaleTransaction(
+        biggestTransaction.transaction,
+        biggestTransaction.totalOutput / 1e8
+      );
+    } else {
+      return formatExchangeWithdrawal(
+        biggestTransaction.transaction,
+        biggestTransaction.totalOutput / 1e8,
+        biggestTransaction.transaction.vout.length
+      );
     }
-
-    const randomTransaction =
-      transactions[Math.floor(Math.random() * transactions.length)];
-
-    return formatUserTransaction(randomTransaction);
   } catch (error) {
     return `🚨 Error fetching Bitcoin data: ${error.message}`;
   }
@@ -97,21 +104,12 @@ async function formatWhaleTransaction(transaction, totalOutput) {
 async function formatExchangeWithdrawal(transaction, totalOutput, outputCount) {
   const { txid } = transaction;
 
-  let output = "🔔 Crypto Exchange Withdrawal Detected!\n\n";
-  output += `📤 Number of Outputs: ${outputCount}\n`;
-  output += `💸 Total Amount Withdrawn: ${totalOutput} BTC\n\n`;
-  output += `View : https://mempool.space/tx/${txid}\n`;
-  return output;
-}
-
-async function formatUserTransaction(transaction) {
-  const { txid, vout } = transaction;
-
-  const totalOutput = vout.reduce((sum, output) => sum + output.value, 0) / 1e8;
-  let output = "🔔 Random User Transaction Detected!\n\n";
+  let output = "🔔 A Crypto Exchange Paid Users !\n\n";
   output += `🔗 Transaction ID: ${txid}\n`;
-  output += `💸 Total Bitcoin Transferred: ${totalOutput} BTC\n\n`;
+  output += `💸 Total Amount Withdrawn: ${totalOutput} BTC\n`;
+  output += `📤 Number of Outputs: ${outputCount}\n\n`;
   output += `View : https://mempool.space/tx/${txid}\n`;
+
   return output;
 }
 
