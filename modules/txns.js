@@ -32,11 +32,11 @@ async function analyzeTransactions() {
       const totalOutput =
         transaction.vout.reduce((sum, output) => sum + output.value, 0) / 1e8;
 
-      if (totalOutput > 7) {
+      const outputCount = transaction.vout.length;
+
+      if (totalOutput > 5 && outputCount < 3) {
         return formatWhaleTransaction(transaction, totalOutput);
       }
-
-      const outputCount = transaction.vout.length;
 
       if (outputCount > 5) {
         return formatExchangeWithdrawal(transaction, totalOutput, outputCount);
