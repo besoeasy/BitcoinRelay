@@ -49,10 +49,10 @@ async function handleBitcoinPriceChart() {
   if (msgurl) {
     await pushIt(
       `Bitcoin Price Action :\n\n` +
+        `Avg: ${avgPrice} USD\n\n` +
         `Min: ${minPrice} USD\n` +
         `Max: ${maxPrice} USD\n` +
-        `Avg: ${avgPrice} USD\n` +
-        `\n\n#bitcoin #crypto #trade\n\n` +
+        `#bitcoin #crypto #trade\n\n` +
         `${msgurl}`
     );
   }
@@ -103,7 +103,7 @@ async function handleLightningNetworkPost() {
 async function handleBitcoinFeesPost() {
   const { fee } = await getBitcoinFees();
 
-  const msgurl = await imgFees(`${fee} Sat`);
+  const msgurl = await imgFees(`${fee} Satoshi`);
 
   if (msgurl) {
     await pushIt(`Bitcoin Fee: ${fee} sat/vB \n\n#bitcoin #fees\n${msgurl}`);
