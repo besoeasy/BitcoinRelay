@@ -6,7 +6,7 @@ const backimgprice = [
   "https://bafkreiaskulskavaxi5z3x7bgovn563ppnn73q32ahhmgrm656ktalxx54.ipfs.dweb.link",
   "https://bafkreia62gmdu7mkabkfk5yegeztcdopvgnzvs6wr2ifawlbtflfjyzi5a.ipfs.dweb.link",
   "https://bafkreie3nexatkohw3gltrdkvsgcwhgsmkgp3on6juzlo3irjlfikyd7lu.ipfs.dweb.link",
-  "https://bafkreig5lz3hig6rpjvrdgzkl3jqi7kmc4p47m7c3bbo4o3ctgcd2z6ncu.ipfs.dweb.link",
+  "https://bafkreigk7kyjp2ra7w6qeinbhfmgqvehjwwm2qgmkn75y6eobfiti2qcxy.ipfs.dweb.link",
 ];
 
 async function paintPrice(textx) {
