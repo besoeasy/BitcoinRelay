@@ -83,13 +83,13 @@ async function formatWhaleTransaction(transaction, totalOutput) {
     output += `  Output ${index + 1}: ${value} BTC to ${address}\n`;
   });
 
-  output += `\nView : https://mempool.space/tx/${txid}\n`;
-
   const msgurl = await imgWhale(totalOutput.toFixed(2));
 
   if (msgurl) {
     output += `\n${msgurl}`;
   }
+
+  output += `\nView : https://mempool.space/tx/${txid}\n`;
 
   return output;
 }
