@@ -62,32 +62,4 @@ async function paintFees(textx) {
   return canvas.toBuffer("image/png");
 }
 
-const backimgwhale = [
-  "https://bafkreigpvku2yzgcn5hdrtrbaqdr6dfoyhzpl5pnnhskdbx4ar3ntxpaca.ipfs.dweb.link",
-];
-
-async function paintWhale(textx) {
-  const width = 1000;
-  const height = 1000;
-  const canvas = createCanvas(width, height);
-  const context = canvas.getContext("2d");
-
-  const backgroundImage = await loadImage(
-    backimgwhale[Math.floor(Math.random() * backimgwhale.length)]
-  );
-
-  context.drawImage(backgroundImage, 0, 0, width, height);
-
-  const fontSize = 160;
-  context.font = `bold ${fontSize}px 'Helvetica Neue', Arial, sans-serif`;
-  context.textAlign = "center";
-  context.textBaseline = "middle";
-
-  context.font = `bold ${fontSize}px 'Helvetica Neue', Arial, sans-serif`;
-  context.fillStyle = "#1b1b1b";
-  context.fillText(textx, width / 2, height / 2);
-
-  return canvas.toBuffer("image/png");
-}
-
-module.exports = { paintPrice, paintFees, paintWhale };
+module.exports = { paintPrice, paintFees };

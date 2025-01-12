@@ -10,7 +10,7 @@ const { analyzeTransactions } = require("./modules/txns.js");
 
 const { paintPrice, paintFees } = require("./modules/chaw.js");
 
-const { plotData } = require("modules/btc_chart.js");
+const { plotData } = require("./modules/btc_chart.js");
 
 const { fetchAllFeeds } = require("./modules/news.js");
 

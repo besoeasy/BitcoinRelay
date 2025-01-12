@@ -1,6 +1,34 @@
-const { paintWhale } = require("./chaw.js");
+const { createCanvas, loadImage } = require("canvas");
 const { uploadIMG } = require("../utls/imgup.js");
 const { axiosGet } = require("../utls/get.js");
+
+const backimgwhale = [
+  "https://bafkreigpvku2yzgcn5hdrtrbaqdr6dfoyhzpl5pnnhskdbx4ar3ntxpaca.ipfs.dweb.link",
+];
+
+async function paintWhale(textx) {
+  const width = 1000;
+  const height = 1000;
+  const canvas = createCanvas(width, height);
+  const context = canvas.getContext("2d");
+
+  const backgroundImage = await loadImage(
+    backimgwhale[Math.floor(Math.random() * backimgwhale.length)]
+  );
+
+  context.drawImage(backgroundImage, 0, 0, width, height);
+
+  const fontSize = 140;
+  context.font = `bold ${fontSize}px 'Helvetica Neue', Arial, sans-serif`;
+  context.textAlign = "center";
+  context.textBaseline = "middle";
+
+  context.font = `bold ${fontSize}px 'Helvetica Neue', Arial, sans-serif`;
+  context.fillStyle = "#1b1b1b";
+  context.fillText(textx, width / 2, height / 2);
+
+  return canvas.toBuffer("image/png");
+}
 
 async function imgWhale(msg) {
   try {
