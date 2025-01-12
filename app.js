@@ -1,10 +1,10 @@
 require("dotenv").config();
 
-const {
-  getBitcoinPrice,
-  getBitcoinFees,
-  btcLightning,
-} = require("./modules/pag.js");
+const { btcLightning } = require("./modules/btc_light.js");
+
+const { getBitcoinFees } = require("./modules/btc_fee.js");
+
+const { getBitcoinPrice } = require("./modules/btc_price.js");
 
 const { analyzeTransactions } = require("./modules/txns.js");
 
@@ -48,15 +48,14 @@ async function handleNewsPost() {
 }
 
 async function handleBitcoinPricePost() {
-  const btcprice = await getBitcoinPrice();
-  const sattousd = parseFloat(btcprice / 100000000).toFixed(6);
+  const { price, sat } = await getBitcoinPrice();
 
   const buffer = await paintPrice(btcprice);
   const msgurl = uploadIMG(buffer) || null;
 
   if (msgurl) {
     await pushIt(
-      `Bitcoin: ${btcprice} USD\n\n1 Satoshi = ${sattousd} USD\n\n#bitcoin #crypto\n${msgurl}`
+      `Bitcoin: ${price} USD\n1 Satoshi = ${sat} USD\n\n#bitcoin #crypto #bitcoinprice\n${msgurl}`
     );
   }
 }
