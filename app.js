@@ -33,7 +33,7 @@ async function handleBitcoinPriceChart() {
         `Avg: ${avgPrice} USD\n` +
         `Min: ${minPrice} USD\n` +
         `Max: ${maxPrice} USD\n` +
-        `#bitcoin #crypto #trade\n` +
+        `\n#bitcoin #crypto #trade\n` +
         `${msgurl}`
     );
   }
