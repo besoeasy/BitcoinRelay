@@ -51,18 +51,10 @@ async function analyzeTransactions() {
         { transaction: null, totalOutput: 0 }
       );
 
-    if (Math.random() < 0.5) {
-      return formatWhaleTransaction(
-        biggestTransaction.transaction,
-        biggestTransaction.totalOutput / 1e8
-      );
-    } else {
-      return formatExchangeWithdrawal(
-        biggestTransaction.transaction,
-        biggestTransaction.totalOutput / 1e8,
-        biggestTransaction.transaction.vout.length
-      );
-    }
+    return formatWhaleTransaction(
+      biggestTransaction.transaction,
+      biggestTransaction.totalOutput / 1e8
+    );
   } catch (error) {
     return `🚨 Error fetching Bitcoin data: ${error.message}`;
   }
@@ -97,18 +89,6 @@ async function formatWhaleTransaction(transaction, totalOutput) {
   }
 
   output += `\nView : https://mempool.space/tx/${txid}\n`;
-
-  return output;
-}
-
-async function formatExchangeWithdrawal(transaction, totalOutput, outputCount) {
-  const { txid } = transaction;
-
-  let output = "🔔 A Crypto Exchange Paid Users !\n\n";
-  output += `🔗 Transaction ID: ${txid}\n`;
-  output += `💸 Total Amount Withdrawn: ${totalOutput} BTC\n`;
-  output += `📤 Number of Outputs: ${outputCount}\n\n`;
-  output += `View : https://mempool.space/tx/${txid}\n`;
 
   return output;
 }
