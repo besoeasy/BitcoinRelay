@@ -8,51 +8,32 @@ const {
 
 const { analyzeTransactions } = require("./modules/txns.js");
 
-const {
-  plotData,
-  getBTCData,
-  paintPrice,
-  paintFees,
-} = require("./modules/chaw.js");
+const { paintPrice, paintFees } = require("./modules/chaw.js");
+
+const { plotData } = require("modules/btc_chart.js");
 
 const { fetchAllFeeds } = require("./modules/news.js");
 
-const { uploadIMG } = require("./imgup.js");
+const { uploadIMG } = require("./utls/imgup.js");
 
-const { commitMsg } = require("./nostr.js");
+const { commitMsg } = require("./utls/nostr.js");
 
 async function pushIt(text) {
   await commitMsg(process.env.NSEC, text);
 }
 
-async function imgChart() {
-  const buffer = await plotData();
-  return uploadIMG(buffer) || null;
-}
-
-async function imgPrice(msg) {
-  const buffer = await paintPrice(msg);
-  return uploadIMG(buffer) || null;
-}
-
-async function imgFees(msg) {
-  const buffer = await paintFees(msg);
-  return uploadIMG(buffer) || null;
-}
-
 async function handleBitcoinPriceChart() {
-  const { data, minPrice, maxPrice, avgPrice } = await getBTCData();
+  const { buffer, minPrice, maxPrice, avgPrice } = await plotData();
 
-  if (!data.length) return;
-  const msgurl = await imgChart();
+  const msgurl = await uploadIMG(buffer);
 
   if (msgurl) {
     await pushIt(
       `Bitcoin Price Action :\n\n` +
-        `Avg: ${avgPrice} USD\n\n` +
+        `Avg: ${avgPrice} USD\n` +
         `Min: ${minPrice} USD\n` +
         `Max: ${maxPrice} USD\n` +
-        `#bitcoin #crypto #trade\n\n` +
+        `#bitcoin #crypto #trade\n` +
         `${msgurl}`
     );
   }
@@ -69,7 +50,9 @@ async function handleNewsPost() {
 async function handleBitcoinPricePost() {
   const btcprice = await getBitcoinPrice();
   const sattousd = parseFloat(btcprice / 100000000).toFixed(6);
-  const msgurl = await imgPrice(`${btcprice}`);
+
+  const buffer = await paintPrice(btcprice);
+  const msgurl = uploadIMG(buffer) || null;
 
   if (msgurl) {
     await pushIt(
@@ -103,7 +86,8 @@ async function handleLightningNetworkPost() {
 async function handleBitcoinFeesPost() {
   const { fee } = await getBitcoinFees();
 
-  const msgurl = await imgFees(`${fee} Sat`);
+  const buffer = await paintFees(`${fee} Sat`);
+  const msgurl = uploadIMG(buffer) || null;
 
   if (msgurl) {
     await pushIt(`Bitcoin Fee: ${fee} sat/vB \n\n#bitcoin #fees\n${msgurl}`);

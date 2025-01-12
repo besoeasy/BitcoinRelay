@@ -1,23 +1,13 @@
-const axios = require("axios");
 const { paintWhale } = require("./chaw.js");
-const { uploadIMG } = require("../imgup.js");
+const { uploadIMG } = require("../utls/imgup.js");
+const { axiosGet } = require("../utls/get.js");
 
 async function imgWhale(msg) {
   try {
     const buffer = await paintWhale(msg);
-    return await uploadIMG(buffer) || null;
+    return (await uploadIMG(buffer)) || null;
   } catch (error) {
     console.error("Error generating whale image:", error.message);
-    return null;
-  }
-}
-
-async function axiosGet(url) {
-  try {
-    const response = await axios.get(url);
-    return response.data;
-  } catch (error) {
-    console.error("GET request error:", error.response?.data || error.message);
     return null;
   }
 }
