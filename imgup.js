@@ -69,7 +69,6 @@ async function uploadIMG(buffer) {
     console.warn("API key for ImgBB is not provided. Falling back to Catbox.");
   }
 
-  // Fallback to Catbox if ImgBB fails or API key is not provided
   if (!imageUrl) {
     imageUrl = await uploadToCatbox(buffer);
   }

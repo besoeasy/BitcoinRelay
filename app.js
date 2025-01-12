@@ -17,7 +17,7 @@ const {
 
 const { fetchAllFeeds } = require("./modules/news.js");
 
-const { uploadIMG } = require("./modules/imgup.js");
+const { uploadIMG } = require("./imgup.js");
 
 const { commitMsg } = require("./nostr.js");
 
@@ -117,6 +117,7 @@ async function main() {
     handleBiggestTransactionPost,
     handleLightningNetworkPost,
     handleBitcoinFeesPost,
+    handleNewsPost,
   ];
 
   const randomTask = tasks[Math.floor(Math.random() * tasks.length)];

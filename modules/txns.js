@@ -1,11 +1,15 @@
 const axios = require("axios");
-
 const { paintWhale } = require("./chaw.js");
-const { uploadIMG } = require("./imgup.js");
+const { uploadIMG } = require("../imgup.js");
 
 async function imgWhale(msg) {
-  const buffer = await paintWhale(msg);
-  return uploadIMG(buffer) || null;
+  try {
+    const buffer = await paintWhale(msg);
+    return await uploadIMG(buffer) || null;
+  } catch (error) {
+    console.error("Error generating whale image:", error.message);
+    return null;
+  }
 }
 
 async function axiosGet(url) {
@@ -25,7 +29,7 @@ async function analyzeTransactions() {
     );
 
     if (!latestBlockHash) {
-      throw new Error("Failed to fetch the latest block hash");
+      throw new Error("Failed to fetch the latest block hash.");
     }
 
     const transactions = await axiosGet(
@@ -37,7 +41,7 @@ async function analyzeTransactions() {
     }
 
     const biggestTransaction = transactions
-      .filter((tx) => tx.vout.length < 3)
+      .filter((tx) => tx.vout.length < 3) // Focusing on "big whales" with few outputs
       .reduce(
         (max, tx) => {
           const totalOutput = tx.vout.reduce(
@@ -51,11 +55,16 @@ async function analyzeTransactions() {
         { transaction: null, totalOutput: 0 }
       );
 
-    return formatWhaleTransaction(
+    if (!biggestTransaction.transaction) {
+      return "No significant transactions found in the latest block.";
+    }
+
+    return await formatWhaleTransaction(
       biggestTransaction.transaction,
-      biggestTransaction.totalOutput / 1e8
+      biggestTransaction.totalOutput / 1e8 // Convert Satoshis to BTC
     );
   } catch (error) {
+    console.error("Error analyzing transactions:", error.message);
     return `🚨 Error fetching Bitcoin data: ${error.message}`;
   }
 }
@@ -65,30 +74,32 @@ async function formatWhaleTransaction(transaction, totalOutput) {
 
   let output = "🐋 A whale moved Bitcoins!\n\n";
   output += `🔗 Transaction ID: ${txid}\n`;
-  output += `💸 Total Bitcoin Transferred: ${totalOutput} BTC\n\n`;
+  output += `💸 Total Bitcoin Transferred: ${totalOutput.toFixed(8)} BTC\n\n`;
 
   output += "💰 Inputs:\n";
   vin.forEach((input, index) => {
-    const value = input.prevout?.value / 1e8 || 0;
-    const address =
-      input.prevout?.scriptpubkey_address || "Unknown (Missing Address)";
-    output += `  Input ${index + 1}: ${value} BTC from ${address}\n`;
+    const value = (input.prevout?.value || 0) / 1e8; // Convert Satoshis to BTC
+    const address = input.prevout?.scriptpubkey_address || "Unknown Address";
+    output += `  Input ${index + 1}: ${value.toFixed(8)} BTC from ${address}\n`;
   });
 
   output += "\n📤 Outputs:\n";
   vout.forEach((outputTx, index) => {
-    const value = outputTx.value / 1e8;
-    const address = outputTx.scriptpubkey_address || "Mystery address 🔮";
-    output += `  Output ${index + 1}: ${value} BTC to ${address}\n`;
+    const value = (outputTx.value || 0) / 1e8; // Convert Satoshis to BTC
+    const address = outputTx.scriptpubkey_address || "Mystery Address 🔮";
+    output += `  Output ${index + 1}: ${value.toFixed(8)} BTC to ${address}\n`;
   });
 
-  const msgurl = await imgWhale(totalOutput.toFixed(2));
-
-  if (msgurl) {
-    output += `\n${msgurl}`;
+  try {
+    const msgurl = await imgWhale(totalOutput.toFixed(2));
+    if (msgurl) {
+      output += `\n${msgurl}`;
+    }
+  } catch (error) {
+    console.error("Error generating image URL:", error.message);
   }
 
-  output += `\nView : https://mempool.space/tx/${txid}\n`;
+  output += `\n🔍 View on Explorer: https://mempool.space/tx/${txid}\n`;
 
   return output;
 }
