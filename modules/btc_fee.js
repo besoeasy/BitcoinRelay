@@ -25,7 +25,7 @@ async function paintFees(textx) {
 
   context.drawImage(backgroundImage, 0, 0, width, height);
 
-  const fontSize = 160;
+  const fontSize = 120;
   context.font = `bold ${fontSize}px 'Helvetica Neue', Arial, sans-serif`;
   context.textAlign = "center";
   context.textBaseline = "middle";
