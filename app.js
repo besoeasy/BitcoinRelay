@@ -2,13 +2,11 @@ require("dotenv").config();
 
 const { btcLightning } = require("./modules/btc_light.js");
 
-const { getBitcoinFees } = require("./modules/btc_fee.js");
+const { getBitcoinFees, paintFees } = require("./modules/btc_fee.js");
 
-const { getBitcoinPrice } = require("./modules/btc_price.js");
+const { getBitcoinPrice, paintPrice } = require("./modules/btc_price.js");
 
 const { analyzeTransactions } = require("./modules/txns.js");
-
-const { paintPrice, paintFees } = require("./modules/chaw.js");
 
 const { plotData } = require("./modules/btc_chart.js");
 
@@ -51,7 +49,7 @@ async function handleBitcoinPricePost() {
   const { price, sat } = await getBitcoinPrice();
 
   const buffer = await paintPrice(btcprice);
-  const msgurl = await uploadIMG(buffer) || null;
+  const msgurl = (await uploadIMG(buffer)) || null;
 
   if (msgurl) {
     await pushIt(
@@ -86,7 +84,7 @@ async function handleBitcoinFeesPost() {
   const { fee } = await getBitcoinFees();
 
   const buffer = await paintFees(`${fee} Sat`);
-  const msgurl = await uploadIMG(buffer) || null;
+  const msgurl = (await uploadIMG(buffer)) || null;
 
   if (msgurl) {
     await pushIt(`Bitcoin Fee: ${fee} sat/vB \n\n#bitcoin #fees\n${msgurl}`);
