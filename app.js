@@ -51,7 +51,7 @@ async function handleBitcoinPricePost() {
   const { price, sat } = await getBitcoinPrice();
 
   const buffer = await paintPrice(btcprice);
-  const msgurl = uploadIMG(buffer) || null;
+  const msgurl = await uploadIMG(buffer) || null;
 
   if (msgurl) {
     await pushIt(
@@ -86,7 +86,7 @@ async function handleBitcoinFeesPost() {
   const { fee } = await getBitcoinFees();
 
   const buffer = await paintFees(`${fee} Sat`);
-  const msgurl = uploadIMG(buffer) || null;
+  const msgurl = await uploadIMG(buffer) || null;
 
   if (msgurl) {
     await pushIt(`Bitcoin Fee: ${fee} sat/vB \n\n#bitcoin #fees\n${msgurl}`);
