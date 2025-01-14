@@ -6,7 +6,7 @@ const { getBitcoinFees, paintFees } = require("./modules/btc_fee.js");
 
 const { getBitcoinPrice, paintPrice } = require("./modules/btc_price.js");
 
-const { analyzeTransactions } = require("./modules/txns.js");
+const { analyzeTransactions } = require("./modules/txn_whale.js");
 
 const { plotData } = require("./modules/btc_chart.js");
 
