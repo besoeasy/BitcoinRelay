@@ -1,5 +1,6 @@
 const { axiosGet } = require("../utls/get.js");
 const { createCanvas, loadImage } = require("canvas");
+const { uploadIMG } = require("../utls/imgup.js");
 
 async function getBitcoinPrice() {
   const data = await axiosGet(
@@ -47,7 +48,21 @@ async function paintPrice(textx) {
   return canvas.toBuffer("image/png");
 }
 
+async function handleBitcoinPricePost() {
+  const { price, sat } = await getBitcoinPrice();
+
+  const buffer = await paintPrice(price);
+  const msgurl = await uploadIMG(buffer);
+
+  let msg;
+
+  if (msgurl) {
+    msg = `Bitcoin: ${price} USD\n1 Satoshi = ${sat} USD\n\n#bitcoin #crypto #bitcoinprice\n${msgurl}`;
+  }
+
+  return msg;
+}
+
 module.exports = {
-  getBitcoinPrice,
-  paintPrice,
+  handleBitcoinPricePost,
 };

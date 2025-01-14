@@ -45,6 +45,14 @@ async function fetchAllFeeds() {
   return allPosts[Math.floor(Math.random() * 15)];
 }
 
+async function handleNewsPost() {
+  const { title, contentSnippet, link } = await fetchAllFeeds();
+
+  const msg = `📰 ${title}\n\n${contentSnippet}\n\n#bitcoin #crypto #news\n\n View : ${link}`;
+
+  return msg;
+}
+
 module.exports = {
-  fetchAllFeeds,
+  handleNewsPost,
 };

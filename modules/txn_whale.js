@@ -119,6 +119,8 @@ async function formatWhaleTransaction(transaction, totalOutput) {
 
   output += `\n🔍 View on Explorer: https://mempool.space/tx/${txid}\n`;
 
+  output += "\n#bitcoin #whalealert #whale 🐳";
+
   return output;
 }
 

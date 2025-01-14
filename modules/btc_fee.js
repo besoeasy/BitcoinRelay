@@ -1,5 +1,7 @@
 const { axiosGet } = require("../utls/get.js");
 const { createCanvas, loadImage } = require("canvas");
+const { uploadIMG } = require("../utls/imgup.js");
+
 
 async function getBitcoinFees() {
   const fees = await axiosGet("https://mempool.space/api/v1/fees/recommended");
@@ -37,7 +39,21 @@ async function paintFees(textx) {
   return canvas.toBuffer("image/png");
 }
 
+async function handleBitcoinFeesPost() {
+  const { fee } = await getBitcoinFees();
+
+  const buffer = await paintFees(`${fee} Sat`);
+  const msgurl = (await uploadIMG(buffer)) || null;
+
+  let msg;
+
+  if (msgurl) {
+    msg = `Bitcoin Fee: ${fee} sat/vB \n\n#bitcoin #fees\n${msgurl}`;
+  }
+
+  return msg;
+}
+
 module.exports = {
-  getBitcoinFees,
-  paintFees,
+  handleBitcoinFeesPost,
 };

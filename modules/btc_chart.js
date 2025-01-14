@@ -1,6 +1,6 @@
 const axios = require("axios");
 const { createCanvas, loadImage } = require("canvas");
-
+const { uploadIMG } = require("../utls/imgup.js");
 
 const getBTCData = async () => {
   try {
@@ -144,4 +144,24 @@ const plotData = async () => {
   };
 };
 
-module.exports = { plotData };
+async function handleBitcoinPriceChart() {
+  const { buffer, minPrice, maxPrice, avgPrice } = await plotData();
+
+  const msgurl = await uploadIMG(buffer);
+
+  let msg = "";
+
+  if (msgurl) {
+    msg =
+      `Bitcoin Price Action :\n\n` +
+      `Avg: ${avgPrice} USD\n` +
+      `Min: ${minPrice} USD\n` +
+      `Max: ${maxPrice} USD\n` +
+      `\n#bitcoin #crypto #trade\n` +
+      `${msgurl}`;
+  }
+
+  return msg;
+}
+
+module.exports = { handleBitcoinPriceChart };
