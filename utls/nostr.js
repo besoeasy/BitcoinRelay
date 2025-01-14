@@ -86,8 +86,6 @@ async function commitMsg(content, nsec, expireAfter = 180, powDifficulty = 4) {
       return;
     }
 
-    console.log(signedEvent);
-
     for (const relayUrl of relayarray) {
       try {
         const relay = await Relay.connect(relayUrl);
