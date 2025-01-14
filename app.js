@@ -15,7 +15,7 @@ const { hndl_news } = require("./modules/news.js");
 const { commitMsg } = require("./utils/nostr.js");
 
 async function pushIt(text) {
-  await commitMsg(text, process.env.NSEC);
+  await commitMsg(text, process.env.NSEC, 101, 4);
 }
 
 async function main() {
@@ -36,7 +36,7 @@ async function main() {
 
     await pushIt(await rafn());
   } catch (error) {
-    console.error("An error occurred:", error);
+    console.error(error);
   } finally {
     process.exit(0);
   }
