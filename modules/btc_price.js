@@ -16,7 +16,6 @@ async function getBitcoinPrice() {
 
 const backimgprice = [
   "https://bafkreiekpm3hj2cktdjgrxibcpefdjwuc7yahuhqzkbtpltwrpu2nyynnq.ipfs.dweb.link",
-  "https://bafkreiaskulskavaxi5z3x7bgovn563ppnn73q32ahhmgrm656ktalxx54.ipfs.dweb.link",
   "https://bafkreia62gmdu7mkabkfk5yegeztcdopvgnzvs6wr2ifawlbtflfjyzi5a.ipfs.dweb.link",
   "https://bafkreie3nexatkohw3gltrdkvsgcwhgsmkgp3on6juzlo3irjlfikyd7lu.ipfs.dweb.link",
   "https://bafkreigk7kyjp2ra7w6qeinbhfmgqvehjwwm2qgmkn75y6eobfiti2qcxy.ipfs.dweb.link",
