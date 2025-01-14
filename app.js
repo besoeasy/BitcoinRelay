@@ -15,16 +15,24 @@ const { hndl_news } = require("./modules/news.js");
 const { commitMsg } = require("./utils/nostr.js");
 
 async function pushIt(text) {
-  await commitMsg(text, process.env.NSEC, 101, 4);
+  await commitMsg(text, process.env.NSEC, 111, 4);
 }
 
 async function main() {
   const funcx = [hndl_news, hndl_btcchart, hndl_btcprice, hndl_btcfee, hndl_whale, hndl_btclight];
 
   try {
-    const rafn = funcx[Math.floor(Math.random() * funcx.length)];
+    const indices = [];
+    while (indices.length < 2) {
+      const index = Math.floor(Math.random() * funcx.length);
+      if (!indices.includes(index)) {
+        indices.push(index);
+      }
+    }
 
-    await pushIt(await rafn());
+    for (const index of indices) {
+      await pushIt(await funcx[index]());
+    }
   } catch (error) {
     console.error(error);
   } finally {
