@@ -28,9 +28,11 @@ async function main() {
     hndl_btclight,
   ];
 
+
+  const rafn =
+    func[Math.floor(Math.random() * func.length)];
+
   try {
-    const rafn =
-      func[Math.floor(Math.random() * func.length)];
 
     await pushIt(await rafn());
   } catch (error) {
