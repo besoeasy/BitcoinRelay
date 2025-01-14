@@ -57,7 +57,7 @@ async function handleBitcoinPricePost() {
   let msg;
 
   if (msgurl) {
-    msg = `Bitcoin: ${price} USD\n1 Satoshi = ${sat} USD\n\n#bitcoin #crypto #bitcoinprice\n${msgurl}`;
+    msg = `Bitcoin: ${price} USD\n1 Satoshi = ${sat} USD\n${msgurl}\n#bitcoin #crypto #price`;
   }
 
   return msg;

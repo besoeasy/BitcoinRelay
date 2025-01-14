@@ -48,7 +48,7 @@ async function fetchAllFeeds() {
 async function handleNewsPost() {
   const { title, contentSnippet, link } = await fetchAllFeeds();
 
-  const msg = `📰 ${title}\n${contentSnippet}\n#bitcoin #crypto #news\nView : ${link}`;
+  const msg = `📰 ${title}\n${contentSnippet}\n#bitcoin #crypto #news\n\n${link}`;
 
   return msg;
 }
