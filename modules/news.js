@@ -48,7 +48,7 @@ async function fetchAllFeeds() {
 async function hndl_news() {
   const { title, contentSnippet, link } = await fetchAllFeeds();
 
-  const msg = `📰 ${title}\n${contentSnippet}\n#bitcoin #crypto #news\n\n${link}`;
+  const msg = `📰 ${title}\n\n${contentSnippet}\n\n#bitcoin #crypto #news\n${link}`;
 
   return msg;
 }
