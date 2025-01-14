@@ -92,19 +92,13 @@ async function handleBitcoinFeesPost() {
 }
 
 async function main() {
-  const tasks = [
-    handleBitcoinPriceChart,
-    handleBitcoinPricePost,
-    handleBiggestTransactionPost,
-    handleLightningNetworkPost,
-    handleBitcoinFeesPost,
-    handleNewsPost,
-  ];
-
-  const randomTask = tasks[Math.floor(Math.random() * tasks.length)];
-
   try {
-    await randomTask();
+    await handleNewsPost();
+    await handleBitcoinPricePost();
+    await handleBiggestTransactionPost();
+    await handleLightningNetworkPost();
+    await handleBitcoinFeesPost();
+    await handleBitcoinPriceChart();
   } catch (error) {
     console.error("An error occurred:", error);
   } finally {
