@@ -19,7 +19,7 @@ async function pushIt(text) {
 }
 
 async function main() {
-  const functions = [
+  const func = [
     hndl_news,
     hndl_btcchart,
     hndl_btcprice,
@@ -29,10 +29,10 @@ async function main() {
   ];
 
   try {
-    const randomFunction =
-      functions[Math.floor(Math.random() * functions.length)];
+    const rafn =
+      func[Math.floor(Math.random() * func.length)];
 
-    await pushIt(await randomFunction());
+    await pushIt(await rafn());
   } catch (error) {
     console.error("An error occurred:", error);
   } finally {
