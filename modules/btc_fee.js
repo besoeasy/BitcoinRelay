@@ -39,7 +39,7 @@ async function paintFees(textx) {
   return canvas.toBuffer("image/png");
 }
 
-async function handleBitcoinFeesPost() {
+async function hndl_btcfee() {
   const { fee } = await getBitcoinFees();
 
   const buffer = await paintFees(`${fee} Sat`);
@@ -55,5 +55,5 @@ async function handleBitcoinFeesPost() {
 }
 
 module.exports = {
-  handleBitcoinFeesPost,
+  hndl_btcfee,
 };

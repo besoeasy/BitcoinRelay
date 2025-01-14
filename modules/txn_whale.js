@@ -40,7 +40,7 @@ async function imgWhale(msg) {
   }
 }
 
-async function analyzeTransactions() {
+async function hndl_whale() {
   try {
     const latestBlockHash = await axiosGet(
       "https://blockstream.info/api/blocks/tip/hash"
@@ -125,5 +125,5 @@ async function formatWhaleTransaction(transaction, totalOutput) {
 }
 
 module.exports = {
-  analyzeTransactions,
+  hndl_whale,
 };

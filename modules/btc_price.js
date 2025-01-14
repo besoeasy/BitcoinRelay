@@ -48,7 +48,7 @@ async function paintPrice(textx) {
   return canvas.toBuffer("image/png");
 }
 
-async function handleBitcoinPricePost() {
+async function hndl_btcprice() {
   const { price, sat } = await getBitcoinPrice();
 
   const buffer = await paintPrice(price);
@@ -64,5 +64,5 @@ async function handleBitcoinPricePost() {
 }
 
 module.exports = {
-  handleBitcoinPricePost,
+  hndl_btcprice,
 };

@@ -144,7 +144,7 @@ const plotData = async () => {
   };
 };
 
-async function handleBitcoinPriceChart() {
+async function hndl_btcchart() {
   const { buffer, minPrice, maxPrice, avgPrice } = await plotData();
 
   const msgurl = await uploadIMG(buffer);
@@ -164,4 +164,4 @@ async function handleBitcoinPriceChart() {
   return msg;
 }
 
-module.exports = { handleBitcoinPriceChart };
+module.exports = { hndl_btcchart };

@@ -8,7 +8,7 @@ async function btcLightning() {
   return data?.latest || {};
 }
 
-async function handleLightningNetworkPost() {
+async function hndl_btclight() {
   const { node_count, channel_count, avg_capacity, total_capacity } =
     await btcLightning();
 
@@ -24,5 +24,5 @@ async function handleLightningNetworkPost() {
 }
 
 module.exports = {
-  handleLightningNetworkPost,
+  hndl_btclight,
 };

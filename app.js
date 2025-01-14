@@ -1,16 +1,16 @@
 require("dotenv").config();
 
-const { handleLightningNetworkPost } = require("./modules/btc_light.js");
+const { hndl_btclight } = require("./modules/btc_light.js");
 
-const { handleBitcoinFeesPost } = require("./modules/btc_fee.js");
+const { hndl_btcfee } = require("./modules/btc_fee.js");
 
-const { handleBitcoinPricePost } = require("./modules/btc_price.js");
+const { hndl_btcprice } = require("./modules/btc_price.js");
 
-const { analyzeTransactions } = require("./modules/txn_whale.js");
+const { hndl_whale } = require("./modules/txn_whale.js");
 
-const { handleBitcoinPriceChart } = require("./modules/btc_chart.js");
+const { hndl_btcchart } = require("./modules/btc_chart.js");
 
-const { handleNewsPost } = require("./modules/news.js");
+const { hndl_news } = require("./modules/news.js");
 
 const { commitMsg } = require("./utils/nostr.js");
 
@@ -20,12 +20,12 @@ async function pushIt(text) {
 
 async function main() {
   const functions = [
-    handleNewsPost,
-    handleBitcoinPriceChart,
-    handleBitcoinPricePost,
-    handleBitcoinFeesPost,
-    analyzeTransactions,
-    handleLightningNetworkPost,
+    hndl_news,
+    hndl_btcchart,
+    hndl_btcprice,
+    hndl_btcfee,
+    hndl_whale,
+    hndl_btclight,
   ];
 
   try {

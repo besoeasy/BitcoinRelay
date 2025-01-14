@@ -45,7 +45,7 @@ async function fetchAllFeeds() {
   return allPosts[Math.floor(Math.random() * 15)];
 }
 
-async function handleNewsPost() {
+async function hndl_news() {
   const { title, contentSnippet, link } = await fetchAllFeeds();
 
   const msg = `📰 ${title}\n${contentSnippet}\n#bitcoin #crypto #news\n\n${link}`;
@@ -54,5 +54,5 @@ async function handleNewsPost() {
 }
 
 module.exports = {
-  handleNewsPost,
+  hndl_news,
 };
