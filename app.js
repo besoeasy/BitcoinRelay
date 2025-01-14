@@ -12,7 +12,7 @@ const { handleBitcoinPriceChart } = require("./modules/btc_chart.js");
 
 const { handleNewsPost } = require("./modules/news.js");
 
-const { commitMsg } = require("./utls/nostr.js");
+const { commitMsg } = require("./utils/nostr.js");
 
 async function pushIt(text) {
   await commitMsg(text, process.env.NSEC);

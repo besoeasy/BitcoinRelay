@@ -1,6 +1,6 @@
-const { axiosGet } = require("../utls/get.js");
+const { axiosGet } = require("../utils/get.js");
 const { createCanvas, loadImage } = require("canvas");
-const { uploadIMG } = require("../utls/imgup.js");
+const { uploadIMG } = require("../utils/imgup.js");
 
 async function getBitcoinPrice() {
   const data = await axiosGet(

@@ -1,4 +1,4 @@
-const { axiosGet } = require("../utls/get.js");
+const { axiosGet } = require("../utils/get.js");
 
 async function btcLightning() {
   const data = await axiosGet(

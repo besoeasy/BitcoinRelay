@@ -1,6 +1,6 @@
 const { createCanvas, loadImage } = require("canvas");
-const { uploadIMG } = require("../utls/imgup.js");
-const { axiosGet } = require("../utls/get.js");
+const { uploadIMG } = require("../utils/imgup.js");
+const { axiosGet } = require("../utils/get.js");
 
 const backimgwhale = [
   "https://bafkreigpvku2yzgcn5hdrtrbaqdr6dfoyhzpl5pnnhskdbx4ar3ntxpaca.ipfs.dweb.link",

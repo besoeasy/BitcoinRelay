@@ -1,6 +1,6 @@
 const axios = require("axios");
 const { createCanvas, loadImage } = require("canvas");
-const { uploadIMG } = require("../utls/imgup.js");
+const { uploadIMG } = require("../utils/imgup.js");
 
 const getBTCData = async () => {
   try {
