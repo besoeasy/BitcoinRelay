@@ -19,20 +19,10 @@ async function pushIt(text) {
 }
 
 async function main() {
-  const func = [
-    hndl_news,
-    hndl_btcchart,
-    hndl_btcprice,
-    hndl_btcfee,
-    hndl_whale,
-    hndl_btclight,
-  ];
-
-
-  const rafn =
-    func[Math.floor(Math.random() * func.length)];
+  const funcx = [hndl_news, hndl_btcchart, hndl_btcprice, hndl_btcfee, hndl_whale, hndl_btclight];
 
   try {
+    const rafn = funcx[Math.floor(Math.random() * funcx.length)];
 
     await pushIt(await rafn());
   } catch (error) {
