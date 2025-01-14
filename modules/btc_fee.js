@@ -12,7 +12,9 @@ async function getBitcoinFees() {
 }
 
 const backimgfees = [
-  "https://bafkreigqzxkma2dqkntns36cvtyjx7dadwvbmoytfh3wdb4dv72y34dvpa.ipfs.dweb.link",
+  "https://bafkreibwikylhpxwwynbvpbmbjjnkqii4utaqx4wen3vhs2xmrbyys72bu.ipfs.dweb.link",
+  "https://bafkreiabc2hzfbbjv3qsrs3guff7qre4v6rtbmrv7v4ohfa7fzlefcm3gy.ipfs.dweb.link",
+
 ];
 
 async function paintFees(textx) {
