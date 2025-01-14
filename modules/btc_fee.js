@@ -42,13 +42,13 @@ async function paintFees(textx) {
 async function hndl_btcfee() {
   const { fee } = await getBitcoinFees();
 
-  const buffer = await paintFees(`${fee} Sat`);
+  const buffer = await paintFees(`${fee} Sat/vB`);
   const msgurl = (await uploadIMG(buffer)) || null;
 
   let msg;
 
   if (msgurl) {
-    msg = `Bitcoin Fee: ${fee} sat/vB \n\n#bitcoin #fees\n${msgurl}`;
+    msg = `Bitcoin Fee: ${fee} Sat/vB\n#bitcoin #fees\n${msgurl}`;
   }
 
   return msg;
