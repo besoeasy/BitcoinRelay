@@ -17,7 +17,7 @@ const { uploadIMG } = require("./utls/imgup.js");
 const { commitMsg } = require("./utls/nostr.js");
 
 async function pushIt(text) {
-  await commitMsg(process.env.NSEC, text);
+  await commitMsg(text, process.env.NSEC);
 }
 
 async function handleBitcoinPriceChart() {

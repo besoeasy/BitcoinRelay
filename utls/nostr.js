@@ -55,7 +55,7 @@ function calculatePow(event, difficulty) {
   return event;
 }
 
-async function commitMsg(nsec, content, powDifficulty = 4) {
+async function commitMsg(content, nsec, expireAfter = 180, powDifficulty = 4) {
   try {
     const { type, data } = nip19.decode(nsec);
 
@@ -69,7 +69,7 @@ async function commitMsg(nsec, content, powDifficulty = 4) {
     const eventTemplate = {
       kind: 1,
       created_at: timenow,
-      tags: [["expiration", String(timenow + 86400 * 100)]],
+      tags: [["expiration", String(timenow + 86400 * expireAfter)]],
       content: content,
       pubkey: pk,
     };
