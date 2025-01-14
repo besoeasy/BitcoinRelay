@@ -19,13 +19,20 @@ async function pushIt(text) {
 }
 
 async function main() {
+  const functions = [
+    handleNewsPost,
+    handleBitcoinPriceChart,
+    handleBitcoinPricePost,
+    handleBitcoinFeesPost,
+    analyzeTransactions,
+    handleLightningNetworkPost,
+  ];
+
   try {
-    await pushIt(await handleNewsPost());
-    await pushIt(await handleBitcoinPriceChart());
-    await pushIt(await handleBitcoinPricePost());
-    await pushIt(await handleBitcoinFeesPost());
-    await pushIt(await analyzeTransactions());
-    await pushIt(await handleLightningNetworkPost());
+    const randomFunction =
+      functions[Math.floor(Math.random() * functions.length)];
+
+    await pushIt(await randomFunction());
   } catch (error) {
     console.error("An error occurred:", error);
   } finally {
