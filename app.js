@@ -49,7 +49,7 @@ async function handleBitcoinPricePost() {
   const { price, sat } = await getBitcoinPrice();
 
   const buffer = await paintPrice(btcprice);
-  const msgurl = (await uploadIMG(buffer)) || null;
+  const msgurl = await uploadIMG(buffer);
 
   if (msgurl) {
     await pushIt(
