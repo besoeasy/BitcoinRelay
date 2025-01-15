@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": " node test.js && node app.js"
   },
   "author": "besoeasy",
   "license": "ISC",
