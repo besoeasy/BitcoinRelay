@@ -35,7 +35,6 @@ async function main() {
     for (const index of indices) {
       await pushIt(await funcx[index]());
     }
-    await pushIt(await hndl_reddit());
   } catch (error) {
     console.error(error);
   } finally {

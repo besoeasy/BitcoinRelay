@@ -4,15 +4,26 @@ const redditurls = ["https://www.reddit.com/r/Bitcoin/hot/.json", "https://www.r
 
 const getRandomRedditPost = async () => {
   try {
-    const response = await axios.get(redditurls[Math.floor(Math.random() * redditurls.length)]);
+    const response = await axios.get(redditurls[Math.floor(Math.random() * redditurls.length)], {
+      headers: {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+      },
+    });
+
     const posts = response.data.data.children;
 
     const randomPost = posts[Math.floor(Math.random() * posts.length)];
 
     const postUrl = `https://www.reddit.com${randomPost.data.permalink}`;
 
-    // Fetch the detailed data from the post's .json endpoint
-    const detailedPostResponse = await axios.get(`${postUrl}.json`);
+    const detailedPostResponse = await axios.get(
+      `${postUrl}.json`,
+      {
+        headers: {
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.3029.110 Safari/537.3",
+        },
+      }
+    );
     const detailedPost = detailedPostResponse.data[0].data.children[0].data;
 
     // Extract title, description, images, and other details
