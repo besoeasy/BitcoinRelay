@@ -23,7 +23,7 @@ async function main() {
 
   try {
     const indices = [];
-    while (indices.length < 2) {
+    while (indices.length < 3) {
       const index = Math.floor(Math.random() * funcx.length);
       if (!indices.includes(index)) {
         indices.push(index);
