@@ -8,7 +8,7 @@ const uploadToImgBB = async (buffer) => {
   form.append("image", buffer.toString("base64"));
 
   const headers = form.getHeaders();
-  const url = `https://api.imgbb.com/1/upload?expiration=15550000&key=${apiKey}`;
+  const url = `https://api.imgbb.com/1/upload?expiration=15000000&key=${apiKey}`;
 
   try {
     const response = await axios.post(url, form, { headers });

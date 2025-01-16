@@ -15,7 +15,7 @@ const { hndl_news } = require("./modules/news.js");
 const { commitMsg } = require("./utils/nostr.js");
 
 async function pushIt(text) {
-  await commitMsg(text, process.env.NSEC, 111, 4);
+  await commitMsg(text, process.env.NSEC, 7, 4);
 }
 
 async function main() {
