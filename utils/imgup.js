@@ -8,7 +8,7 @@ const uploadToImgBB = async (buffer) => {
   form.append("image", buffer.toString("base64"));
 
   const headers = form.getHeaders();
-  const url = `https://api.imgbb.com/1/upload?expiration=15000000&key=${apiKey}`;
+  const url = `https://api.imgbb.com/1/upload?expiration=${86400 * 10}&key=${apiKey}`;
 
   try {
     const response = await axios.post(url, form, { headers });
@@ -20,11 +20,7 @@ const uploadToImgBB = async (buffer) => {
       return null; // Return null to indicate failure
     }
   } catch (error) {
-    console.error(
-      `Error uploading to ImgBB: ${
-        error.response?.data?.error?.message || error.message
-      }`
-    );
+    console.error(`Error uploading to ImgBB: ${error.response?.data?.error?.message || error.message}`);
     return null; // Return null to indicate failure
   }
 };
