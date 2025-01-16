@@ -10,6 +10,8 @@ const { hndl_whale } = require("./modules/txn_whale.js");
 
 const { hndl_btcchart } = require("./modules/btc_chart.js");
 
+const { hndl_reddit } = require("./modules/reddit.js");
+
 const { hndl_news } = require("./modules/news.js");
 
 const { commitMsg } = require("./utils/nostr.js");
@@ -19,7 +21,7 @@ async function pushIt(text) {
 }
 
 async function main() {
-  const funcx = [hndl_news, hndl_btcchart, hndl_btcprice, hndl_btcfee, hndl_whale, hndl_btclight];
+  const funcx = [hndl_news, hndl_btcchart, hndl_btcprice, hndl_btcfee, hndl_whale, hndl_btclight, hndl_reddit];
 
   try {
     const rand = Math.floor(Math.random() * funcx.length);
