@@ -22,17 +22,7 @@ async function main() {
   const funcx = [hndl_news, hndl_btcchart, hndl_btcprice, hndl_btcfee, hndl_whale, hndl_btclight];
 
   try {
-    const indices = [];
-    while (indices.length < 3) {
-      const index = Math.floor(Math.random() * funcx.length);
-      if (!indices.includes(index)) {
-        indices.push(index);
-      }
-    }
-
-    for (const index of indices) {
-      await pushIt(await funcx[index]());
-    }
+    await pushIt(await funcx[Math.floor(Math.random() * funcx.length)]);
   } catch (error) {
     console.error(error);
   } finally {
