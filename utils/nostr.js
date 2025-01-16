@@ -1,24 +1,12 @@
-const {
-  finalizeEvent,
-  getPublicKey,
-  getEventHash,
-  verifyEvent,
-} = require("nostr-tools/pure");
+const { finalizeEvent, getPublicKey, getEventHash, verifyEvent } = require("nostr-tools/pure");
 const { Relay } = require("nostr-tools/relay");
 const { useWebSocketImplementation } = require("nostr-tools/pool");
-const WebSocket = require("ws"); // Import WebSocket from the ws package
+const WebSocket = require("ws");
 const nip19 = require("nostr-tools/nip19");
 
-useWebSocketImplementation(WebSocket); // Set ws as the WebSocket implementation
+useWebSocketImplementation(WebSocket);
 
-const relayarray = [
-  "wss://nostr.oxtr.dev",
-  "wss://relay.damus.io",
-  "wss://nos.lol",
-  "wss://purplerelay.com",
-  "wss://n.ok0.org",
-  "wss://zap.watch",
-];
+const relayarray = ["wss://nostr.oxtr.dev", "wss://relay.damus.io", "wss://nos.lol", "wss://purplerelay.com", "wss://n.ok0.org", "wss://zap.watch"];
 
 function extractHashtagsAndLinks(content) {
   const hashtagPattern = /#(\w+)/g;
@@ -28,12 +16,10 @@ function extractHashtagsAndLinks(content) {
   let links = [];
   let match;
 
-  // Extract hashtags
   while ((match = hashtagPattern.exec(content)) !== null) {
     hashtags.push(`${match[1]}`);
   }
 
-  // Extract links
   while ((match = urlPattern.exec(content)) !== null) {
     links.push(match[0]);
   }
