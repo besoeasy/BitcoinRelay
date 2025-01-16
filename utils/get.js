@@ -5,7 +5,7 @@ async function axiosGet(url) {
     const response = await axios.get(url);
     return response.data;
   } catch (error) {
-    console.error("GET request error:", error.response?.data || error.message);
+    console.error(error);
     return null;
   }
 }

@@ -24,9 +24,9 @@ async function main() {
   const funcx = [hndl_news, hndl_btcchart, hndl_btcprice, hndl_btcfee, hndl_whale, hndl_btclight, hndl_reddit];
 
   try {
-    const rand = Math.floor(Math.random() * funcx.length);
-
-    await pushIt(await funcx[rand]());
+    const content = await funcx[Math.floor(Math.random() * funcx.length)]();
+    console.log(content);
+    await pushIt(content);
   } catch (error) {
     console.error(error);
   } finally {
