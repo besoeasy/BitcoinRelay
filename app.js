@@ -22,12 +22,11 @@ async function main() {
   const funcx = [hndl_news, hndl_btcchart, hndl_btcprice, hndl_btcfee, hndl_whale, hndl_btclight];
 
   try {
-    const content = await funcx[Math.floor(Math.random() * funcx.length)]();
-    console.log(content);
-    await pushIt(content);
-
-    if (Math.random() > 0.95) {
-      await pushIt("Hey! 👋 If you'd like to support the project, feel free to send some BTC to: bc1q6euy5rpway8le2rv0m4djj6udltypf4yk3ptes 💰 \n\nOr, if you're into coding 💻, you can help improve the bot by contributing here: https://github.com/besoeasy/cryptorelay 🤖 \n\nThanks for your support! 🙏 \n\n#nostr #bitcoin #news #crypto 🚀");
+    if (Math.random() > 0.4) {
+      const content = await funcx[Math.floor(Math.random() * funcx.length)]();
+      await pushIt(content);
+    } else {
+      await pushIt(await hndl_news());
     }
   } catch (error) {
     console.error(error);
