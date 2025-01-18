@@ -10,8 +10,6 @@ const feedUrls = [
   "https://cryptoslate.com/feed/",
   "https://www.theblock.co/rss",
   "https://beincrypto.com/feed/",
-  "https://www.reddit.com/r/bitcoin/top/.rss",
-  "https://www.reddit.com/r/bitcoin/hot/.rss",
 ];
 
 async function fetchFeed(url) {
