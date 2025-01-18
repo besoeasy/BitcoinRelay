@@ -21,12 +21,12 @@ async function pushIt(text) {
 async function main() {
   const funcx = [hndl_news, hndl_btcchart, hndl_btcprice, hndl_btcfee, hndl_whale, hndl_btclight];
 
+  const shuffledFunctions = funcx.sort(() => Math.random() - 0.5);
+
   try {
-    if (Math.random() > 0.4) {
-      const content = await funcx[Math.floor(Math.random() * funcx.length)]();
+    for (let i = 0; i < 3; i++) {
+      const content = await shuffledFunctions[i]();
       await pushIt(content);
-    } else {
-      await pushIt(await hndl_news());
     }
   } catch (error) {
     console.error(error);
