@@ -68,7 +68,7 @@ async function hndl_reddit() {
     });
   }
 
-  output += "\n#reddit #bitcoin\n";
+  output += "\n#reddit #bitcoin #news #crypto\n";
   output += `${post.link}\n`;
 
   return output;
