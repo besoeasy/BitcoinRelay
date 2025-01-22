@@ -1,6 +1,7 @@
 const { axiosGet } = require("../utils/get.js");
 const { createCanvas, loadImage } = require("canvas");
 const { uploadIMG } = require("../utils/imgup.js");
+const path = require("path");
 
 async function getBitcoinPrice() {
   const data = await axiosGet(
@@ -16,10 +17,10 @@ async function getBitcoinPrice() {
 }
 
 const backimgprice = [
-  "https://bafkreiekpm3hj2cktdjgrxibcpefdjwuc7yahuhqzkbtpltwrpu2nyynnq.ipfs.dweb.link",
-  "https://bafkreia62gmdu7mkabkfk5yegeztcdopvgnzvs6wr2ifawlbtflfjyzi5a.ipfs.dweb.link",
-  "https://bafkreie3nexatkohw3gltrdkvsgcwhgsmkgp3on6juzlo3irjlfikyd7lu.ipfs.dweb.link",
-  "https://bafkreigk7kyjp2ra7w6qeinbhfmgqvehjwwm2qgmkn75y6eobfiti2qcxy.ipfs.dweb.link",
+  path.resolve(__dirname, "../images/price/1.png"),
+  path.resolve(__dirname, "../images/price/2.png"),
+  path.resolve(__dirname, "../images/price/3.png"),
+  path.resolve(__dirname, "../images/price/4.png"),
 ];
 
 async function paintPrice(textx) {
@@ -41,7 +42,6 @@ async function paintPrice(textx) {
 
   const textxColor = Math.random() > 0.5 ? "#e74c3c" : "#2ecc71";
 
-  context.font = `bold ${fontSize}px 'Helvetica Neue', Arial, sans-serif`;
   context.fillStyle = textxColor;
   context.fillText(textx, width / 2, height / 2);
 

@@ -1,9 +1,10 @@
 const { createCanvas, loadImage } = require("canvas");
 const { uploadIMG } = require("../utils/imgup.js");
 const { axiosGet } = require("../utils/get.js");
+const path = require("path");
 
 const backimgwhale = [
-  "https://bafkreigpvku2yzgcn5hdrtrbaqdr6dfoyhzpl5pnnhskdbx4ar3ntxpaca.ipfs.dweb.link",
+  path.resolve(__dirname, "../images/whale/1.png"),
 ];
 
 async function paintWhale(textx) {
@@ -23,7 +24,6 @@ async function paintWhale(textx) {
   context.textAlign = "center";
   context.textBaseline = "middle";
 
-  context.font = `bold ${fontSize}px 'Helvetica Neue', Arial, sans-serif`;
   context.fillStyle = "#1b1b1b";
   context.fillText(textx, width / 2, height / 2);
 

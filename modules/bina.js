@@ -53,14 +53,12 @@ async function hndl_binance() {
   const positionData = await fetchTopLongShortPositionRatio();
   const openInterest = await fetchOpenInterest();
 
-  if (positionData.length === 0) {
-    return "Error fetching data. Please try again later!";
-  }
-
   const longAccount = positionData[0]?.longAccount || "Unknown";
   const shortAccount = positionData[0]?.shortAccount || "Unknown";
   const longShortRatio = parseFloat(positionData[0]?.longShortRatio || 0);
   const funnyMessage = generateFunnyMessage(longShortRatio);
+
+  
 
   return `
 Here's the latest Bitcoin update:

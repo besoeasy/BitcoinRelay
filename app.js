@@ -30,6 +30,13 @@ async function main() {
   try {
     for (let i = 0; i < 3; i++) {
       const content = await shuffledFunctions[i]();
+
+      console.log(" ");
+      console.log(new Date().toLocaleString());
+      console.log(" ");
+      console.log(content);
+      console.log(" ");
+
       await pushIt(content);
     }
   } catch (error) {
