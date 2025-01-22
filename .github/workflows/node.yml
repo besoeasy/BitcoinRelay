@@ -18,12 +18,21 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
+
+      - name: Set Cloudflare DNS
+        run: |
+          echo "nameserver 1.1.1.1" | sudo tee /etc/resolv.conf > /dev/null
+          echo "nameserver 1.0.0.1" | sudo tee -a /etc/resolv.conf > /dev/null
+        shell: bash
+
       - run: npm install
+
       - name: Run Script
         env:
           IMGBB_API_KEY: ${{ secrets.IMGBB_API_KEY }}
