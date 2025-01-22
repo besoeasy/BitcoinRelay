@@ -53,7 +53,6 @@ async function hndl_reddit() {
 
   let output = "";
 
-  // Title
   output += `${post.title}\n`;
 
   if (post.description) {

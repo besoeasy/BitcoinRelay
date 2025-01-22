@@ -1,4 +1,4 @@
-const { hndl_reddit } = require("./modules/reddix.js");
+const { hndl_reddit } = require("./broken/reddit.js");
 
 async function main() {
   const x = await hndl_reddit();
