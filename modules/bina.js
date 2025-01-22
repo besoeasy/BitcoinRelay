@@ -3,7 +3,7 @@ const axios = require("axios");
 async function fetchBitcoinPrice() {
   try {
     const response = await axios.get("https://fapi.binance.com/fapi/v1/ticker/price?symbol=BTCUSDT");
-    return parseInt(response.data.price); // Format price to 2 decimals
+    return parseInt(response.data.price); 
   } catch (error) {
     console.error("Error fetching Bitcoin price:", error.message);
     return "Unavailable";
