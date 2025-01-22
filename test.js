@@ -1,9 +1,8 @@
-const { hndl_reddit } = require("./broken/reddit.js");
+const { hndl_binance } = require("./modules/bina.js");
 
 async function main() {
-  const x = await hndl_reddit();
-
-  console.log(x);
+  const data = await hndl_binance();
+  console.log(data);
 }
 
 main();
