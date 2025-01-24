@@ -28,7 +28,7 @@ async function main() {
   const shuffledFunctions = funcx.sort(() => Math.random() - 0.5);
 
   try {
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 2; i++) {
       const content = await shuffledFunctions[i]();
 
       console.log(" ");
