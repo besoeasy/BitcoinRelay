@@ -23,7 +23,7 @@ async function pushIt(text) {
 }
 
 async function main() {
-  const funcx = [hndl_reddit, hndl_news, hndl_btcchart, hndl_btcprice, hndl_btcfee, hndl_whale, hndl_btclight, hndl_binance];
+  const funcx = [hndl_reddit, hndl_news, hndl_btcchart, hndl_btcprice, hndl_btcfee, hndl_whale, hndl_btclight];
 
   const shuffledFunctions = funcx.sort(() => Math.random() - 0.5);
 
