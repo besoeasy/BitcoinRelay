@@ -12,6 +12,7 @@ async function aigen(inputx) {
   const prompt = `${inputx}
 
 Your job is to read and understand the content above, then rework it into informative report.
+Do not over explain if its about price, bitcoin avg price, bitcoin fees, etc. Keep it simple and to the point.
 
 Ensure the response follows this format:
 
