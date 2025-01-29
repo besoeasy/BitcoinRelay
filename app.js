@@ -32,13 +32,12 @@ async function main() {
   try {
     const content = await shuffledFunctions[1]();
 
-    console.log(content);
+    const { promt, response } = await aigen(content);
 
-    const aiContent = await aigen(content);
-
-    console.log(aiContent);
+    console.log(promt, response);
 
     await pushIt(aiContent);
+    
   } catch (error) {
     console.error(error);
   } finally {
