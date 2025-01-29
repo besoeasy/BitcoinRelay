@@ -18,6 +18,8 @@ const { hndl_news } = require("./modules/news.js");
 
 const { commitMsg } = require("./utils/nostr.js");
 
+const { aigen } = require("./ai/index.js");
+
 async function pushIt(text) {
   await commitMsg(text, process.env.NSEC, 10, 4);
 }
@@ -28,17 +30,15 @@ async function main() {
   const shuffledFunctions = funcx.sort(() => Math.random() - 0.5);
 
   try {
-    for (let i = 0; i < 2; i++) {
-      const content = await shuffledFunctions[i]();
+    const content = await shuffledFunctions[1]();
 
-      console.log(" ");
-      console.log(new Date().toLocaleString());
-      console.log(" ");
-      console.log(content);
-      console.log(" ");
+    console.log(content);
 
-      await pushIt(content);
-    }
+    const aiContent = await aigen(content);
+
+    console.log(aiContent);
+
+    await pushIt(aiContent);
   } catch (error) {
     console.error(error);
   } finally {
