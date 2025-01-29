@@ -153,11 +153,11 @@ async function hndl_btcchart() {
 
   if (msgurl) {
     msg =
-      `Bitcoin Price Action :\n\n` +
+      `Bitcoin Price Action In Last 24 Hours:\n\n` +
       `Avg: ${avgPrice} USD\n` +
       `Min: ${minPrice} USD\n` +
       `Max: ${maxPrice} USD\n` +
-      `\n#bitcoin #crypto #trade\n` +
+      `\n#bitcoin #trade\n` +
       `${msgurl}`;
   }
 
