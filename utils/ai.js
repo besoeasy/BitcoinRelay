@@ -21,11 +21,11 @@ Ensure the response follows this format:
 
 Title
 
-Content
-
-Image & Links (ionly if provided in the content) otherwise skip this section
+Content split into multiple lines.
 
 Random Fact 
+
+Images/ Links (if needed)
 
 Hashtags (minimum 4, maximum 8, relevant to the content)
 
