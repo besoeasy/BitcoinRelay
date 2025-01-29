@@ -20,10 +20,6 @@ const { commitMsg } = require("./utils/nostr.js");
 
 const { aigen } = require("./utils/ai.js");
 
-async function pushIt(text) {
-  await commitMsg(text, process.env.NSEC, 10, 4);
-}
-
 async function main() {
   const funcx = [hndl_reddit, hndl_news, hndl_btcchart, hndl_btcprice, hndl_btcfee, hndl_whale, hndl_btclight];
 
@@ -32,15 +28,10 @@ async function main() {
   try {
     const content = await shuffledFunctions[1]();
 
-    const { success, promt, response } = await aigen(content);
+    const { success, prompt, response } = await aigen(content);
 
     console.log(content, response);
-
-    if (success) {
-      await pushIt(response);
-    } else {
-      await pushIt(content);
-    }
+    
   } catch (error) {
     console.error(error);
   } finally {
