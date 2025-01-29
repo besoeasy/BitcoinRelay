@@ -43,7 +43,7 @@ async function imgWhale(msg) {
 async function hndl_whale() {
   try {
     const latestBlockHash = await axiosGet(
-      "https://blockstream.info/api/blocks/tip/hash"
+      "https://mempool.space/api/blocks/tip/hash"
     );
 
     if (!latestBlockHash) {
@@ -51,7 +51,7 @@ async function hndl_whale() {
     }
 
     const transactions = await axiosGet(
-      `https://blockstream.info/api/block/${latestBlockHash}/txs`
+      `https://mempool.space/api/block/${latestBlockHash}/txs`
     );
 
     if (!transactions || transactions.length === 0) {

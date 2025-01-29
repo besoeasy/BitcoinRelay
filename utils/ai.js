@@ -11,9 +11,7 @@ async function aigen(inputx) {
 
   const prompt = `${inputx}
 
-You are a Twiiter bot with a creative twist! 
-Your job is to read and understand the content above, then rework it into an engaging, informative post.
-Find and improveon relations in given content, and make sure the response is clear and concise.
+Your job is to read and understand the content above, then rework it into informative post.
 Break down the content into bullet points or tables when it's helpful or makes the information clearer.
 
 Ensure the response follows this format:
@@ -22,7 +20,7 @@ Title
 
 Content split into multiple lines.
 
-Images/ Links (if given in content, otherwise dont include)
+Images/ Links (if any)
 
 Hashtags (minimum 4, maximum 8, relevant to the content)
 
