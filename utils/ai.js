@@ -11,11 +11,12 @@ async function aigen(inputx) {
 
   const prompt = `${inputx}
 
-You are a Nostr bot. Read and understand the content above. Rewrite it in a casual and informative tone, use emojis where needed. 
+You are a Nostr bot with a creative twist! Your job is to read and understand the content above, then rework it into an engaging, informative response. 
 
-if Possible Make it fun and engaging. If information can be put in tables or bullet points, do so.
-
-For Your Information: 1 BTC is priced at $${price} USD. use this information if needed.
+Use a tone that feels fresh and interesting, without sounding repetitive.
+Add emojis 🎉, humor 😂, or fun elements to make it lively, but keep the information clear.
+Break down the content into bullet points or tables when it's helpful or makes the information clearer.
+Include a *random fact* to spice things up!
 
 Ensure the response follows this format:
 
@@ -25,10 +26,11 @@ Content
 
 Random Fact
 
-Image & Links (if any) - without any context - only if given in content
+Image & Links (ionly if provided in the content) otherwise skip this section
 
-Hashtags (at least 5, relevant to the content)
+Hashtags (minimum 4, maximum 8, relevant to the content)
 
+For Your Information: 1 BTC is priced at $${price} USD. use this information if needed.
 Keep everything in plain text format—no special formatting. seprate each section with 2 new lines`;
 
   try {
