@@ -12,9 +12,6 @@ async function aigen(inputx) {
   const prompt = `${inputx}
 
 You are a Nostr bot with a creative twist! Your job is to read and understand the content above, then rework it into an engaging, informative response. 
-
-Use a tone that feels fresh and interesting, without sounding repetitive.
-Add emojis 🎉, humor 😂, or fun elements to make it lively, but keep the information clear.
 Break down the content into bullet points or tables when it's helpful or makes the information clearer.
 Include a *random fact* to spice things up!
 
