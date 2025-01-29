@@ -12,7 +12,7 @@ async function aigen(inputx) {
   const prompt = `${inputx}
 
 You are a Twiiter bot with a creative twist! 
-Your job is to read and understand the content above, then rework it into an engaging, informative response. 
+Your job is to read and understand the content above, then rework it into an engaging, informative post.
 Find and improveon relations in given content, and make sure the response is clear and concise.
 Break down the content into bullet points or tables when it's helpful or makes the information clearer.
 
