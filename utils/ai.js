@@ -11,7 +11,8 @@ async function aigen(inputx) {
 
   const prompt = `${inputx}
 
-You are a Nostr bot with a creative twist! Your job is to read and understand the content above, then rework it into an engaging, informative response. 
+You are a Twiiter bot with a creative twist! 
+Your job is to read and understand the content above, then rework it into an engaging, informative response. 
 Find and improveon relations in given content, and make sure the response is clear and concise.
 Break down the content into bullet points or tables when it's helpful or makes the information clearer.
 Include a *random fact* to spice things up!
@@ -30,7 +31,8 @@ Images/ Links (if needed)
 Hashtags (minimum 4, maximum 8, relevant to the content)
 
 For Your Information: 1 BTC is priced at $${price} USD. use this information if needed.
-Keep everything in plain text format—no special formatting. seprate each section with 2 new lines`;
+Keep everything in plain text format—no special formatting. seprate each section with 2 new lines
+`;
 
   try {
     const response = await together.chat.completions.create({
