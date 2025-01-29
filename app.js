@@ -18,7 +18,7 @@ const { hndl_news } = require("./modules/news.js");
 
 const { commitMsg } = require("./utils/nostr.js");
 
-const { aigen } = require("./ai/index.js");
+const { aigen } = require( "./utils/ai.js");
 
 async function pushIt(text) {
   await commitMsg(text, process.env.NSEC, 10, 4);
