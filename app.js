@@ -32,11 +32,15 @@ async function main() {
   try {
     const content = await shuffledFunctions[1]();
 
-    const { promt, response } = await aigen(content);
+    const { success, promt, response } = await aigen(content);
 
     console.log("------------ PROMT -----------" + promt, "----------- RESPONSE -----------" + response);
 
-    await pushIt(response);
+    if (success) {
+      await pushIt(response);
+    } else {
+      await pushIt(content);
+    }
   } catch (error) {
     console.error(error);
   } finally {
