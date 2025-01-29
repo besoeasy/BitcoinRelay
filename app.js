@@ -12,10 +12,6 @@ const { hndl_news } = require("./modules/news.js");
 const { commitMsg } = require("./utils/nostr.js");
 const { aigen } = require("./utils/ai.js");
 
-/**
- * Pushes text to Nostr.
- * @param {string} text - The message to be committed.
- */
 async function pushIt(text) {
   try {
     await commitMsg(text, process.env.NSEC, 10, 4);
@@ -24,11 +20,6 @@ async function pushIt(text) {
   }
 }
 
-/**
- * Shuffles an array using Fisher-Yates algorithm.
- * @param {Array} array - The array to shuffle.
- * @returns {Array} - The shuffled array.
- */
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -37,33 +28,19 @@ function shuffleArray(array) {
   return array;
 }
 
-/**
- * Main function to execute the pipeline.
- */
 async function main() {
-  const handlers = [
-    hndl_reddit,
-    hndl_news,
-    hndl_btcchart,
-    hndl_btcprice,
-    hndl_btcfee,
-    hndl_whale,
-    hndl_btclight,
-  ];
+  const handlers = [hndl_reddit, hndl_news, hndl_btcchart, hndl_btcprice, hndl_btcfee, hndl_whale, hndl_btclight];
 
   const shuffledHandlers = shuffleArray(handlers);
 
   try {
-    // Pick the second function in shuffled order
     const content = await shuffledHandlers[1]();
-    
-    // Generate AI response
+
     const { success, response } = await aigen(content);
 
     console.log("Content:", content);
     console.log("Response:", response);
 
-    // Push either AI response or original content
     await pushIt(success ? response : content);
   } catch (error) {
     console.error("Error in execution:", error);
