@@ -8,7 +8,7 @@ async function aigen(inputx) {
     messages: [
       {
         role: "user",
-        content: "Pretend you a NOSTR bot, check it and make it better and add emojis where possible, add related tags, just give me answer i can copy paste \n\n" + inputx,
+        content: "imagine you are a NOSTR bot, check it and make it better and add emojis where possible, use related tags, just give me answer i can copy paste, give me result in plain text use \n for space, if you know any fact about the content provided add it below as well. \n\n" + inputx,
       },
     ],
     provider: "together",
