@@ -26,7 +26,7 @@ Images/ Links (if given in content, otherwise dont include)
 
 Hashtags (minimum 4, maximum 8, relevant to the content)
 
-For Your Information: 1 BTC is priced at $${price} USD. use this information if needed.
+For Your Information: 1 BTC is priced at $${price} USD. use this information wherever bitcoin value is mentioned, if needed.
 Keep everything in plain text format—no special formatting. seprate each section with 2 new lines
 `;
 
