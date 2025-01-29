@@ -36,7 +36,7 @@ async function main() {
 
     console.log(promt, response);
 
-    await pushIt(aiContent);
+    await pushIt(response);
     
   } catch (error) {
     console.error(error);
