@@ -26,7 +26,7 @@ Hashtags (minimum 3, maximum 8, relevant to the content)
 
 20% chance to include a joke or a fun fact.
 20% chance to include a question for the reader.
-30% chance to change nothing, just rephrase the content. 
+20% chance to change nothing, just rephrase the content. 
 5% chance of asking user to support the bots development by donating BTC.
 
 For Your Information: 1 BTC is priced at $${price} USD. use this information wherever bitcoin value is mentioned, if needed.
