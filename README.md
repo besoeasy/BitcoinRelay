@@ -6,11 +6,16 @@
 
 ---
 
+## Running
+
+      NSEC=your-nostr-key node index.js
+
 ## 🚀 Features
 
 - **Bitcoin-Centric Content**: Stay updated with the most relevant news and insights about Bitcoin.
 - **Auto-Deletion**: Posts self-destruct after a set period to keep the feed minimalistic and distraction-free.
 - **Open-Source**: Free to use, modify, and enhance. Your contributions are welcome!
+
 ---
 
 ## 💡 About Nostr
