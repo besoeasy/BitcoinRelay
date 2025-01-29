@@ -3,9 +3,7 @@ const { uploadIMG } = require("../utils/imgup.js");
 const { axiosGet } = require("../utils/get.js");
 const path = require("path");
 
-const backimgwhale = [
-  path.resolve(__dirname, "../images/whale/1.png"),
-];
+const backimgwhale = [path.resolve(__dirname, "../images/whale/1.png")];
 
 async function paintWhale(textx) {
   const width = 1000;
@@ -13,9 +11,7 @@ async function paintWhale(textx) {
   const canvas = createCanvas(width, height);
   const context = canvas.getContext("2d");
 
-  const backgroundImage = await loadImage(
-    backimgwhale[Math.floor(Math.random() * backimgwhale.length)]
-  );
+  const backgroundImage = await loadImage(backimgwhale[Math.floor(Math.random() * backimgwhale.length)]);
 
   context.drawImage(backgroundImage, 0, 0, width, height);
 
@@ -42,17 +38,13 @@ async function imgWhale(msg) {
 
 async function hndl_whale() {
   try {
-    const latestBlockHash = await axiosGet(
-      "https://mempool.space/api/blocks/tip/hash"
-    );
+    const latestBlockHash = await axiosGet("https://mempool.space/api/blocks/tip/hash");
 
     if (!latestBlockHash) {
       throw new Error("Failed to fetch the latest block hash.");
     }
 
-    const transactions = await axiosGet(
-      `https://mempool.space/api/block/${latestBlockHash}/txs`
-    );
+    const transactions = await axiosGet(`https://mempool.space/api/block/${latestBlockHash}/txs`);
 
     if (!transactions || transactions.length === 0) {
       return "It's quiet out there… no transactions in the latest block. Did Bitcoin fall asleep?";
@@ -62,13 +54,8 @@ async function hndl_whale() {
       .filter((tx) => tx.vout.length < 3) // Focusing on "big whales" with few outputs
       .reduce(
         (max, tx) => {
-          const totalOutput = tx.vout.reduce(
-            (sum, output) => sum + output.value,
-            0
-          );
-          return totalOutput > max.totalOutput
-            ? { transaction: tx, totalOutput }
-            : max;
+          const totalOutput = tx.vout.reduce((sum, output) => sum + output.value, 0);
+          return totalOutput > max.totalOutput ? { transaction: tx, totalOutput } : max;
         },
         { transaction: null, totalOutput: 0 }
       );
@@ -92,7 +79,7 @@ async function formatWhaleTransaction(transaction, totalOutput) {
 
   let output = "🐋 A whale moved Bitcoins!\n\n";
   output += `🔗 Transaction ID: ${txid}\n`;
-  output += `💸 Total Bitcoin Transferred: ${totalOutput.toFixed(8)} BTC\n\n`;
+  output += `💸 Total Bitcoin Transferred: ${parseInt(totalOutput)} BTC\n\n`;
 
   output += "💰 Inputs:\n";
   vin.forEach((input, index) => {

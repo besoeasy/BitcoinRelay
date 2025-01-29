@@ -13,10 +13,12 @@ const { commitMsg } = require("./utils/nostr.js");
 const { aigen } = require("./utils/ai.js");
 
 async function pushIt(text) {
-  try {
-    await commitMsg(text, process.env.NSEC, 10, 4);
-  } catch (error) {
-    console.error("Error pushing message:", error);
+  if (process.env.NSEC) {
+    try {
+      await commitMsg(text, process.env.NSEC, 10, 4);
+    } catch (error) {
+      console.error("Error pushing message:", error);
+    }
   }
 }
 
@@ -38,8 +40,14 @@ async function main() {
 
     const { success, response } = await aigen(content);
 
-    console.log("Content:", content);
-    console.log("Response:", response);
+    console.log(`Content: 
+      
+      ${content}
+      
+      
+      Response: 
+      
+      ${response}`);
 
     await pushIt(success ? response : content);
   } catch (error) {
