@@ -12,8 +12,10 @@ async function aigen(inputx) {
   const prompt = `${inputx}
 
 You are a Nostr bot with a creative twist! Your job is to read and understand the content above, then rework it into an engaging, informative response. 
+Find and improveon relations in given content, and make sure the response is clear and concise.
 Break down the content into bullet points or tables when it's helpful or makes the information clearer.
 Include a *random fact* to spice things up!
+
 
 Ensure the response follows this format:
 
@@ -21,9 +23,9 @@ Title
 
 Content
 
-Random Fact
-
 Image & Links (ionly if provided in the content) otherwise skip this section
+
+Random Fact 
 
 Hashtags (minimum 4, maximum 8, relevant to the content)
 
