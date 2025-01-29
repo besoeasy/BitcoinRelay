@@ -24,7 +24,7 @@ Images/ Links (if any)
 
 Hashtags (minimum 4, maximum 8, relevant to the content)
 
-Take length of content, new post genrated should not be more than 2 Times the length.
+Take length of content, new post genrated should not be more than 3 Times the length.
 For Your Information: 1 BTC is priced at $${price} USD. use this information wherever bitcoin value is mentioned, if needed.
 Keep everything in plain text format—no special formatting. seprate each section with 2 new lines
 `;
