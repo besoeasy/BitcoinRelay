@@ -26,7 +26,7 @@ Content split into multiple lines.
 
 Random Fact 
 
-Images/ Links (if needed)
+Images/ Links (if given in content, otherwise dont include)
 
 Hashtags (minimum 4, maximum 8, relevant to the content)
 
