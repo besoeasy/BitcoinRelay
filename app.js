@@ -34,7 +34,7 @@ async function main() {
 
     const { promt, response } = await aigen(content);
 
-    console.log(promt, response);
+    console.log("------------ PROMT -----------" + promt, "----------- RESPONSE -----------"  response);
 
     await pushIt(response);
     

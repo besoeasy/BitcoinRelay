@@ -14,7 +14,7 @@ async function aigen(inputx) {
       },
     ],
     provider: "together",
-    max_tokens: 500,
+    max_tokens: 1000,
   });
 
   return {
