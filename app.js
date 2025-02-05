@@ -10,7 +10,6 @@ const { hndl_binance } = require("./modules/bina.js");
 const { hndl_news } = require("./modules/news.js");
 
 const { commitMsg } = require("./utils/nostr.js");
-const { aigen } = require("./utils/ai.js");
 
 async function pushIt(text) {
   if (process.env.NSEC) {
@@ -38,18 +37,7 @@ async function main() {
   try {
     const content = await shuffledHandlers[1]();
 
-    const { success, response } = await aigen(content);
-
-    console.log(`Content: 
-      
-      ${content}
-      
-      
-      Response: 
-      
-      ${response}`);
-
-    await pushIt(success ? response : content);
+    await pushIt(content);
   } catch (error) {
     console.error("Error in execution:", error);
   } finally {
