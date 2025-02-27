@@ -14,7 +14,7 @@ const { aigen } = require("./utils/ai.js");
 async function pushIt(text) {
   if (process.env.NSEC) {
     try {
-      await commitMsg(text, process.env.NSEC, 10, 4);
+      await commitMsg(text, process.env.NSEC, 30, 4);
     } catch (error) {
       console.error("Error pushing message:", error);
     }
