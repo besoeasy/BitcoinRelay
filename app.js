@@ -33,6 +33,9 @@ async function main() {
 
   try {
     const content2 = await handler_data[0]();
+
+    console.log("\n\n\n" + content2 + "\n\n\n");
+
     await pushIt(content2);
   } catch (error) {
     console.error("Error in execution:", error);
