@@ -1,95 +1,98 @@
-const { finalizeEvent, getPublicKey, getEventHash, verifyEvent } = require("nostr-tools/pure");
-const { Pool, useWebSocketImplementation } = require("nostr-tools/pool");
+const { finalizeEvent, getPublicKey, nip19 } = require("nostr-tools");
 const WebSocket = require("ws");
-const nip19 = require("nostr-tools/nip19");
 
-// Inject the NodeJS WebSocket implementation
-useWebSocketImplementation(WebSocket);
+/**
+ * Posts content to the Nostr network
+ * @param {string} nsec - The private key in nsec format
+ * @param {string} content - The content to post
+ * @returns {Promise<string>} - The event ID (post ID)
+ */
+function postToNostr(nsec, content) {
+  return new Promise((resolve, reject) => {
+    try {
+      // Decode the nsec to get the hex private key
+      let privateKey;
+      if (nsec.startsWith("nsec")) {
+        privateKey = nip19.decode(nsec).data;
+      } else {
+        // Assume it's already a hex private key
+        privateKey = nsec;
+      }
 
-// List of relay URLs
-const relayUrls = [
-  "wss://nostr.oxtr.dev",
-  "wss://relay.damus.io",
-  "wss://nos.lol",
-  "wss://purplerelay.com",
-  "wss://n.ok0.org",
-  "wss://zap.watch"
-];
+      // Get the public key from the private key
+      const pubkey = getPublicKey(privateKey);
 
-// Create a persistent connection pool
-const pool = new Pool(relayUrls);
+      // Create the event
+      const event = {
+        kind: 1, // Regular text note
+        created_at: Math.floor(Date.now() / 1000),
+        tags: [],
+        content: content,
+        pubkey: pubkey,
+      };
 
-function extractHashtagsAndLinks(content) {
-  const hashtagPattern = /#(\w+)/g;
-  const urlPattern = /(https?:\/\/[^\s]+)/g;
-  const hashtags = [];
-  const links = [];
-  let match;
+      // Sign the event
+      const signedEvent = finalizeEvent(event, privateKey);
+      const eventId = signedEvent.id;
 
-  while ((match = hashtagPattern.exec(content)) !== null) {
-    hashtags.push(match[1]);
-  }
+      // Connect to some Nostr relays
+      const relays = ["wss://nostr.oxtr.dev", "wss://relay.damus.io", "wss://nos.lol", "wss://purplerelay.com", "wss://n.ok0.org", "wss://zap.watch"];
 
-  while ((match = urlPattern.exec(content)) !== null) {
-    links.push(match[0]);
-  }
+      let connectedRelays = 0;
+      let publishedToAtLeastOne = false;
 
-  return { hashtags, links };
-}
+      for (const relayUrl of relays) {
+        const ws = new WebSocket(relayUrl);
 
-function calculatePow(event, difficulty) {
-  let nonce = 0;
-  let hash;
-  do {
-    // Remove any previous nonce tag and append a new one
-    event.tags = event.tags.filter((tag) => tag[0] !== "nonce");
-    event.tags.push(["nonce", String(nonce), String(difficulty)]);
-    hash = getEventHash(event);
-    nonce++;
-  } while (!hash.startsWith("0".repeat(difficulty)));
-  return event;
-}
+        ws.on("open", () => {
+          connectedRelays++;
+          console.log(`Connected to ${relayUrl}`);
 
-async function commitMsg(content, nsec, expireAfter = 150, powDifficulty = 2) {
-  try {
-    // Decode the secret key
-    const { data: sk } = nip19.decode(nsec);
-    const pk = getPublicKey(sk);
+          // Publish the event
+          const publishMessage = ["EVENT", signedEvent];
+          ws.send(JSON.stringify(publishMessage));
+        });
 
-    // Extract hashtags and links from content
-    const { hashtags, links } = extractHashtagsAndLinks(content);
-    const timenow = Math.floor(Date.now() / 1000);
+        ws.on("message", (data) => {
+          const message = JSON.parse(data.toString());
+          if (message[0] === "OK" && message[1] === eventId && message[2]) {
+            console.log(`Event published to ${relayUrl}: ${eventId}`);
+            publishedToAtLeastOne = true;
+            ws.close();
 
-    // Build the event template
-    const event = {
-      kind: 1,
-      created_at: timenow,
-      tags: [
-        ["expiration", String(timenow + 86400 * expireAfter)]
-      ],
-      content: content,
-      pubkey: pk,
-    };
+            // If we've published to at least one relay and all connections have been attempted
+            if (publishedToAtLeastOne && connectedRelays === relays.length) {
+              resolve(eventId);
+            }
+          }
+        });
 
-    // Append hashtag and link tags
-    event.tags.push(...hashtags.map((tag) => ["t", tag]));
-    event.tags.push(...links.map((link) => ["r", link]));
+        ws.on("error", (error) => {
+          console.error(`Error with ${relayUrl}:`, error.message);
+          connectedRelays++;
 
-    // Apply proof-of-work and sign the event
-    const eventWithPow = calculatePow(event, powDifficulty);
-    const signedEvent = finalizeEvent(eventWithPow, sk);
+          // If all connections have been attempted
+          if (connectedRelays === relays.length && publishedToAtLeastOne) {
+            resolve(eventId);
+          } else if (connectedRelays === relays.length) {
+            reject(new Error("Failed to publish to any relay"));
+          }
+        });
+      }
 
-    if (!verifyEvent(signedEvent)) {
-      console.error("Invalid event signature");
-      return;
+      // Set a timeout in case relays don't respond
+      setTimeout(() => {
+        if (publishedToAtLeastOne) {
+          resolve(eventId);
+        } else {
+          reject(new Error("Timeout waiting for relay responses"));
+        }
+      }, 10000);
+    } catch (error) {
+      reject(error);
     }
-
-    // Publish via the persistent pool
-    const publishResult = await pool.publish(signedEvent);
-    console.log("Published to relays:", publishResult);
-  } catch (error) {
-    console.error("Error in bot execution:", error);
-  }
+  });
 }
 
-module.exports = { commitMsg };
+// Export as CommonJS module
+module.exports = postToNostr;
