@@ -9,6 +9,7 @@ const { hndl_reddit } = require("./modules/reddix.js");
 const { hndl_news } = require("./modules/news.js");
 
 const postToNostr = require("./utils/nostr.js");
+const { aigen } = require("./utils/ai.js");
 
 async function pushIt(text) {
   if (process.env.NSEC) {
@@ -36,7 +37,15 @@ async function main() {
 
     console.log("\n\n\n" + content2 + "\n\n\n");
 
-    await pushIt(content2);
+    const aicontent = await aigen(content2);
+
+    console.log("\n\n\n" + aicontent.response + "\n\n\n");
+
+    if (Math.random() > 0.5) {
+      await pushIt(content2);
+    } else {
+      await pushIt(aicontent.response);
+    }
   } catch (error) {
     console.error("Error in execution:", error);
   } finally {

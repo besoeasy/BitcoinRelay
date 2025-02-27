@@ -1,5 +1,17 @@
-const { finalizeEvent, getPublicKey, nip19, getEventHash } = require('nostr-tools');
-const WebSocket = require('ws');
+const { finalizeEvent, getPublicKey, nip19, getEventHash } = require("nostr-tools");
+const WebSocket = require("ws");
+
+const relays = ["wss://relay.damus.io", "wss://nostr.bitcoiner.social", "wss://purplerelay.com"];
+
+/**
+ * Calculates expiration timestamp (1 year from now)
+ * @returns {number} - Unix timestamp for 1 year from now
+ */
+function calculateExpirationTime() {
+  const oneYearFromNow = new Date();
+  oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1);
+  return Math.floor(oneYearFromNow.getTime() / 1000);
+}
 
 /**
  * Extracts hashtags and links from content
@@ -44,7 +56,7 @@ function calculatePow(event, difficulty) {
 }
 
 /**
- * Posts content to the Nostr network with POW
+ * Posts content to the Nostr network with POW and 1-year expiration
  * @param {string} nsec - The private key in nsec format
  * @param {string} content - The content to post
  * @returns {Promise<string>} - The event ID (post ID)
@@ -54,7 +66,7 @@ function postToNostr(nsec, content) {
     try {
       // Decode the nsec to get the hex private key
       let privateKey;
-      if (nsec.startsWith('nsec')) {
+      if (nsec.startsWith("nsec")) {
         privateKey = nip19.decode(nsec).data;
       } else {
         // Assume it's already a hex private key
@@ -63,14 +75,18 @@ function postToNostr(nsec, content) {
 
       // Get the public key from the private key
       const pubkey = getPublicKey(privateKey);
-      
+
       // Extract hashtags and links
       const { hashtags, links } = extractHashtagsAndLinks(content);
-      
-      // Create tags array with hashtags and links
+
+      // Calculate expiration time (1 year from now)
+      const expirationTime = calculateExpirationTime();
+
+      // Create tags array with hashtags, links, and expiration
       const tags = [
-        ...hashtags.map(tag => ['t', tag]),
-        ...links.map(url => ['r', url])
+        ...hashtags.map((tag) => ["t", tag]),
+        ...links.map((url) => ["r", url]),
+        ["expiration", String(expirationTime)], // Add expiration tag (NIP-40)
       ];
 
       // Create the event
@@ -79,83 +95,81 @@ function postToNostr(nsec, content) {
         created_at: Math.floor(Date.now() / 1000),
         tags: tags,
         content: content,
-        pubkey: pubkey
+        pubkey: pubkey,
       };
 
-      console.log('Calculating POW with difficulty 3...');
+      console.log("Calculating POW with difficulty 3...");
       // Calculate POW with difficulty 3
       const eventWithPow = calculatePow(event, 3);
-      console.log('POW calculated successfully');
+      console.log("POW calculated successfully");
 
       // Sign the event
       const signedEvent = finalizeEvent(eventWithPow, privateKey);
       const eventId = signedEvent.id;
-      
-      // Connect to some Nostr relays
-      const relays = [
-        "wss://relay.damus.io",
-        "wss://nostr-pub.wellorder.net",
-        "wss://nostr.rocks",
-        "wss://relay.nostr.info",
-        "wss://nos.lol",
-        "wss://relay.nostr.win",
-        "wss://nostr-relay.wlvs.space",
-        "wss://nostr.bitcoiner.social",
-        "wss://relay.nostr.ch",
-        "wss://relay.snort.social"
-      ];
-      
+
+      // Log expiration info
+      const expirationDate = new Date(expirationTime * 1000).toLocaleString();
+      console.log(`Post will expire on: ${expirationDate}`);
+
       let connectedRelays = 0;
       let publishedToAtLeastOne = false;
-      
+
       for (const relayUrl of relays) {
         const ws = new WebSocket(relayUrl);
-        
-        ws.on('open', () => {
+
+        ws.on("open", () => {
           connectedRelays++;
           console.log(`Connected to ${relayUrl}`);
-          
+
           // Publish the event
-          const publishMessage = ['EVENT', signedEvent];
+          const publishMessage = ["EVENT", signedEvent];
           ws.send(JSON.stringify(publishMessage));
         });
-        
-        ws.on('message', (data) => {
+
+        ws.on("message", (data) => {
           const message = JSON.parse(data.toString());
-          if (message[0] === 'OK' && message[1] === eventId && message[2]) {
+          if (message[0] === "OK" && message[1] === eventId && message[2]) {
             console.log(`Event published to ${relayUrl}: ${eventId}`);
             publishedToAtLeastOne = true;
             ws.close();
-            
+
             // If we've published to at least one relay and all connections have been attempted
             if (publishedToAtLeastOne && connectedRelays === relays.length) {
-              resolve(eventId);
+              resolve({
+                eventId: eventId,
+                expirationDate: expirationDate,
+              });
             }
           }
         });
-        
-        ws.on('error', (error) => {
+
+        ws.on("error", (error) => {
           console.error(`Error with ${relayUrl}:`, error.message);
           connectedRelays++;
-          
+
           // If all connections have been attempted
           if (connectedRelays === relays.length && publishedToAtLeastOne) {
-            resolve(eventId);
+            resolve({
+              eventId: eventId,
+              expirationDate: expirationDate,
+            });
           } else if (connectedRelays === relays.length) {
-            reject(new Error('Failed to publish to any relay'));
+            reject(new Error("Failed to publish to any relay"));
           }
         });
       }
-      
+
       // Set a timeout in case relays don't respond
       setTimeout(() => {
         if (publishedToAtLeastOne) {
-          resolve(eventId);
+          resolve({
+            eventId: eventId,
+            expirationDate: expirationDate,
+          });
         } else {
-          reject(new Error('Timeout waiting for relay responses'));
+          reject(new Error("Timeout waiting for relay responses"));
         }
       }, 10000);
-      
     } catch (error) {
       reject(error);
     }

@@ -3,10 +3,18 @@ const Together = require("together-ai");
 const { getBitcoinPrice } = require("../modules/btc_price.js");
 
 const together = new Together({
-  apiKey: process.env.TOGETHER_API_KEY,
+  apiKey: process.env.TOGETHER_API_KEY || null,
 });
 
 async function aigen(inputx) {
+  if (!process.env.TOGETHER_API_KEY) {
+    return {
+      success: false,
+      prompt: null,
+      response: inputx,
+    };
+  }
+
   const { price, sat } = await getBitcoinPrice();
 
   const prompt = `${inputx}
