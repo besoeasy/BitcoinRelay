@@ -35,12 +35,12 @@ async function main() {
 
   try {
     if (Math.random() > 0.5) {
-      const content = await handler_data[0]();
+      const content2 = await handler_data[0]();
 
-      await pushIt(content);
+      await pushIt(content2);
     } else {
-      const content = await handler_updates[0]();
-      const aicontent = await aigen(content);
+      const content3 = await handler_updates[0]();
+      const aicontent = await aigen(content3);
 
       await pushIt(aicontent);
     }
