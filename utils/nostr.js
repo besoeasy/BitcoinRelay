@@ -1,23 +1,33 @@
 const { finalizeEvent, getPublicKey, getEventHash, verifyEvent } = require("nostr-tools/pure");
-const { Relay } = require("nostr-tools/relay");
-const { useWebSocketImplementation } = require("nostr-tools/pool");
+const { Pool, useWebSocketImplementation } = require("nostr-tools/pool");
 const WebSocket = require("ws");
 const nip19 = require("nostr-tools/nip19");
 
+// Inject the NodeJS WebSocket implementation
 useWebSocketImplementation(WebSocket);
 
-const relayarray = ["wss://nostr.oxtr.dev", "wss://relay.damus.io", "wss://nos.lol", "wss://purplerelay.com", "wss://n.ok0.org", "wss://zap.watch"];
+// List of relay URLs
+const relayUrls = [
+  "wss://nostr.oxtr.dev",
+  "wss://relay.damus.io",
+  "wss://nos.lol",
+  "wss://purplerelay.com",
+  "wss://n.ok0.org",
+  "wss://zap.watch"
+];
+
+// Create a persistent connection pool
+const pool = new Pool(relayUrls);
 
 function extractHashtagsAndLinks(content) {
   const hashtagPattern = /#(\w+)/g;
   const urlPattern = /(https?:\/\/[^\s]+)/g;
-
-  let hashtags = [];
-  let links = [];
+  const hashtags = [];
+  const links = [];
   let match;
 
   while ((match = hashtagPattern.exec(content)) !== null) {
-    hashtags.push(`${match[1]}`);
+    hashtags.push(match[1]);
   }
 
   while ((match = urlPattern.exec(content)) !== null) {
@@ -30,41 +40,43 @@ function extractHashtagsAndLinks(content) {
 function calculatePow(event, difficulty) {
   let nonce = 0;
   let hash;
-
   do {
+    // Remove any previous nonce tag and append a new one
     event.tags = event.tags.filter((tag) => tag[0] !== "nonce");
     event.tags.push(["nonce", String(nonce), String(difficulty)]);
     hash = getEventHash(event);
     nonce++;
   } while (!hash.startsWith("0".repeat(difficulty)));
-
   return event;
 }
 
 async function commitMsg(content, nsec, expireAfter = 150, powDifficulty = 2) {
   try {
-    const { type, data } = nip19.decode(nsec);
-
-    const sk = data;
+    // Decode the secret key
+    const { data: sk } = nip19.decode(nsec);
     const pk = getPublicKey(sk);
 
+    // Extract hashtags and links from content
     const { hashtags, links } = extractHashtagsAndLinks(content);
-
     const timenow = Math.floor(Date.now() / 1000);
 
-    const eventTemplate = {
+    // Build the event template
+    const event = {
       kind: 1,
       created_at: timenow,
-      tags: [["expiration", String(timenow + 86400 * expireAfter)]],
+      tags: [
+        ["expiration", String(timenow + 86400 * expireAfter)]
+      ],
       content: content,
       pubkey: pk,
     };
 
-    eventTemplate.tags.push(...hashtags.map((tag) => ["t", tag]));
-    eventTemplate.tags.push(...links.map((link) => ["r", link]));
+    // Append hashtag and link tags
+    event.tags.push(...hashtags.map((tag) => ["t", tag]));
+    event.tags.push(...links.map((link) => ["r", link]));
 
-    const eventWithPow = calculatePow(eventTemplate, powDifficulty);
-
+    // Apply proof-of-work and sign the event
+    const eventWithPow = calculatePow(event, powDifficulty);
     const signedEvent = finalizeEvent(eventWithPow, sk);
 
     if (!verifyEvent(signedEvent)) {
@@ -72,17 +84,9 @@ async function commitMsg(content, nsec, expireAfter = 150, powDifficulty = 2) {
       return;
     }
 
-    for (const relayUrl of relayarray) {
-      try {
-        const relay = await Relay.connect(relayUrl);
-
-        await relay.publish(signedEvent);
-
-        await relay.close();
-      } catch (error) {
-        console.error(`Error : ${relayUrl}`);
-      }
-    }
+    // Publish via the persistent pool
+    const publishResult = await pool.publish(signedEvent);
+    console.log("Published to relays:", publishResult);
   } catch (error) {
     console.error("Error in bot execution:", error);
   }
