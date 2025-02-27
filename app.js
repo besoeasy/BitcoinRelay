@@ -10,6 +10,7 @@ const { hndl_binance } = require("./modules/bina.js");
 const { hndl_news } = require("./modules/news.js");
 
 const { commitMsg } = require("./utils/nostr.js");
+const { aigen } = require("./utils/ai.js");
 
 async function pushIt(text) {
   if (process.env.NSEC) {
@@ -30,14 +31,20 @@ function shuffleArray(array) {
 }
 
 async function main() {
-  const handlers = [hndl_reddit, hndl_news, hndl_btcchart, hndl_btcprice, hndl_btcfee, hndl_whale, hndl_btclight];
-
-  const shuffledHandlers = shuffleArray(handlers);
+  const handler_data = shuffleArray([hndl_btcchart, hndl_btcprice, hndl_btcfee, hndl_whale, hndl_btclight]);
+  const handler_updates = shuffleArray([hndl_reddit, hndl_news]);
 
   try {
-    const content = await shuffledHandlers[1]();
+    if (Math.random() > 0.5) {
+      const content = await handler_data[0]();
 
-    await pushIt(content);
+      await pushIt(content);
+    } else {
+      const content = await handler_updates[0]();
+      const aicontent = await aigen(content);
+
+      await pushIt(aicontent);
+    }
   } catch (error) {
     console.error("Error in execution:", error);
   } finally {
