@@ -14,7 +14,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [22.x]
+        node-version: [20.x]
 
     steps:
       - uses: actions/checkout@v4
@@ -24,12 +24,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
-
-      - name: Set Cloudflare DNS
-        run: |
-          echo "nameserver 1.1.1.1" | sudo tee /etc/resolv.conf > /dev/null
-          echo "nameserver 1.0.0.1" | sudo tee -a /etc/resolv.conf > /dev/null
-        shell: bash
 
       - run: npm ci
 

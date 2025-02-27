@@ -6,7 +6,6 @@ const { hndl_btcprice } = require("./modules/btc_price.js");
 const { hndl_whale } = require("./modules/txn_whale.js");
 const { hndl_btcchart } = require("./modules/btc_chart.js");
 const { hndl_reddit } = require("./modules/reddix.js");
-const { hndl_binance } = require("./modules/bina.js");
 const { hndl_news } = require("./modules/news.js");
 
 const { commitMsg } = require("./utils/nostr.js");
