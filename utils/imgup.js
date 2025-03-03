@@ -74,7 +74,7 @@ async function uploadIMG(buffer) {
     throw new Error("Image upload failed.");
   }
 
-  return imageUrl;
+  return "https://wsrv.nl/?url=" +imageUrl;
 }
 
 module.exports = {
