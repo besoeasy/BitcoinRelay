@@ -25,7 +25,6 @@ Analyze the content (min 50 words, max 80 words) and create a structured reddit 
 For Your Information: 1 Bitcoin (BTC) is priced at $${price} USD.
 
 GUIDELINES:
-- **Structure:** Clear sections with introduction, body, and conclusion.
 - **Content:** Use tables, lists, and bullet points. Include examples if relevant.
 - **Visuals:** Add images/links at the bottom.
 - **Hashtags:** Include 3-8 relevant hashtags.
