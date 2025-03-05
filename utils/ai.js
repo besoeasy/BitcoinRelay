@@ -20,7 +20,7 @@ async function aigen(inputx) {
 const prompt = `${inputx}
 
 DIRECTIVE:
-Analyze the content (max 50 words) and create a structured report. Follow these guidelines:
+Analyze the content (max 70 words) and create a structured report. Follow these guidelines:
 
 For Your Information: 1 Bitcoin (BTC) is priced at $${price} USD.
 
