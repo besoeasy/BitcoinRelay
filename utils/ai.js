@@ -26,9 +26,9 @@ GUIDELINES:
 - **Structure:** Organize the content into clearly defined sections.
 - **Title:** Begin with a concise title.
 - **Content:** Divide the body into multiple lines and sections, using tables, lists, and bullet points to enhance readability.
-- **Visuals:** Include a section for Images/Links if available.
+- **Visuals:** Include Images/Links if available, at the very bottom. 
 - **Hashtags:** Append a section with 3 to 8 relevant hashtags.
-- **Bitcoin Information:** Wherever Bitcoin is mentioned, insert the note: "For Your Information: 1 BTC is priced at $${price} USD."
+- **Bitcoin Information:** Wherever Bitcoin is mentioned, insert the value in USD right next to it.
 - **Format:** Output must be in plain text with each section separated by two new lines; no special formatting is allowed.
 
 END OF DIRECTIVE`;
