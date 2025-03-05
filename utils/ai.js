@@ -15,29 +15,24 @@ async function aigen(inputx) {
     };
   }
 
-  
-
-
   const { price, sat } = await getBitcoinPrice();
 
 const prompt = `${inputx}
 
 DIRECTIVE:
-Analyze the content provided above and create a comprehensive, structured report. Follow these instructions precisely.
+Analyze the content (max 50 words) and create a structured report. Follow these guidelines:
 
-For Your Information: The current price of 1 Bitcoin (BTC) is $${price} USD. Use this information as needed.
+For Your Information: 1 Bitcoin (BTC) is priced at $${price} USD.
 
 GUIDELINES:
-- **Structure:** Organize the content into well-defined sections for clarity.
-- **Title:** Start with a concise and informative title.
-- **Content:** Use multiple lines and sections, incorporating tables, lists, and bullet points to improve readability.
-- **Visuals:** Include any relevant images or links at the bottom of the report.
-- **Hashtags:** Conclude with a section containing 3 to 8 relevant hashtags.
-- **Bitcoin References:** Whenever Bitcoin is mentioned, include its current value in USD alongside it (e.g., Bitcoin ($${price} USD)).
-- **Format:** Ensure the output is in plain text, with each section separated by two new lines. Avoid using special formatting.
+- **Structure:** Clear sections with introduction, body, and conclusion.
+- **Content:** Use tables, lists, and bullet points. Include examples if relevant.
+- **Visuals:** Add images/links at the bottom.
+- **Hashtags:** Include 3-8 relevant hashtags.
+- **Bitcoin References:** Use Bitcoin ($${price} USD) format.
+- **Format:** Plain text, sections separated by two new lines.
 
 END OF DIRECTIVE`
-
 
 
   try {
