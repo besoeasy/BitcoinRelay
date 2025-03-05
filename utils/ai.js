@@ -22,6 +22,8 @@ const prompt = `${inputx}
 DIRECTIVE:
 Analyze the content provided above and transform it into an informative report. Follow the instructions below strictly.
 
+For Your Information: 1 BTC is priced at $${price} USD. use this information if needed.
+
 GUIDELINES:
 - **Structure:** Organize the content into clearly defined sections.
 - **Title:** Begin with a concise title.
