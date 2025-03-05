@@ -17,24 +17,22 @@ async function aigen(inputx) {
 
   const { price, sat } = await getBitcoinPrice();
 
-  const prompt = `${inputx}
+const prompt = `${inputx}
 
-Your job is to read and understand the content above, then rework it into informative report.
-Use tables, list, bullet points, or any other to make the content more readable.
+DIRECTIVE:
+Analyze the content provided above and transform it into an informative report. Follow the instructions below strictly.
 
-Ensure the response follows this format:
+GUIDELINES:
+- **Structure:** Organize the content into clearly defined sections.
+- **Title:** Begin with a concise title.
+- **Content:** Divide the body into multiple lines and sections, using tables, lists, and bullet points to enhance readability.
+- **Visuals:** Include a section for Images/Links if available.
+- **Hashtags:** Append a section with 3 to 8 relevant hashtags.
+- **Bitcoin Information:** Wherever Bitcoin is mentioned, insert the note: "For Your Information: 1 BTC is priced at $${price} USD."
+- **Format:** Output must be in plain text with each section separated by two new lines; no special formatting is allowed.
 
-Title
+END OF DIRECTIVE`;
 
-Content split into multiple lines.
-
-Images/ Links (if any)
-
-Hashtags (minimum 3, maximum 8, relevant to the content)
-
-For Your Information: 1 BTC is priced at $${price} USD. use this information wherever bitcoin value is mentioned, if needed.
-Keep everything in plain text format—no special formatting. seprate each section with 2 new lines
-`;
 
   try {
     const response = await together.chat.completions.create({
