@@ -17,10 +17,10 @@ async function aigen(inputx) {
 
   const { price, sat } = await getBitcoinPrice();
 
-const prompt = `${inputx}
+  const prompt = `${inputx}
 
 DIRECTIVE:
-Analyze the content (max 70 words) and create a structured report. Follow these guidelines:
+Analyze the content (min 50 words, max 80 words) and create a structured reddit post. Follow these guidelines:
 
 For Your Information: 1 Bitcoin (BTC) is priced at $${price} USD.
 
@@ -32,8 +32,7 @@ GUIDELINES:
 - **Bitcoin References:** Use Bitcoin ($${price} USD) format.
 - **Format:** Plain text, sections separated by two new lines.
 
-END OF DIRECTIVE`
-
+END OF DIRECTIVE`;
 
   try {
     const response = await together.chat.completions.create({
