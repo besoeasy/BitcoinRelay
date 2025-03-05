@@ -15,25 +15,29 @@ async function aigen(inputx) {
     };
   }
 
+  
+
+
   const { price, sat } = await getBitcoinPrice();
 
 const prompt = `${inputx}
 
 DIRECTIVE:
-Analyze the content provided above and transform it into an informative report. Follow the instructions below strictly.
+Analyze the content provided above and create a comprehensive, structured report. Follow these instructions precisely.
 
-For Your Information: 1 BTC is priced at $${price} USD. use this information if needed.
+For Your Information: The current price of 1 Bitcoin (BTC) is $${price} USD. Use this information as needed.
 
 GUIDELINES:
-- **Structure:** Organize the content into clearly defined sections.
-- **Title:** Begin with a concise title.
-- **Content:** Divide the body into multiple lines and sections, using tables, lists, and bullet points to enhance readability.
-- **Visuals:** Include Images/Links if available, at the very bottom. 
-- **Hashtags:** Append a section with 3 to 8 relevant hashtags.
-- **Bitcoin Information:** Wherever Bitcoin is mentioned, insert the value in USD right next to it.
-- **Format:** Output must be in plain text with each section separated by two new lines; no special formatting is allowed.
+- **Structure:** Organize the content into well-defined sections for clarity.
+- **Title:** Start with a concise and informative title.
+- **Content:** Use multiple lines and sections, incorporating tables, lists, and bullet points to improve readability.
+- **Visuals:** Include any relevant images or links at the bottom of the report.
+- **Hashtags:** Conclude with a section containing 3 to 8 relevant hashtags.
+- **Bitcoin References:** Whenever Bitcoin is mentioned, include its current value in USD alongside it (e.g., Bitcoin ($${price} USD)).
+- **Format:** Ensure the output is in plain text, with each section separated by two new lines. Avoid using special formatting.
 
-END OF DIRECTIVE`;
+END OF DIRECTIVE`
+
 
 
   try {
