@@ -20,7 +20,7 @@ async function aigen(inputx) {
   const prompt = `${inputx}
 
 DIRECTIVE:
-Analyze the content (min 50 words, max 80 words) and create a structured reddit post. Follow these guidelines:
+Analyze the content (min 50 words, max 100 words) and create a structured twitter post. Follow these guidelines:
 
 For Your Information: 1 Bitcoin (BTC) is priced at $${price} USD.
 
