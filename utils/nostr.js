@@ -1,7 +1,7 @@
 const { finalizeEvent, getPublicKey, nip19, getEventHash } = require("nostr-tools");
 const WebSocket = require("ws");
 
-const relays = ["wss://relay.damus.io", "wss://nostr.bitcoiner.social", "wss://purplerelay.com"];
+const relays = ["wss://relay.damus.io", "wss://purplerelay.com"];
 
 /**
  * Calculates expiration timestamp (1 year from now)
