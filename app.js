@@ -14,9 +14,11 @@ const { aigen } = require("./utils/ai.js");
 async function pushIt(text) {
   if (process.env.NSEC) {
     try {
-      await postToNostr(process.env.NSEC, text, {
+      const pushedObj = await postToNostr(process.env.NSEC, text, {
         expirationDays: 20,
       });
+
+      console.log("Pushed to Nostr:", pushedObj);
     } catch (error) {
       console.error("Error pushing message:", error);
     }
