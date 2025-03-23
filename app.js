@@ -16,7 +16,6 @@ async function pushIt(text) {
     try {
       await postToNostr(process.env.NSEC, text, {
         expirationDays: 20,
-        timeout: 15000,
       });
     } catch (error) {
       console.error("Error pushing message:", error);
