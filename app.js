@@ -8,13 +8,16 @@ const { hndl_btcchart } = require("./modules/btc_chart.js");
 const { hndl_reddit } = require("./modules/reddix.js");
 const { hndl_news } = require("./modules/news.js");
 
-const postToNostr = require("./utils/nostr.js");
+const postToNostr = require("nostr-poster");
 const { aigen } = require("./utils/ai.js");
 
 async function pushIt(text) {
   if (process.env.NSEC) {
     try {
-      await postToNostr(process.env.NSEC, text);
+      await postToNostr(process.env.NSEC, text, {
+        expirationDays: 20,
+        timeout: 15000,
+      });
     } catch (error) {
       console.error("Error pushing message:", error);
     }
@@ -30,7 +33,15 @@ function shuffleArray(array) {
 }
 
 async function main() {
-  const handler_data = shuffleArray([hndl_btcchart, hndl_btcprice, hndl_btcfee, hndl_whale, hndl_btclight, hndl_reddit, hndl_news]);
+  const handler_data = shuffleArray([
+    hndl_btcchart,
+    hndl_btcprice,
+    hndl_btcfee,
+    hndl_whale,
+    hndl_btclight,
+    hndl_reddit,
+    hndl_news,
+  ]);
 
   try {
     const content2 = await handler_data[0]();

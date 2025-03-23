@@ -12,9 +12,8 @@
     "axios": "^1.7.9",
     "canvas": "^3.0.0",
     "dotenv": "^16.4.7",
-    "nostr-tools": "^2.10.4",
+    "nostr-poster": "^1.0.0",
     "rss-parser": "^3.13.0",
-    "together-ai": "^0.13.0",
-    "ws": "^8.18.0"
+    "together-ai": "^0.13.0"
   }
 }
