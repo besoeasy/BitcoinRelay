@@ -3,9 +3,16 @@ const Parser = require("rss-parser");
 const parser = new Parser();
 
 const redditRssUrls = [
-  "https://www.reddit.com/r/Bitcoin/.rss", 
-  "https://www.reddit.com/r/Bitcoin/top/.rss",
-  "https://www.reddit.com/r/Bitcoin/hot/.rss",
+  "https://www.reddit.com/r/Bitcoin/.rss",           // Bitcoin general feed
+  "https://www.reddit.com/r/Bitcoin/top/.rss",      // Bitcoin top posts
+  "https://www.reddit.com/r/Bitcoin/hot/.rss",      // Bitcoin trending posts
+  "https://www.reddit.com/r/CryptoCurrency/.rss",   // Broad crypto news and discussion
+  "https://www.reddit.com/r/Ethereum/.rss",         // Ethereum-specific updates
+  "https://www.reddit.com/r/BTC/.rss",              // Bitcoin alternative community
+  "https://www.reddit.com/r/CryptoMarkets/.rss",    // Market-focused crypto news
+  "https://www.reddit.com/r/Crypto_General/.rss",   // General crypto topics
+  "https://www.reddit.com/r/Altcoin/.rss",          // Altcoin news and updates
+  "https://www.reddit.com/r/Blockchain/.rss",       // Blockchain tech and crypto overlap
 ];
 
 const getRandomRedditPostFromRss = async () => {
