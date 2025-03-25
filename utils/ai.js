@@ -1,9 +1,9 @@
-const Together = require("together-ai");
-const { getBitcoinPrice } = require("../modules/btc_price.js");
+import Together from 'together-ai';
+import { getBitcoinPrice } from '../modules/btc_price.js';
 
 const DEFAULT_DIRECTIVE = `
 DIRECTIVE:
-create a structured twitter post from content given above Follow these guidelines:
+create a structured post from content given above Follow these guidelines:
 
 GUIDELINES:
 - **Content:** Use tables, lists, and bullet points. Include examples if relevant.
@@ -17,7 +17,7 @@ END OF DIRECTIVE`;
 
 const apiKey = process.env.TOGETHER_API_KEY;
 if (!apiKey) {
-  throw new Error("TOGETHER_API_KEY environment variable is required");
+  throw new Error('TOGETHER_API_KEY environment variable is required');
 }
 const together = new Together({ apiKey });
 
@@ -30,11 +30,11 @@ const together = new Together({ apiKey });
  * @returns {Promise<{success: boolean, prompt: string|null, response: string|null, error?: string}>}
  */
 async function aigen(inputx, options = {}) {
-  if (!inputx || typeof inputx !== "string") {
-    throw new Error("Input must be a non-empty string");
+  if (!inputx || typeof inputx !== 'string') {
+    throw new Error('Input must be a non-empty string');
   }
 
-  const { model = "meta-llama/Llama-3.3-70B-Instruct-Turbo-Free", maxTokens = null } = options;
+  const { model = 'meta-llama/Llama-3.3-70B-Instruct-Turbo-Free', maxTokens = null } = options;
 
   const { price, sat } = await getBitcoinPrice();
 
@@ -42,7 +42,7 @@ async function aigen(inputx, options = {}) {
 
   try {
     const response = await together.chat.completions.create({
-      messages: [{ role: "user", content: prompt }],
+      messages: [{ role: 'user', content: prompt }],
       model,
       max_tokens: maxTokens,
     });
@@ -57,9 +57,9 @@ async function aigen(inputx, options = {}) {
       success: false,
       prompt,
       response: null,
-      error: error.message || "Unknown error occurred",
+      error: error.message || 'Unknown error occurred',
     };
   }
 }
 
-module.exports = { aigen };
+export { aigen };

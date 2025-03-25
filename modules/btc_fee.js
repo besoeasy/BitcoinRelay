@@ -1,23 +1,30 @@
-const { axiosGet } = require("../utils/get.js");
-const { createCanvas, loadImage } = require("canvas");
-const { uploadIMG } = require("../utils/imgup.js");
-const path = require("path");
+import { axiosGet } from '../utils/get.js';
+import { createCanvas, loadImage } from 'canvas';
+import { uploadIMG } from '../utils/imgup.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 async function getBitcoinFees() {
-  const fees = await axiosGet("https://mempool.space/api/v1/fees/recommended");
+  const fees = await axiosGet('https://mempool.space/api/v1/fees/recommended');
 
   return {
     fee: fees?.fastestFee || 3,
   };
 }
 
-const backimgfees = [path.resolve(__dirname, "../images/fees/1.png"), path.resolve(__dirname, "../images/fees/2.png")];
+const backimgfees = [
+  path.resolve(__dirname, '../images/fees/1.png'),
+  path.resolve(__dirname, '../images/fees/2.png')
+];
 
 async function paintFees(textx) {
   const width = 1000;
   const height = 1000;
   const canvas = createCanvas(width, height);
-  const context = canvas.getContext("2d");
+  const context = canvas.getContext('2d');
 
   const backgroundImage = await loadImage(backimgfees[Math.floor(Math.random() * backimgfees.length)]);
 
@@ -25,13 +32,13 @@ async function paintFees(textx) {
 
   const fontSize = 80;
   context.font = `bold ${fontSize}px 'Helvetica Neue', Arial, sans-serif`;
-  context.textAlign = "center";
-  context.textBaseline = "middle";
+  context.textAlign = 'center';
+  context.textBaseline = 'middle';
 
-  context.fillStyle = "#080808";
+  context.fillStyle = '#080808';
   context.fillText(textx, width / 2, height / 2);
 
-  return canvas.toBuffer("image/png");
+  return canvas.toBuffer('image/png');
 }
 
 async function hndl_btcfee() {
@@ -49,6 +56,6 @@ async function hndl_btcfee() {
   return msg;
 }
 
-module.exports = {
+export {
   hndl_btcfee,
 };

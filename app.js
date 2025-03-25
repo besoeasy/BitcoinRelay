@@ -1,29 +1,16 @@
-require("dotenv").config();
+import "dotenv/config";
 
-const { hndl_btclight } = require("./modules/btc_light.js");
-const { hndl_btcfee } = require("./modules/btc_fee.js");
-const { hndl_btcprice } = require("./modules/btc_price.js");
-const { hndl_whale } = require("./modules/txn_whale.js");
-const { hndl_btcchart } = require("./modules/btc_chart.js");
-const { hndl_reddit } = require("./modules/reddix.js");
-const { hndl_news } = require("./modules/news.js");
+import { hndl_btclight } from "./modules/btc_light.js";
+import { hndl_btcfee } from "./modules/btc_fee.js";
+import { hndl_btcprice } from "./modules/btc_price.js";
+import { hndl_whale } from "./modules/txn_whale.js";
+import { hndl_btcchart } from "./modules/btc_chart.js";
+import { hndl_reddit } from "./modules/reddix.js";
+import { hndl_news } from "./modules/news.js";
 
-const postToNostr = require("nostr-poster");
-const { aigen } = require("./utils/ai.js");
+import { aigen } from "./utils/ai.js";
 
-async function pushIt(text) {
-  if (process.env.NSEC) {
-    try {
-      const pushedObj = await postToNostr(process.env.NSEC, text, {
-        expirationDays: 20,
-      });
-
-      console.log("Pushed to Nostr:", pushedObj);
-    } catch (error) {
-      console.error("Error pushing message:", error);
-    }
-  }
-}
+import postToNostr from "nostr-poster";
 
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -53,11 +40,13 @@ async function main() {
 
     console.log("\n\n\n" + aicontent.response + "\n\n\n");
 
-    if (Math.random() > 0.5) {
-      await pushIt(content2);
-    } else {
-      await pushIt(aicontent.response);
-    }
+    console.log("Pushing to Nostr...");
+
+    const postResult = await postToNostr(process.env.NSEC, aicontent.response, {
+      expirationDays: 20,
+    });
+
+    console.log("Pushed to Nostr:", postResult.eventId);
   } catch (error) {
     console.error("Error in execution:", error);
   } finally {

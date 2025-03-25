@@ -1,10 +1,14 @@
-const { axiosGet } = require("../utils/get.js");
-const { createCanvas, loadImage } = require("canvas");
-const { uploadIMG } = require("../utils/imgup.js");
-const path = require("path");
+import { axiosGet } from '../utils/get.js';
+import { createCanvas, loadImage } from 'canvas';
+import { uploadIMG } from '../utils/imgup.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 async function getBitcoinPrice() {
-  const data = await axiosGet("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd");
+  const data = await axiosGet('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
 
   const btcprice = parseInt(data?.bitcoin?.usd || 0);
 
@@ -14,13 +18,18 @@ async function getBitcoinPrice() {
   };
 }
 
-const backimgprice = [path.resolve(__dirname, "../images/price/1.png"), path.resolve(__dirname, "../images/price/2.png"), path.resolve(__dirname, "../images/price/3.png"), path.resolve(__dirname, "../images/price/4.png")];
+const backimgprice = [
+  path.resolve(__dirname, '../images/price/1.png'),
+  path.resolve(__dirname, '../images/price/2.png'),
+  path.resolve(__dirname, '../images/price/3.png'),
+  path.resolve(__dirname, '../images/price/4.png')
+];
 
 async function paintPrice(textx) {
   const width = 1000;
   const height = 1000;
   const canvas = createCanvas(width, height);
-  const context = canvas.getContext("2d");
+  const context = canvas.getContext('2d');
 
   const backgroundImage = await loadImage(backimgprice[Math.floor(Math.random() * backimgprice.length)]);
 
@@ -28,15 +37,15 @@ async function paintPrice(textx) {
 
   const fontSize = 160;
   context.font = `bold ${fontSize}px 'Helvetica Neue', Arial, sans-serif`;
-  context.textAlign = "center";
-  context.textBaseline = "middle";
+  context.textAlign = 'center';
+  context.textBaseline = 'middle';
 
-  const textxColor = Math.random() > 0.5 ? "#e74c3c" : "#2ecc71";
+  const textxColor = Math.random() > 0.5 ? '#e74c3c' : '#2ecc71';
 
   context.fillStyle = textxColor;
   context.fillText(textx, width / 2, height / 2);
 
-  return canvas.toBuffer("image/png");
+  return canvas.toBuffer('image/png');
 }
 
 async function hndl_btcprice() {
@@ -54,7 +63,7 @@ async function hndl_btcprice() {
   return msg;
 }
 
-module.exports = {
+export {
   hndl_btcprice,
   getBitcoinPrice,
 };

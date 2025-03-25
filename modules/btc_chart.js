@@ -1,12 +1,12 @@
-const axios = require("axios");
-const { createCanvas, loadImage } = require("canvas");
-const { uploadIMG } = require("../utils/imgup.js");
+import axios from 'axios';
+import { createCanvas, loadImage } from 'canvas';
+import { uploadIMG } from '../utils/imgup.js';
 
 const getBTCData = async () => {
   try {
     const response = await axios.get(
-      "https://api.coingecko.com/api/v3/coins/bitcoin/ohlc",
-      { params: { vs_currency: "usd", days: "1" } }
+      'https://api.coingecko.com/api/v3/coins/bitcoin/ohlc',
+      { params: { vs_currency: 'usd', days: '1' } }
     );
 
     const data = response.data;
@@ -27,7 +27,7 @@ const getBTCData = async () => {
       avgPrice,
     };
   } catch (error) {
-    console.error("Error fetching BTC data:", error);
+    console.error('Error fetching BTC data:', error);
     return { data: [], minPrice: 0, maxPrice: 0, avgPrice: 0 };
   }
 };
@@ -40,10 +40,10 @@ const plotData = async () => {
   const canvasHeight = 2000;
 
   const canvas = createCanvas(canvasWidth, canvasHeight);
-  const ctx = canvas.getContext("2d");
+  const ctx = canvas.getContext('2d');
 
   // Background
-  ctx.fillStyle = "#1e1e2e";
+  ctx.fillStyle = '#1e1e2e';
   ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
   // Define chart area
@@ -56,7 +56,7 @@ const plotData = async () => {
   const yScale = chartHeight / priceRange;
 
   // Draw grid
-  ctx.strokeStyle = "#444";
+  ctx.strokeStyle = '#444';
   ctx.lineWidth = 2;
 
   for (let i = 0; i <= 5; i++) {
@@ -87,7 +87,7 @@ const plotData = async () => {
     const lowY = canvasHeight - chartPadding - (low - minPrice) * yScale;
 
     const isBullish = close > open;
-    ctx.fillStyle = isBullish ? "#4caf50" : "#f44336";
+    ctx.fillStyle = isBullish ? '#4caf50' : '#f44336';
     ctx.strokeStyle = ctx.fillStyle;
 
     ctx.beginPath();
@@ -106,8 +106,8 @@ const plotData = async () => {
   });
 
   // Annotations: High, Low, and Average Prices
-  ctx.fillStyle = "white";
-  ctx.font = "80px Arial";
+  ctx.fillStyle = 'white';
+  ctx.font = '80px Arial';
 
   // High
   ctx.fillText(`High: $${maxPrice}`, chartPadding, chartPadding - 50);
@@ -121,7 +121,7 @@ const plotData = async () => {
 
   // Average Price Line
   const avgY = canvasHeight - chartPadding - (avgPrice - minPrice) * yScale;
-  ctx.strokeStyle = "#ffd700"; // Bright yellow for visibility
+  ctx.strokeStyle = '#ffd700'; // Bright yellow for visibility
   ctx.lineWidth = 5;
   ctx.setLineDash([10, 10]);
   ctx.beginPath();
@@ -129,7 +129,7 @@ const plotData = async () => {
   ctx.lineTo(canvasWidth - chartPadding, avgY);
   ctx.stroke();
   ctx.setLineDash([]);
-  ctx.fillStyle = "#ffd700";
+  ctx.fillStyle = '#ffd700';
   ctx.fillText(
     `Avg: $${avgPrice}`,
     canvasWidth - chartPadding - 300,
@@ -137,7 +137,7 @@ const plotData = async () => {
   );
 
   return {
-    buffer: canvas.toBuffer("image/png"),
+    buffer: canvas.toBuffer('image/png'),
     minPrice,
     maxPrice,
     avgPrice,
@@ -149,7 +149,7 @@ async function hndl_btcchart() {
 
   const msgurl = await uploadIMG(buffer);
 
-  let msg = "";
+  let msg = '';
 
   if (msgurl) {
     msg =
@@ -164,4 +164,4 @@ async function hndl_btcchart() {
   return msg;
 }
 
-module.exports = { hndl_btcchart };
+export { hndl_btcchart };

@@ -1,8 +1,8 @@
-const { axiosGet } = require("../utils/get.js");
+import { axiosGet } from '../utils/get.js';
 
 async function btcLightning() {
   const data = await axiosGet(
-    "https://mempool.space/api/v1/lightning/statistics/latest"
+    'https://mempool.space/api/v1/lightning/statistics/latest'
   );
 
   return data?.latest || {};
@@ -23,6 +23,6 @@ async function hndl_btclight() {
   return msg;
 }
 
-module.exports = {
+export {
   hndl_btclight,
 };

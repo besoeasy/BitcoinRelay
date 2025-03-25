@@ -1,11 +1,11 @@
-const axios = require("axios");
-const FormData = require("form-data");
+import axios from 'axios';
+import FormData from 'form-data';
 
 const apiKey = process.env.IMGBB_API_KEY;
 
 const uploadToImgBB = async (buffer) => {
   const form = new FormData();
-  form.append("image", buffer.toString("base64"));
+  form.append('image', buffer.toString('base64'));
 
   const headers = form.getHeaders();
   const url = `https://api.imgbb.com/1/upload?expiration=${86400 * 11}&key=${apiKey}`;
@@ -16,7 +16,7 @@ const uploadToImgBB = async (buffer) => {
     if (data && data.url) {
       return data.url;
     } else {
-      console.error("Unexpected response format from ImgBB:", response.data);
+      console.error('Unexpected response format from ImgBB:', response.data);
       return null; // Return null to indicate failure
     }
   } catch (error) {
@@ -27,11 +27,11 @@ const uploadToImgBB = async (buffer) => {
 
 const uploadToCatbox = async (buffer) => {
   const form = new FormData();
-  form.append("reqtype", "fileupload");
-  form.append("userhash", "");
-  form.append("fileToUpload", buffer, "image.png");
+  form.append('reqtype', 'fileupload');
+  form.append('userhash', '');
+  form.append('fileToUpload', buffer, 'image.png');
 
-  const url = "https://catbox.moe/user/api.php";
+  const url = 'https://catbox.moe/user/api.php';
 
   try {
     const response = await axios.post(url, form, {
@@ -40,7 +40,7 @@ const uploadToCatbox = async (buffer) => {
     if (response.data) {
       return response.data.trim();
     } else {
-      console.error("Unexpected response format from Catbox:", response.data);
+      console.error('Unexpected response format from Catbox:', response.data);
       return null; // Return null to indicate failure
     }
   } catch (error) {
@@ -51,7 +51,7 @@ const uploadToCatbox = async (buffer) => {
 
 async function uploadIMG(buffer) {
   if (!Buffer.isBuffer(buffer)) {
-    throw new TypeError("Provided data is not a Buffer");
+    throw new TypeError('Provided data is not a Buffer');
   }
 
   let imageUrl = null;
@@ -59,10 +59,10 @@ async function uploadIMG(buffer) {
   if (apiKey) {
     imageUrl = await uploadToImgBB(buffer);
     if (!imageUrl) {
-      console.warn("ImgBB upload failed. Falling back to Catbox.");
+      console.warn('ImgBB upload failed. Falling back to Catbox.');
     }
   } else {
-    console.warn("API key for ImgBB is not provided. Falling back to Catbox.");
+    console.warn('API key for ImgBB is not provided. Falling back to Catbox.');
   }
 
   if (!imageUrl) {
@@ -70,13 +70,13 @@ async function uploadIMG(buffer) {
   }
 
   if (!imageUrl) {
-    console.error("Both ImgBB and Catbox uploads failed.");
-    throw new Error("Image upload failed.");
+    console.error('Both ImgBB and Catbox uploads failed.');
+    throw new Error('Image upload failed.');
   }
 
   return imageUrl;
 }
 
-module.exports = {
+export {
   uploadIMG,
 };
