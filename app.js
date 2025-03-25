@@ -8,8 +8,6 @@ import { hndl_btcchart } from "./modules/btc_chart.js";
 import { hndl_reddit } from "./modules/reddix.js";
 import { hndl_news } from "./modules/news.js";
 
-import { aigen } from "./utils/ai.js";
-
 import postToNostr from "nostr-poster";
 
 function shuffleArray(array) {
@@ -36,17 +34,14 @@ async function main() {
 
     console.log("\n\n\n" + content2 + "\n\n\n");
 
-    const aicontent = await aigen(content2);
-
-    console.log("\n\n\n" + aicontent.response + "\n\n\n");
-
     console.log("Pushing to Nostr...");
 
-    const postResult = await postToNostr(process.env.NSEC, aicontent.response, {
+    const postResult = await postToNostr(process.env.NSEC, content2, {
       expirationDays: 20,
     });
 
     console.log("Pushed to Nostr:", postResult.eventId);
+    
   } catch (error) {
     console.error("Error in execution:", error);
   } finally {
