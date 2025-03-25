@@ -1,20 +1,6 @@
 import Together from 'together-ai';
 import { getBitcoinPrice } from '../modules/btc_price.js';
 
-const DEFAULT_DIRECTIVE = `
-DIRECTIVE:
-create a structured post from content given above Follow these guidelines:
-
-GUIDELINES:
-- **Content:** Use tables, lists, and bullet points. Include examples if relevant.
-- **Hashtags:** Include 4-10 relevant hashtags, always include #crypto #bitcoin #news
-- **Format:** Plain text, sections separated by two new lines.
-- **Tone:** Professional, informative, and engaging.
-- **Links:** Include 1-2 relevant links, always include a link to the source
-- **Length:** 400 characters or less.
-
-END OF DIRECTIVE`;
-
 const apiKey = process.env.TOGETHER_API_KEY;
 if (!apiKey) {
   throw new Error('TOGETHER_API_KEY environment variable is required');
@@ -38,7 +24,7 @@ async function aigen(inputx, options = {}) {
 
   const { price, sat } = await getBitcoinPrice();
 
-  const prompt = `${inputx}\n use 1 bitcoin = ${price} for all calculations \n\n${DEFAULT_DIRECTIVE}`;
+  const prompt = `Improve this post, and explain it in key points if possible \n\n  use 1 bitcoin = ${price} and display estimated value in USD whereever bitcoin is mentioned in a minimal way \n\n ${inputx} i need output in plaintext add relevent hashtags below it, alyways use #bitcoin & #crypto hashtag, add any links at the end of the post`;
 
   try {
     const response = await together.chat.completions.create({
