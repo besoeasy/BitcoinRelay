@@ -47,23 +47,6 @@ async function main() {
     });
 
     console.log("Pushed to Nostr:", postResult2.eventId);
-
-
-    if (Math.random() < 0.2) {
-  const sponsorMsg = `Crypto Relay is sponsored by
-
-https://2xpt.com - an anonymous bitcoin game, no emails, no phone, no KYC.
-`;
-
-  const sponsorPost = await postToNostr(process.env.NSEC, sponsorMsg, {
-    expirationDays: 30,
-  });
-  console.log("Pushed Sponsor Message to Nostr:", sponsorPost.eventId);
-}
-
-
-
-    
   } catch (error) {
     console.error("Error in execution:", error);
   } finally {
