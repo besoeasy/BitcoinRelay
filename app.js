@@ -34,7 +34,9 @@ async function main() {
 
     const content2 = await handler_data[1]();
 
-    console.log(content + "\n\n\n" + content2);
+    const content3 = await handler_data[2]();
+
+    console.log(content + "\n\n\n" + content2 + "\n\n\n" + content3);
 
     const postResult = await postToNostr(process.env.NSEC, content, {
       expirationDays: 20,
@@ -47,6 +49,12 @@ async function main() {
     });
 
     console.log("Pushed to Nostr:", postResult2.eventId);
+
+    const postResult3 = await postToNostr(process.env.NSEC, content3, {
+      expirationDays: 30,
+    });
+
+    console.log("Pushed to Nostr:", postResult3.eventId);
   } catch (error) {
     console.error("Error in execution:", error);
   } finally {
