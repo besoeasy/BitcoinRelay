@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: ["main"]
   schedule:
-    - cron: "58 * * * *"
+    - cron: "0 */3 * * *"
 
 jobs:
   build:
@@ -14,7 +14,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [20.x]
+        node-version: [22.x]
 
     steps:
       - uses: actions/checkout@v4
@@ -31,5 +31,4 @@ jobs:
         env:
           IMGBB_API_KEY: ${{ secrets.IMGBB_API_KEY }}
           NSEC: ${{ secrets.NSEC }}
-          TOGETHER_API_KEY: ${{ secrets.TOGETHER_API_KEY }}
         run: npm start
