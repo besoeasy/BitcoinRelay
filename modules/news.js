@@ -1,22 +1,18 @@
 import RSSParser from 'rss-parser';
 const parser = new RSSParser();
 
+// Use popular news aggregators with bitcoin keyword
 const feedUrls = [
-  'https://cointelegraph.com/rss',                  // Broad crypto news and trends
-  'https://news.bitcoin.com/feed',                 // Bitcoin-focused news
-  'https://www.coindesk.com/arc/outboundfeeds/rss/', // Industry-leading crypto journalism
-  'https://bitcoinmagazine.com/feed',              // Bitcoin-specific insights
-  'https://decrypt.co/feed',                       // Crypto and blockchain news
-  'https://cryptoslate.com/feed/',                 // Market analysis and crypto updates
-  'https://www.theblock.co/rss',                   // Deep dives into crypto markets
-  'https://beincrypto.com/feed/',                  // Independent crypto news
-  'https://cryptobriefing.com/feed/',              // In-depth crypto analysis
-  'https://coingape.com/feed/',                    // Breaking news and price updates
-  'https://u.today/rss',                           // Daily crypto news and opinions
-  'https://www.newsbtc.com/feed/',                 // Bitcoin and altcoin focus
-  'https://www.blockchain.news/feed',              // Blockchain and crypto coverage
-  'https://coinspectator.com/feed/',               // Real-time news aggregation
-  'https://crypto.news/feed/',                     // Crypto and Web3 updates
+  // Yahoo News search for bitcoin
+  'https://news.yahoo.com/rss/search?p=bitcoin',
+  // Google News search for bitcoin
+  'https://news.google.com/rss/search?q=bitcoin',
+  // Bing News search for bitcoin
+  'https://www.bing.com/news/search?q=bitcoin&format=rss',
+  // Reuters search for bitcoin
+  'https://www.reutersagency.com/feed/?best-topics=bitcoin&post_type=best',
+  // Cointelegraph for redundancy
+  'https://cointelegraph.com/rss',
 ];
 
 async function fetchFeed(url) {
