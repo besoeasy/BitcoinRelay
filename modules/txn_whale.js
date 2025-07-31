@@ -42,30 +42,32 @@ async function imgWhale(msg) {
 
 async function hndl_whale() {
   try {
-    const latestBlockHash = await axiosGet('https://mempool.space/api/blocks/tip/hash');
-
-    if (!latestBlockHash) {
-      throw new Error('Failed to fetch the latest block hash.');
+    // Get the latest 10 block hashes
+    const blocks = await axiosGet('https://mempool.space/api/blocks');
+    if (!blocks || blocks.length === 0) {
+      throw new Error('Failed to fetch recent blocks.');
     }
+    const blockHashes = blocks.slice(0, 10).map(b => b.id);
 
-    const transactions = await axiosGet(`https://mempool.space/api/block/${latestBlockHash}/txs`);
+    let biggestTransaction = { transaction: null, totalOutput: 0 };
 
-    if (!transactions || transactions.length === 0) {
-      return "It's quiet out there… no transactions in the latest block. Did Bitcoin fall asleep?";
-    }
-
-    const biggestTransaction = transactions
-      .filter((tx) => tx.vout.length < 3) // Focusing on "big whales" with few outputs
-      .reduce(
-        (max, tx) => {
+    for (const blockHash of blockHashes) {
+      const transactions = await axiosGet(`https://mempool.space/api/block/${blockHash}/txs`);
+      if (!transactions || transactions.length === 0) {
+        continue;
+      }
+      transactions
+        .filter((tx) => tx.vout.length < 3) // Focusing on "big whales" with few outputs
+        .forEach((tx) => {
           const totalOutput = tx.vout.reduce((sum, output) => sum + output.value, 0);
-          return totalOutput > max.totalOutput ? { transaction: tx, totalOutput } : max;
-        },
-        { transaction: null, totalOutput: 0 }
-      );
+          if (totalOutput > biggestTransaction.totalOutput) {
+            biggestTransaction = { transaction: tx, totalOutput };
+          }
+        });
+    }
 
     if (!biggestTransaction.transaction) {
-      return 'No significant transactions found in the latest block.';
+      return 'No significant transactions found in the last 10 blocks.';
     }
 
     return await formatWhaleTransaction(
