@@ -4,7 +4,7 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "start": "node app.js"
+    "start": "npx playwright install && node app.js"
   },
   "author": "besoeasy",
   "license": "ISC",
@@ -14,6 +14,7 @@
     "canvas": "^3.1.2",
     "dotenv": "^16.4.7",
     "nostr-poster": "github:besoeasy/nostr-poster",
+    "playwright": "^1.54.2",
     "rss-parser": "^3.13.0"
   }
 }
