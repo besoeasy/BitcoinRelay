@@ -7,6 +7,7 @@ import { hndl_whale } from "./modules/txn_whale.js";
 import { hndl_btcchart } from "./modules/btc_chart.js";
 import { hndl_reddit } from "./modules/reddix.js";
 import { hndl_news } from "./modules/news.js";
+import { hndl_btcHyperliquid } from "./modules/btc_hyperliquid.js";
 
 import postToNostr from "nostr-poster";
 
@@ -27,6 +28,7 @@ async function main() {
     hndl_btclight,
     hndl_reddit,
     hndl_news,
+    hndl_btcHyperliquid,
   ]);
 
   try {
