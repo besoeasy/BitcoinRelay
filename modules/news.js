@@ -1,18 +1,14 @@
-import RSSParser from 'rss-parser';
+import RSSParser from "rss-parser";
 const parser = new RSSParser();
 
 // Use popular news aggregators with bitcoin keyword
 const feedUrls = [
   // Yahoo News search for bitcoin
-  'https://news.yahoo.com/rss/search?p=bitcoin',
+  "https://news.yahoo.com/rss/search?p=bitcoin",
   // Google News search for bitcoin
-  'https://news.google.com/rss/search?q=bitcoin',
+  "https://news.google.com/rss/search?q=bitcoin",
   // Bing News search for bitcoin
-  'https://www.bing.com/news/search?q=bitcoin&format=rss',
-  // Reuters search for bitcoin
-  'https://www.reutersagency.com/feed/?best-topics=bitcoin&post_type=best',
-  // Cointelegraph for redundancy
-  'https://cointelegraph.com/rss',
+  "https://www.bing.com/news/search?q=bitcoin&format=rss",
 ];
 
 async function fetchFeed(url) {
@@ -42,7 +38,7 @@ async function fetchAllFeeds() {
   allPosts.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
 
   allPosts.forEach((post) => {
-    post.title = post.title.replace(/[^a-zA-Z0-9 ]/g, '');
+    post.title = post.title.replace(/[^a-zA-Z0-9 ]/g, "");
   });
 
   return allPosts[Math.floor(Math.random() * 15)];
@@ -56,6 +52,4 @@ async function hndl_news() {
   return msg;
 }
 
-export {
-  hndl_news,
-};
+export { hndl_news };
