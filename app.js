@@ -9,7 +9,7 @@ import { hndl_reddit } from "./modules/reddix.js";
 import { hndl_news } from "./modules/news.js";
 import { hndl_btcHyperliquid } from "./modules/btc_hyperliquid.js";
 
-import postToNostr from "nostr-poster";
+import { posttoNostr, sendmessage, getmessage } from "nostr-sdk";
 
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -20,43 +20,18 @@ function shuffleArray(array) {
 }
 
 async function main() {
-  const handler_data = shuffleArray([
-    hndl_btcchart,
-    hndl_btcprice,
-    hndl_btcfee,
-    hndl_whale,
-    hndl_btclight,
-    hndl_reddit,
-    hndl_news,
-    hndl_btcHyperliquid,
-  ]);
+  const handler_data = shuffleArray([hndl_btcchart, hndl_btcprice, hndl_btcfee, hndl_whale, hndl_btclight, hndl_reddit, hndl_news, hndl_btcHyperliquid]);
 
   try {
     const content = await handler_data[0]();
 
-    const content2 = await handler_data[1]();
-
-    const content3 = await handler_data[2]();
-
-    console.log(content + "\n\n\n" + content2 + "\n\n\n" + content3);
-
-    const postResult = await postToNostr(process.env.NSEC, content, {
-      expirationDays: 20,
+    const postResult = await posttoNostr(content, {
+      nsec: process.env.NSEC,
+      tags: [["client", "nostr-sdk"]],
+      powDifficulty: 2,
     });
 
-    console.log("Pushed to Nostr:", postResult.eventId);
-
-    const postResult2 = await postToNostr(process.env.NSEC, content2, {
-      expirationDays: 25,
-    });
-
-    console.log("Pushed to Nostr:", postResult2.eventId);
-
-    const postResult3 = await postToNostr(process.env.NSEC, content3, {
-      expirationDays: 30,
-    });
-
-    console.log("Pushed to Nostr:", postResult3.eventId);
+    console.log(postResult);
   } catch (error) {
     console.error("Error in execution:", error);
   } finally {

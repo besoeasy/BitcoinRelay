@@ -13,7 +13,7 @@
     "axios": "^1.11.0",
     "canvas": "^3.1.2",
     "dotenv": "^16.4.7",
-    "nostr-poster": "github:besoeasy/nostr-poster",
+    "nostr-sdk": "^0.0.2",
     "playwright": "^1.54.2",
     "rss-parser": "^3.13.0"
   }
