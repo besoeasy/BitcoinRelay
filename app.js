@@ -30,19 +30,19 @@ async function main() {
     const postResult = await posttoNostr(content, {
       nsec: process.env.NSEC,
       tags: [["client", "nostr-sdk"]],
-      powDifficulty: 6,
+      powDifficulty: 3,
     });
 
     const postResult2 = await posttoNostr(content2, {
       nsec: process.env.NSEC,
       tags: [["client", "nostr-sdk"]],
-      powDifficulty: 6,
+      powDifficulty: 3,
     });
 
     const postResult3 = await posttoNostr(content3, {
       nsec: process.env.NSEC,
       tags: [["client", "nostr-sdk"]],
-      powDifficulty: 6,
+      powDifficulty: 3,
     });
 
     console.log(postResult, postResult2, postResult3);
