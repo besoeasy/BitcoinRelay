@@ -24,14 +24,28 @@ async function main() {
 
   try {
     const content = await handler_data[0]();
+    const content2 = await handler_data[2]();
+    const content3 = await handler_data[3]();
 
     const postResult = await posttoNostr(content, {
       nsec: process.env.NSEC,
       tags: [["client", "nostr-sdk"]],
-      powDifficulty: 2,
+      powDifficulty: 6,
     });
 
-    console.log(postResult);
+    const postResult2 = await posttoNostr(content2, {
+      nsec: process.env.NSEC,
+      tags: [["client", "nostr-sdk"]],
+      powDifficulty: 6,
+    });
+
+    const postResult3 = await posttoNostr(content3, {
+      nsec: process.env.NSEC,
+      tags: [["client", "nostr-sdk"]],
+      powDifficulty: 6,
+    });
+
+    console.log(postResult, postResult2, postResult3);
   } catch (error) {
     console.error("Error in execution:", error);
   } finally {

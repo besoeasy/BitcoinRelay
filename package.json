@@ -1,5 +1,5 @@
 {
-  "name": "cryptorelay",
+  "name": "bitcoinrelay",
   "version": "1.0.0",
   "main": "app.js",
   "type": "module",
