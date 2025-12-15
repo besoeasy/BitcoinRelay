@@ -25,6 +25,32 @@ const uploadToImgBB = async (buffer) => {
   }
 };
 
+const uploadToFiledrop = async (buffer, filename = 'image.png') => {
+  const form = new FormData();
+  form.append('file', buffer, filename);
+
+  const url = 'https://filedrop.besoeasy.com/upload';
+
+  try {
+    const response = await axios.put(url, form, {
+      headers: form.getHeaders(),
+    });
+
+    // Accept several possible response formats: string URL, { url }, or { path }
+    if (response.data) {
+      if (typeof response.data === 'string') return response.data.trim();
+      if (response.data.url) return response.data.url;
+      if (response.data.path) return response.data.path;
+    }
+
+    console.error('Unexpected response format from Filedrop:', response.data);
+    return null;
+  } catch (error) {
+    console.error(`Error uploading to Filedrop: ${error.message}`);
+    return null;
+  }
+};
+
 const uploadToCatbox = async (buffer) => {
   const form = new FormData();
   form.append('reqtype', 'fileupload');
@@ -56,12 +82,15 @@ async function uploadIMG(buffer) {
 
   let imageUrl = null;
 
-  // Try ImgBB first (if API key available)
+  // Try Filedrop first
+  imageUrl = await uploadToFiledrop(buffer);
+  if (imageUrl) return imageUrl;
+  console.warn('Filedrop upload failed.');
+
+  // Try ImgBB next (if API key available)
   if (apiKey) {
     imageUrl = await uploadToImgBB(buffer);
-    if (imageUrl) {
-      return imageUrl;
-    }
+    if (imageUrl) return imageUrl;
     console.warn('ImgBB upload failed. Falling back to Catbox.');
   } else {
     console.warn('API key for ImgBB is not provided. Falling back to Catbox.');
@@ -69,11 +98,9 @@ async function uploadIMG(buffer) {
 
   // Try Catbox last
   imageUrl = await uploadToCatbox(buffer);
-  if (imageUrl) {
-    return imageUrl;
-  }
+  if (imageUrl) return imageUrl;
 
-  console.error('All upload services (ImgBB and Catbox) failed.');
+  console.error('All upload services (Filedrop, ImgBB and Catbox) failed.');
   throw new Error('Image upload failed.');
 }
 
