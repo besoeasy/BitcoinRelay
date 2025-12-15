@@ -7,6 +7,7 @@ import { hndl_whale } from "./modules/txn_whale.js";
 import { hndl_btcchart } from "./modules/btc_chart.js";
 import { hndl_news } from "./modules/news.js";
 import { hndl_btcHyperliquid } from "./modules/btc_hyperliquid.js";
+import { wickedsmartbitcoin } from "./modules/wickedsmartbitcoin.js";
 
 import { posttoNostr, sendmessage, getmessage } from "nostr-sdk";
 
@@ -19,7 +20,7 @@ function shuffleArray(array) {
 }
 
 async function main() {
-  const handler_data = shuffleArray([hndl_btcchart, hndl_btcprice, hndl_btcfee, hndl_whale, hndl_btclight, hndl_news, hndl_btcHyperliquid]);
+  const handler_data = shuffleArray([hndl_btcchart, hndl_btcprice, hndl_btcfee, hndl_whale, hndl_btclight, hndl_news, hndl_btcHyperliquid, wickedsmartbitcoin]);
 
   try {
     const content = await handler_data[0]();
