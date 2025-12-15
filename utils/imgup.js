@@ -4,25 +4,26 @@ import FormData from 'form-data';
 const apiKey = process.env.IMGBB_API_KEY;
 
 const uploadToBlossom = async (buffer) => {
-  const form = new FormData();
-  form.append('file', buffer, 'image.png');
-
   const url = 'https://blossom.primal.net/upload';
 
   try {
-    const response = await axios.post(url, form, {
-      headers: form.getHeaders(),
+    const response = await axios.put(url, buffer, {
+      headers: {
+        'Content-Type': 'image/png', // Adjust based on your file type
+      },
     });
-    const { data } = response;
+    
+    // Blossom returns a JSON blob descriptor
+    const data = response.data;
     if (data && data.url) {
       return data.url;
     } else {
       console.error('Unexpected response format from Blossom:', data);
-      return null; // Return null to indicate failure
+      return null;
     }
   } catch (error) {
-    console.error(`Error uploading to Blossom: ${error.response?.data?.error || error.message}`);
-    return null; // Return null to indicate failure
+    console.error(`Error uploading to Blossom: ${error.response?.data || error.message}`);
+    return null;
   }
 };
 
