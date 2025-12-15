@@ -29,6 +29,5 @@ jobs:
 
       - name: Run Script
         env:
-          IMGBB_API_KEY: ${{ secrets.IMGBB_API_KEY }}
           NSEC: ${{ secrets.NSEC }}
         run: npm start

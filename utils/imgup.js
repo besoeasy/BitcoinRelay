@@ -1,35 +1,11 @@
-import axios from 'axios';
-import FormData from 'form-data';
+import axios from "axios";
+import FormData from "form-data";
 
-const apiKey = process.env.IMGBB_API_KEY;
-
-const uploadToImgBB = async (buffer) => {
+const uploadToFiledrop = async (buffer, filename = "image.png") => {
   const form = new FormData();
-  form.append('image', buffer.toString('base64'));
+  form.append("file", buffer, filename);
 
-  const headers = form.getHeaders();
-  const url = `https://api.imgbb.com/1/upload?expiration=${86400 * 16}&key=${apiKey}`;
-
-  try {
-    const response = await axios.post(url, form, { headers });
-    const { data } = response.data;
-    if (data && data.url) {
-      return data.url;
-    } else {
-      console.error('Unexpected response format from ImgBB:', response.data);
-      return null; // Return null to indicate failure
-    }
-  } catch (error) {
-    console.error(`Error uploading to ImgBB: ${error.response?.data?.error?.message || error.message}`);
-    return null; // Return null to indicate failure
-  }
-};
-
-const uploadToFiledrop = async (buffer, filename = 'image.png') => {
-  const form = new FormData();
-  form.append('file', buffer, filename);
-
-  const url = 'https://filedrop.besoeasy.com/upload';
+  const url = "https://filedrop.besoeasy.com/upload";
 
   try {
     const response = await axios.put(url, form, {
@@ -38,12 +14,12 @@ const uploadToFiledrop = async (buffer, filename = 'image.png') => {
 
     // Accept several possible response formats: string URL, { url }, or { path }
     if (response.data) {
-      if (typeof response.data === 'string') return response.data.trim();
+      if (typeof response.data === "string") return response.data.trim();
       if (response.data.url) return response.data.url;
       if (response.data.path) return response.data.path;
     }
 
-    console.error('Unexpected response format from Filedrop:', response.data);
+    console.error("Unexpected response format from Filedrop:", response.data);
     return null;
   } catch (error) {
     console.error(`Error uploading to Filedrop: ${error.message}`);
@@ -53,11 +29,11 @@ const uploadToFiledrop = async (buffer, filename = 'image.png') => {
 
 const uploadToCatbox = async (buffer) => {
   const form = new FormData();
-  form.append('reqtype', 'fileupload');
-  form.append('userhash', '');
-  form.append('fileToUpload', buffer, 'image.png');
+  form.append("reqtype", "fileupload");
+  form.append("userhash", "");
+  form.append("fileToUpload", buffer, "image.png");
 
-  const url = 'https://catbox.moe/user/api.php';
+  const url = "https://catbox.moe/user/api.php";
 
   try {
     const response = await axios.post(url, form, {
@@ -66,7 +42,7 @@ const uploadToCatbox = async (buffer) => {
     if (response.data) {
       return response.data.trim();
     } else {
-      console.error('Unexpected response format from Catbox:', response.data);
+      console.error("Unexpected response format from Catbox:", response.data);
       return null; // Return null to indicate failure
     }
   } catch (error) {
@@ -77,33 +53,21 @@ const uploadToCatbox = async (buffer) => {
 
 async function uploadIMG(buffer) {
   if (!Buffer.isBuffer(buffer)) {
-    throw new TypeError('Provided data is not a Buffer');
+    throw new TypeError("Provided data is not a Buffer");
   }
 
   let imageUrl = null;
 
-  // Try Filedrop first
+  // Try Filedrop
   imageUrl = await uploadToFiledrop(buffer);
   if (imageUrl) return imageUrl;
-  console.warn('Filedrop upload failed.');
+  console.warn("Filedrop upload failed.");
 
-  // Try ImgBB next (if API key available)
-  if (apiKey) {
-    imageUrl = await uploadToImgBB(buffer);
-    if (imageUrl) return imageUrl;
-    console.warn('ImgBB upload failed. Falling back to Catbox.');
-  } else {
-    console.warn('API key for ImgBB is not provided. Falling back to Catbox.');
-  }
-
-  // Try Catbox last
+  // Try Catbox
   imageUrl = await uploadToCatbox(buffer);
   if (imageUrl) return imageUrl;
 
-  console.error('All upload services (Filedrop, ImgBB and Catbox) failed.');
-  throw new Error('Image upload failed.');
+  throw new Error("Image upload failed.");
 }
 
-export {
-  uploadIMG,
-};
+export { uploadIMG };
