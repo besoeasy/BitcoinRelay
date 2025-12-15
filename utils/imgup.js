@@ -4,13 +4,14 @@ import FormData from 'form-data';
 const apiKey = process.env.IMGBB_API_KEY;
 
 const uploadToBlossom = async (buffer) => {
+  const form = new FormData();
+  form.append('file', buffer, 'image.png');
+
   const url = 'https://blossom.primal.net/upload';
 
   try {
-    const response = await axios.put(url, buffer, {
-      headers: {
-        'Content-Type': 'image/png',
-      },
+    const response = await axios.post(url, form, {
+      headers: form.getHeaders(),
     });
     const { data } = response;
     if (data && data.url) {
