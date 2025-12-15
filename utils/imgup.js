@@ -3,12 +3,35 @@ import FormData from 'form-data';
 
 const apiKey = process.env.IMGBB_API_KEY;
 
+const uploadToFiledrop = async (buffer) => {
+  const form = new FormData();
+  form.append('file', buffer, 'image.png');
+
+  const url = 'https://filedrop.besoeasy.com/upload';
+
+  try {
+    const response = await axios.put(url, form, {
+      headers: form.getHeaders(),
+    });
+    const { data } = response;
+    if (data && data.status === 'success' && data.url) {
+      return data.url;
+    } else {
+      console.error('Unexpected response format from Filedrop:', data);
+      return null; // Return null to indicate failure
+    }
+  } catch (error) {
+    console.error(`Error uploading to Filedrop: ${error.response?.data?.error || error.message}`);
+    return null; // Return null to indicate failure
+  }
+};
+
 const uploadToImgBB = async (buffer) => {
   const form = new FormData();
   form.append('image', buffer.toString('base64'));
 
   const headers = form.getHeaders();
-  const url = `https://api.imgbb.com/1/upload?expiration=${86400 * 11}&key=${apiKey}`;
+  const url = `https://api.imgbb.com/1/upload?expiration=${86400 * 16}&key=${apiKey}`;
 
   try {
     const response = await axios.post(url, form, { headers });
@@ -56,25 +79,32 @@ async function uploadIMG(buffer) {
 
   let imageUrl = null;
 
+  // Try Filedrop first
+  imageUrl = await uploadToFiledrop(buffer);
+  if (imageUrl) {
+    return imageUrl;
+  }
+  console.warn('Filedrop upload failed. Falling back to ImgBB.');
+
+  // Try ImgBB second
   if (apiKey) {
     imageUrl = await uploadToImgBB(buffer);
-    if (!imageUrl) {
-      console.warn('ImgBB upload failed. Falling back to Catbox.');
+    if (imageUrl) {
+      return imageUrl;
     }
+    console.warn('ImgBB upload failed. Falling back to Catbox.');
   } else {
     console.warn('API key for ImgBB is not provided. Falling back to Catbox.');
   }
 
-  if (!imageUrl) {
-    imageUrl = await uploadToCatbox(buffer);
+  // Try Catbox last
+  imageUrl = await uploadToCatbox(buffer);
+  if (imageUrl) {
+    return imageUrl;
   }
 
-  if (!imageUrl) {
-    console.error('Both ImgBB and Catbox uploads failed.');
-    throw new Error('Image upload failed.');
-  }
-
-  return imageUrl;
+  console.error('All upload services (Filedrop, ImgBB, and Catbox) failed.');
+  throw new Error('Image upload failed.');
 }
 
 export {
