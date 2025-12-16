@@ -14,31 +14,12 @@ async function downloadImage(url) {
 async function wickedsmartbitcoin() {
   const date = new Date();
 
-  if (Math.random() < 0.4) {
-    const monthNames = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
-    const monthName = monthNames[date.getUTCMonth()]; // Months are zero-based
-    const day = date.getUTCDate();
-    const getdate = `${monthName} ${day}`;
-
+  if (Math.random() < 0.35) {
     const imageUrl = `https://wickedsmartbitcoin.com/final_frames/price_on_this_day.png?v=${date.getTime()}`;
     const imageBuffer = await downloadImage(imageUrl);
     const uploadedUrl = await uploadIMG(imageBuffer);
 
-    const msg =
-      `Bitcoin Price On ${getdate}\n\n` + `${uploadedUrl}\n\n` + `#bitcoin #priceonthisday #pricehistory`;
+    const msg = `Bitcoin Price This Day\n\n` + `${uploadedUrl}\n\n` + `#bitcoin #priceonthisday #pricehistory`;
 
     return msg;
   }
