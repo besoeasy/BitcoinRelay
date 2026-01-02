@@ -8,11 +8,10 @@ const uploadToFiledrop = async (buffer, filename = "image.png") => {
   const url = "https://filedrop.besoeasy.com/upload";
 
   try {
-    const response = await axios.put(url, form, {
+    const response = await axios.post(url, form, {
       headers: form.getHeaders(),
     });
 
-    // Accept several possible response formats: string URL, { url }, or { path }
     if (response.data) {
       if (typeof response.data === "string") return response.data.trim();
       if (response.data.url) return response.data.url;
