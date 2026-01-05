@@ -14,35 +14,29 @@ async function downloadImage(url) {
 async function wickedsmartbitcoin() {
   const date = new Date();
 
-  if (Math.random() < 0.35) {
-    const imageUrl = `https://wickedsmartbitcoin.com/final_frames/price_on_this_day.png?v=${date.getTime()}`;
-    const imageBuffer = await downloadImage(imageUrl);
-    const uploadedUrl = await uploadIMG(imageBuffer);
+  const frames = [
+    {
+      title: "Bitcoin Price This Day",
+      url: `https://wickedsmartbitcoin.com/final_frames/price_on_this_day.png?v=${date.getTime()}`,
+      hashtags: "#bitcoin #priceonthisday #pricehistory",
+    },
+    {
+      title: "Bitcoin Node Count Over Time",
+      url: `https://wickedsmartbitcoin.com/final_frames/node_count.png?v=${date.getTime()}`,
+      hashtags: "#bitcoin #nodecount #decentralization",
+    },
+    {
+      title: "Bitcoin Halving Progress",
+      url: `https://wickedsmartbitcoin.com/final_frames/halving_progress.png?v=${date.getTime()}`,
+      hashtags: "#bitcoin #halving #btc",
+    },
+  ];
 
-    const msg = `Bitcoin Price This Day\n\n` + `${uploadedUrl}\n\n` + `#bitcoin #priceonthisday #pricehistory`;
+  const choice = frames[Math.floor(Math.random() * frames.length)];
+  const imageBuffer = await downloadImage(choice.url);
+  const uploadedUrl = await uploadIMG(imageBuffer);
 
-    return msg;
-  }
-
-  if (Math.random() < 0.5) {
-    const imageUrl = `https://wickedsmartbitcoin.com/final_frames/node_count.png?v=${date.getTime()}`;
-    const imageBuffer = await downloadImage(imageUrl);
-    const uploadedUrl = await uploadIMG(imageBuffer);
-
-    const msg = `Bitcoin Node Count Over Time\n\n` + `${uploadedUrl}\n\n` + `#bitcoin #nodecount #decentralization`;
-
-    return msg;
-  }
-
-  if (Math.random() < 0.5) {
-    const imageUrl = `https://wickedsmartbitcoin.com/final_frames/halving_progress.png?v=${date.getTime()}`;
-    const imageBuffer = await downloadImage(imageUrl);
-    const uploadedUrl = await uploadIMG(imageBuffer);
-
-    const msg = `Bitcoin Halving Progress\n\n` + `${uploadedUrl}\n\n` + `#bitcoin #halving #btc`;
-
-    return msg;
-  }
+  return `${choice.title}\n\n${uploadedUrl}\n\n${choice.hashtags}`;
 }
 
 export { wickedsmartbitcoin };

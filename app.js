@@ -20,32 +20,25 @@ function shuffleArray(array) {
 }
 
 async function main() {
-  const handler_data = shuffleArray([hndl_btcchart, hndl_btcprice, hndl_btcfee, hndl_whale, hndl_btclight, hndl_news, hndl_btcHyperliquid, wickedsmartbitcoin]);
+  const handlers = shuffleArray([hndl_btcchart, hndl_btcprice, hndl_btcfee, hndl_whale, hndl_btclight, hndl_news, hndl_btcHyperliquid, wickedsmartbitcoin]);
 
   try {
-    const content = await handler_data[0]();
-    const content2 = await handler_data[2]();
-    const content3 = await handler_data[3]();
+    const selectedHandlers = handlers.slice(0, 5);
+    const contents = await Promise.all(
+      selectedHandlers.map(async (handler) => ({
+        name: handler.name || "handler",
+        content: await handler(),
+      }))
+    );
 
-    const postResult = await posttoNostr(content, {
+    const postConfig = {
       nsec: process.env.NSEC,
-      tags: [["client", "nostr-sdk"]],
       powDifficulty: 5,
-    });
+    };
 
-    const postResult2 = await posttoNostr(content2, {
-      nsec: process.env.NSEC,
-      tags: [["client", "nostr-sdk"]],
-      powDifficulty: 5,
-    });
+    const results = await Promise.all(contents.map(({ content, name }) => posttoNostr(content, postConfig).then((res) => ({ name, res }))));
 
-    const postResult3 = await posttoNostr(content3, {
-      nsec: process.env.NSEC,
-      tags: [["client", "nostr-sdk"]],
-      powDifficulty: 5,
-    });
-
-    console.log(postResult, postResult2, postResult3);
+    console.log("Posted to Nostr:", results);
   } catch (error) {
     console.error("Error in execution:", error);
   } finally {
